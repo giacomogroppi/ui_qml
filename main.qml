@@ -22,7 +22,7 @@ Window {
         leftPadding: 0
         padding: 0
 
-        statusBar {
+        StatusBar {
             id: statusBar
         }
 
