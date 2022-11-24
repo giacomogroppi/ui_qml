@@ -9,6 +9,8 @@ find_package(Qt6 6.3 COMPONENTS Quick REQUIRED)
 
 qt_add_executable(apptesting_qml
     main.cpp
+    textballoon.h textballoon.cpp
+    resource.qrc
 )
 
 qt_add_qml_module(apptesting_qml
