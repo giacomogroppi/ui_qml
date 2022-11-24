@@ -17,6 +17,7 @@ qt_add_qml_module(apptesting_qml
     URI testing_qml
     VERSION 1.0
     QML_FILES main.qml 
+        statusBar.qml
 )
 
 set_target_properties(apptesting_qml PROPERTIES

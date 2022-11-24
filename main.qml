@@ -22,45 +22,15 @@ Window {
         leftPadding: 0
         padding: 0
 
-        ToolBar {
-            id: toolBarInstruments
-            anchors.left: parent
-            anchors.right: parent
-            anchors.top: parent
-            width: parent.width
-            height: 30
-
-            RoundButton {
-                id: back
-                anchors.left: parent.left
-                anchors.right: button2
-                topPadding: 6
-
-                height: parent.height
-                width: height
-            }
-
-            RoundButton {
-                id: button2
-                anchors.left: back
-                anchors.right: parent.right
-
-                icon.source: "/home/giacomo/ui_qml/images/pen_option.png"
-                icon.width: width
-                icon.height: height
-                icon.color: "transparent"
-                icon.name: "Testing"
-
-                height: parent.height
-                width: height
-            }
+        statusBar {
+            id: statusBar
         }
 
         Rectangle {
             id: rowMainFrame
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.top: toolBarInstruments.bottom
+            anchors.top: statusBar.bottom
             anchors.bottom: rowBottom.top
             anchors.leftMargin: 0
             anchors.rightMargin: 0
