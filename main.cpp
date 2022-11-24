@@ -1,6 +1,6 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-
+#include "textballoon.h"
 
 int main(int argc, char *argv[])
 {
@@ -13,6 +13,9 @@ int main(int argc, char *argv[])
         if (!obj && url == objUrl)
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
+
+    qmlRegisterType<TextBalloon>("TextBalloon", 1, 0, "Disegnatore");
+
     engine.load(url);
 
     return app.exec();

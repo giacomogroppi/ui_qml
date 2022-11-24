@@ -37,13 +37,8 @@ Window {
             anchors.bottomMargin: 0
             anchors.topMargin: 0
 
-            ScrollView {
-                id: canvasSurface
-                anchors.left: parent.left
-                anchors.right: previewList.left
-                anchors.top: parent.top
-                anchors.bottom: parent.right
-
+            CanvasSurcace {
+                id: canvas_surface
             }
 
             ListView {

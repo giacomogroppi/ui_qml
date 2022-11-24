@@ -18,6 +18,7 @@ qt_add_qml_module(apptesting_qml
     VERSION 1.0
     QML_FILES main.qml 
         StatusBar.qml
+        CanvasSurcace.qml
 )
 
 set_target_properties(apptesting_qml PROPERTIES
