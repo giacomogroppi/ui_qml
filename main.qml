@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls 6.3
 
 Window {
-    width: 1280
-    height: 720
+    width: 1024
+    height: 680
     minimumHeight: 600
     minimumWidth: height
     visible: true
