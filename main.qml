@@ -97,21 +97,19 @@ Window {
 
         Row {
             id: rowBottom
-            anchros.top: rowMainFrame.bottom
-            anchros.bottom: parent.bottom
+            anchors.bottom: parent.bottom
             width: parent.width
             height: 20
-            anchors.bottom: parent.bottom
             anchors.bottomMargin: 0
 
             Text {
                 id: textWhatPageLeft
-                anchros.top: scrollView.bottom
-                anchros.bottom: parent.bottom
+                anchors.bottom: parent.bottom
                 text: qsTr("Page: ")
                 anchors.right: textEdit.left
                 anchors.rightMargin: 5
                 font.pixelSize: 12
+                height: parent.height
             }
 
             TextEdit {
