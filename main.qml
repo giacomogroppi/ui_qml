@@ -36,23 +36,36 @@ Window {
             margins: 0
         }
 
-        CanvasSurcace {
-            id: canvas_surface
+        Rectangle {
+            id: containerCanvasSurface
+
             anchors {
                 left: parent.left
                 top: parent.top
                 bottom: parent.bottom
-                right: previewList.right
+                right: containerPreviewList.right
+            }
+
+            CanvasSurcace {
+                id: canvas_surface
+                anchors.fill: parent
             }
         }
 
-
-        ListPreview {
-            id: previewList
+        Rectangle {
+            id: containerPreviewList
             anchors {
                 right: parent.right
                 top: parent.top
                 bottom: parent.bottom
+            }
+
+            width: 100
+
+            ListPreview {
+                id: previewList
+                anchors.fill: parent
+                w: 100
             }
         }
     }

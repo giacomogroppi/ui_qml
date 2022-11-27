@@ -1,8 +1,13 @@
 import QtQuick
 
 Rectangle {
+    property int w: 100
+
+    width: w
+    height: parent.height
+
     Item {
-        width: 100
+        width: parent.width
         height: parent.height
 
         anchors {
@@ -14,9 +19,9 @@ Rectangle {
         anchors.margins: 10
 
         Rectangle {
-            width: parent.width
+            width: w
             height: 200
-            color: "black"
+
             anchors.fill: parent
         }
     }
