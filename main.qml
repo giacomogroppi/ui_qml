@@ -9,102 +9,98 @@ Window {
     visible: true
     title: qsTr("Hello World")
 
-    Frame {
-        id: frame
-        anchors.bottom: parent
-        anchors.top: parent
-        anchors.left: parent
-        anchors.right: parent
-        width: parent.width
-        height: parent.height
+    Rectangle {
+        id: containerStatusBar
+        anchors {
+            left: parent.left
+            right: parent.right
+            top: parent.top
+        }
 
-        rightPadding: 0
-        leftPadding: 0
-        padding: 0
+        width: parent.width
+        height: 30
 
         StatusBar {
             id: statusBar
+            anchors.fill: parent
+        }
+    }
+
+    Rectangle {
+        id: rowMainFrame
+        anchors {
+            left: parent.left
+            right: parent.right
+            top: containerStatusBar.bottom
+            bottom: rowBottom.top
+            margins: 0
         }
 
-        Rectangle {
-            id: rowMainFrame
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: statusBar.bottom
-            anchors.bottom: rowBottom.top
-            anchors.leftMargin: 0
-            anchors.rightMargin: 0
-            anchors.bottomMargin: 0
-            anchors.topMargin: 0
-
-            CanvasSurcace {
-                id: canvas_surface
-            }
-
-            ListView {
-                id: previewList
-                width: 100
-                anchors.right: parent.right
-                anchors.top: parent.top
-                anchors.bottom: parent.border
-                anchors.rightMargin: 0
-                anchors.bottomMargin: 0
-                anchors.topMargin: 0
-                height: parent.height
-
-                Rectangle {
-                    width: parent.width
-                    height: 200
-                    color: "black"
-                }
+        CanvasSurcace {
+            id: canvas_surface
+            anchors {
+                left: parent.left
+                top: parent.top
+                bottom: parent.bottom
+                right: previewList.right
             }
         }
 
-        Row {
-            id: rowBottom
+
+        ListPreview {
+            id: previewList
+            anchors {
+                right: parent.right
+                top: parent.top
+                bottom: parent.bottom
+            }
+        }
+    }
+
+    Rectangle {
+        id: rowBottom
+        anchors.bottom: parent.bottom
+        width: parent.width
+        height: 20
+        anchors.bottomMargin: 0
+
+        Text {
+            id: textWhatPageLeft
             anchors.bottom: parent.bottom
-            width: parent.width
-            height: 20
-            anchors.bottomMargin: 0
-
-            Text {
-                id: textWhatPageLeft
-                anchors.bottom: parent.bottom
-                text: qsTr("Page: ")
-                anchors.right: textEdit.left
-                anchors.rightMargin: 5
-                font.pixelSize: 12
-                height: parent.height
-            }
-
-            TextEdit {
-                id: textEdit
-                width: 20
-                height: parent.height
-                text: qsTr("1")
-                anchors.right: textWhatPageRigth.left
-                font.pixelSize: 12
-                anchors.rightMargin: 0
-            }
-
-            Text {
-                id: textWhatPageRigth
-                text: qsTr(" of ")
-                anchors.right: totalPage.left
-                anchors.rightMargin: 6
-                font.pixelSize: 12
-                height: parent.height
-            }
-
-            Text {
-                id: totalPage
-                text: qsTr("Text")
-                anchors.right: parent.right
-                font.pixelSize: 12
-                anchors.rightMargin: 0
-            }
-
-
+            text: qsTr("Page: ")
+            anchors.right: textEdit.left
+            anchors.rightMargin: 5
+            font.pixelSize: 12
+            height: parent.height
         }
+
+        TextEdit {
+            id: textEdit
+            width: 20
+            height: parent.height
+            text: qsTr("1")
+            anchors.right: textWhatPageRigth.left
+            font.pixelSize: 12
+            anchors.rightMargin: 0
+        }
+
+        Text {
+            id: textWhatPageRigth
+            text: qsTr(" of ")
+            anchors.right: totalPage.left
+            anchors.rightMargin: 6
+            font.pixelSize: 12
+            height: parent.height
+        }
+
+        Text {
+            id: totalPage
+            text: qsTr("Text")
+            anchors.right: parent.right
+            font.pixelSize: 12
+            anchors.rightMargin: 0
+        }
+
+
     }
 }

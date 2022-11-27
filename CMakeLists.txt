@@ -20,6 +20,7 @@ qt_add_qml_module(apptesting_qml
         StatusBar.qml
         CanvasSurcace.qml
         ButtonToolInstruments.qml
+        ListPreview.qml
 )
 
 set_target_properties(apptesting_qml PROPERTIES

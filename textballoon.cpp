@@ -16,6 +16,7 @@ void TextBalloon::paint(QPainter *painter)
     painter->setPen(_pen);
     painter->setRenderHint(QPainter::Antialiasing);
 
+    painter->drawLine(0, 0, width(), height());
     painter->drawRect(0, 0, width(), height());
 }
 

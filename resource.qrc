@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/prefix_1">
         <file>images/pen_option.png</file>
+        <file>icon-hide-left.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>ListPreview.qml</file>
     </qresource>
 </RCC>

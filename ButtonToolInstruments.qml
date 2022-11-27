@@ -1,5 +1,25 @@
 import QtQuick
+import QtQuick.Controls 2.12
 
-Item {
+RoundButton {
+    property string buttonImageSource: ""
+    property int margin: 4
+
+    //background: Rectangle {
+    //    color: "transparent"
+    //}
+
+    anchors.margins: margin
+
+    height: width
+    width: 30
+
+    Image {
+        width: parent.width * .8
+        height: width
+        anchors.centerIn: parent
+        source: parent.buttonImageSource
+        fillMode: Image.PreserveAspectFit
+    }
 
 }
