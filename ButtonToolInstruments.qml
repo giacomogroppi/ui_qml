@@ -11,6 +11,9 @@ RoundButton {
 
     anchors.margins: margin
 
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+
     height: width
     width: 30
 

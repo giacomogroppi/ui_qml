@@ -2,10 +2,15 @@ import QtQuick 2.0
 import QtQuick.Controls 6.3
 
 Rectangle {
-    width: parent.width
-    height: 30
+    property string backColor: "#00248f"
+    property int hAll: 30
+    property int wButton: 30
 
-    color: "#00248f"
+    id: root
+    width: parent.width
+    height: hAll
+
+    color: backColor
 
     ButtonToolInstruments {
         id: buttonBack
@@ -14,17 +19,43 @@ Rectangle {
             left: parent.left
             top: parent.top
             bottom: parent.bottom
+
         }
     }
 
-    ButtonToolInstruments {
-        id: penButton
-        buttonImageSource: ":/prefix_1/images/pen_option.png"
-        anchors {
-            top: parent.top
-            bottom: parent.bottom
-            right: parent.right
+    Rectangle {
+        id: containerCenter
+        anchors.centerIn: parent
+
+        height: parent.height
+        width: wButton * 5
+        color: backColor
+
+        ButtonToolInstruments {
+            id: penButton
+            buttonImageSource: ":/prefix_1/images/pen_option.png"
+            anchors {
+                left: parent.rigth
+                right: rubberButton.left
+            }
+        }
+
+        ButtonToolInstruments {
+            id: rubberButton
+            buttonImageSource: ":/prefix_1/images/rubber_option.png"
+            anchors {
+                left: penButton.right
+                right: highlighterButton.left
+            }
+        }
+
+        ButtonToolInstruments {
+            id: highlighterButton
+            buttonImageSource: ":/prefix_1/images/highlighter_option.png"
+            anchors {
+                left: rubberButton.right
+                right: parent.right
+            }
         }
     }
-
 }
