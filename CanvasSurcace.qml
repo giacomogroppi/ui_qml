@@ -6,6 +6,6 @@ Item {
     Disegnatore {
         id: non_saprei
         anchors.fill: parent
-        anchors.margins: 20
+        anchors.margins: 10
     }
 }

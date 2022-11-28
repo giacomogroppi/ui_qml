@@ -13,10 +13,12 @@ qt_add_executable(apptesting_qml
     resource.qrc
 )
 
+
 qt_add_qml_module(apptesting_qml
     URI testing_qml
     VERSION 1.0
-    QML_FILES main.qml 
+    QML_FILES
+        main.qml
         StatusBar.qml
         CanvasSurcace.qml
         ButtonToolInstruments.qml
