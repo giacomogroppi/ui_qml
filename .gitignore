@@ -3,3 +3,5 @@ CMakeLists.txt.user.7430213
 CMakeLists.txt.user
 CMakeLists.txt.user
 *.user
+CMakeFiles/*
+CMakeCache.txt
