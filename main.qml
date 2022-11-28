@@ -6,11 +6,12 @@ Window {
     height: 680
     minimumHeight: 600
     minimumWidth: height
+    visible: true
     title: qsTr("Writernote")
 
     StackView {
         id: stackViewMain
         anchors.fill: parent
-        initialItem: "qrc:/ui/pageCanvas/MainWindow.qml"
+        initialItem: "qrc:/testing_qml/ui/pageCanvas/MainWindow.qml"
     }
 }

@@ -7,12 +7,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 6.3 COMPONENTS Quick REQUIRED)
 
-qt_add_executable(apptesting_qml
-    main.cpp
-    textballoon.h textballoon.cpp
-    resource.qrc
+file(GLOB_RECURSE cpp_file
+    *.cpp
+    *.h
 )
 
+file(GLOB_RECURSE PROJECT_MOC
+    *.qrc
+)
+
+qt_add_executable(apptesting_qml
+    ${cpp_file}
+    ${PROJECT_MOC}
+)
 
 qt_add_qml_module(apptesting_qml
     URI testing_qml
