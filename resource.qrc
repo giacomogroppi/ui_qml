@@ -4,6 +4,12 @@
         <file>icon-hide-left.png</file>
     </qresource>
     <qresource prefix="/">
-        <file>ListPreview.qml</file>
+        <file>main.qml</file>
+        <file>ui/pageCanvas/ListPreview.qml</file>
+        <file>ui/pageCanvas/MainWindow.qml</file>
+        <file>ui/pageCanvas/StatusBar.qml</file>
+        <file>ui/pageCanvas/CanvasSurface.qml</file>
+        <file>ui/pageCanvas/ButtonToolInstruments.qml</file>
+        <file>Prova.qml</file>
     </qresource>
 </RCC>

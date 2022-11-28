@@ -19,10 +19,12 @@ qt_add_qml_module(apptesting_qml
     VERSION 1.0
     QML_FILES
         main.qml
-        StatusBar.qml
-        CanvasSurcace.qml
-        ButtonToolInstruments.qml
-        ListPreview.qml
+        ui/pageCanvas/StatusBar.qml
+        ui/pageCanvas/CanvasSurface.qml
+        ui/pageCanvas/ButtonToolInstruments.qml
+        ui/pageCanvas/ListPreview.qml
+        ui/pageCanvas/MainWindow.qml
+        Prova.qml
 )
 
 set_target_properties(apptesting_qml PROPERTIES
