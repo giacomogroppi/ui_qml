@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include "textballoon.h"
 #include <QStringLiteral>
+#include "controller/controllerList/controllerList.h"
 
 int main(int argc, char *argv[])
 {
@@ -17,6 +18,7 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
 
     qmlRegisterType<TextBalloon>("TextBalloon", 1, 0, "Disegnatore");
+    qmlRegisterType<controllerList>("ControllerList", 1, 0, "ControllerList");
 
     engine.load(url);
 

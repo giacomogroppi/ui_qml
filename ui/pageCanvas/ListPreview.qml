@@ -1,28 +1,29 @@
 import QtQuick
+import ControllerList 1.0
 
 Rectangle {
     property int w: 100
 
-    width: w
-    height: parent.height
+    color: "#0000ff"
 
-    Item {
-        width: parent.width
-        height: parent.height
+    ControllerList {
+        id: listPreview
+    }
 
-        anchors {
-            right: parent.right
-            top: parent.top
-            bottom: parent.bottom
-        }
-
-        anchors.margins: 10
+    Repeater {
+        model: listPreview.numPage
+        anchors.fill: parent
 
         Rectangle {
             width: w
             height: 200
 
-            anchors.fill: parent
+            color: "#0000ff"
+
+            Text {
+                id: prova
+                text: listPreview.at(index)
+            }
         }
     }
 }
