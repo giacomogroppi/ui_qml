@@ -4,36 +4,47 @@
 #include <QDebug>
 #include <QObject>
 #include <QList>
+#include <QObjectList>
+#include <QAbstractListModel>
 
-struct ListElement{
-    ListElement(const QString &name, int giorno)
+class DataTesting {
+public:
+    DataTesting(const QString &name, const QString &cognome, int eta)
     {
-        _name = name;
-        _giorno = giorno;
+        _nome = name;
+        _cognome = cognome;
+        _eta = eta;
     }
-    QString _name;
-    int _giorno;
+
+    int _eta;
+    QString _nome, _cognome;
 };
 
-class controllerList: public QObject
+class controllerList: public QAbstractListModel
 {
     Q_OBJECT
-private:
-    QList<ListElement> _list;
 public:
     controllerList(QObject *parent = nullptr);
     ~controllerList() = default;
 
-    Q_PROPERTY(int numPage READ numPage NOTIFY numPageChanged)
-    int numPage() const
-    {
-        qDebug() << "Num page call";
-        Q_ASSERT(_list.length() == 2);
-        return _list.length();
+    enum Roles {
+        NamePerson = Qt::UserRole,
+        CognomePerson,
+        Eta
     };
-    Q_SIGNAL void numPageChanged();
 
-    Q_PROPERTY(QString at(int) READ at(int) NOTIFY atChanged)
-    QString at(int index) const { return _list.at(index)._name; };
-    Q_SIGNAL void atChanged();
+    int rowCount(const QModelIndex& parent) const override;
+    QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const override;
+    QHash<int, QByteArray> roleNames() const override;
+
+public slots:
+    void duplicateData(int row);
+    void removeData(int row);
+
+private slots:
+    void growPopulation();
+
+private: //members
+    QVector< DataTesting > m_data;
+
 };
