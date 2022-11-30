@@ -46,7 +46,7 @@ QVariant controllerList::data(const QModelIndex &index, int role) const
 QHash<int, QByteArray> controllerList::roleNames() const
 {
     static QHash<int, QByteArray> mapping {
-        {Roles::NamePerson, "name"},
+        {Roles::NamePerson, "nome"},
         {Roles::CognomePerson, "cognome"},
         {Roles::Eta, "eta"}
     };
