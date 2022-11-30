@@ -47,7 +47,7 @@ QHash<int, QByteArray> controllerList::roleNames() const
 {
     static QHash<int, QByteArray> mapping {
         {Roles::NamePerson, "name"},
-        {Roles::CognomePerson, "flag"},
+        {Roles::CognomePerson, "cognome"},
         {Roles::Eta, "eta"}
     };
     return mapping;
