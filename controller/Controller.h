@@ -17,4 +17,5 @@ private:
 public:
     explicit Controller(QObject *parent, QQmlContext* content);
     ~Controller();
+
 };

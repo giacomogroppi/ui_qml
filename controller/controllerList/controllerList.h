@@ -7,43 +7,31 @@
 #include <QObjectList>
 #include <QAbstractListModel>
 
-class DataTesting {
-public:
-    DataTesting(const QString &name, const QString &cognome, int eta)
-        : nome(name),
-          cognome(cognome),
-          eta(eta) {}
-
-    int eta;
-    QString nome, cognome;
+struct Data {
+    Data() {}
+    Data( const QString& name, const QString& flag, double population )
+        : nome(name), flag(flag), population(population) {}
+    QString nome;
+    QString flag;
+    double population;
 };
 
-class controllerList: public QAbstractListModel
+class controllerList : public QAbstractListModel
 {
     Q_OBJECT
-public:
-    controllerList(QObject *parent = nullptr);
-    ~controllerList() = default;
 
+public:
     enum Roles {
-        NamePerson = Qt::UserRole,
-        CognomePerson,
+        Nome = Qt::UserRole,
+        Cognome,
         Eta
     };
 
+    explicit controllerList(QObject *parent = nullptr);
+
     int rowCount(const QModelIndex& parent) const override;
     QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const override;
-    QHash<int, QByteArray> roleNames() const override {
-        static QHash<int, QByteArray> mapping {
-            {Roles::NamePerson,     "nome"},
-            {Roles::CognomePerson,  "cognome"},
-            {Roles::Eta,            "eta"}
-        };
-
-        qDebug() << "roleNames";
-
-        return mapping;
-    }
+    QHash<int, QByteArray> roleNames() const override;
 
 public slots:
     void duplicateData(int row);
@@ -53,6 +41,5 @@ private slots:
     void growPopulation();
 
 private: //members
-    QVector< DataTesting > m_data;
-
+    QVector< Data > m_data;
 };

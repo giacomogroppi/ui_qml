@@ -6,58 +6,67 @@ controllerList::controllerList(QObject *parent) :
     QAbstractListModel(parent)
 {
     m_data
-        << DataTesting("g1", "c1", 51)
-        << DataTesting("g2", "c2", 94)
-        << DataTesting("g3", "c3", 14)
-        << DataTesting("g4", "c4", 49)
-        << DataTesting("g5", "c5", 5);
+        << Data("Denmark", "Gianfranco", 5.6)
+        << Data("Sweden", "Genoveffo", 9.6)
+        << Data("Iceland", "Rossi", 0.3)
+        << Data("Norway", "Forlanini", 5.1)
+        << Data("Finland", "Agnelli", 5.4);
 
     QTimer *growthTimer = new QTimer(this);
     connect(growthTimer, &QTimer::timeout, this, &controllerList::growPopulation);
-    growthTimer->start(2000);
-
-    qDebug() << "Constructor call";
+    //growthTimer->start(2000);
 }
 
 int controllerList::rowCount( const QModelIndex& parent) const
 {
-    qDebug() << "rowCount 1";
     if (parent.isValid())
         return 0;
 
-    qDebug() << "rowCount 2";
+    qDebug() << "rowCount";
 
     return m_data.count();
 }
 
 QVariant controllerList::data(const QModelIndex &index, int role) const
 {
-    if ( !index.isValid() ) {
-        qDebug() << "Index not valid" << role;
-        return QVariant("Sto cazzo 1");
-    }
+    if ( !index.isValid() )
+        return QVariant();
 
-    qDebug() << "Ask for data" << role;
+    qDebug() << "data" << role << index.row();
 
-    const auto &data = m_data.at(index.row());
-    switch (role) {
-    case Roles::NamePerson:
+    const Data &data = m_data.at(index.row());
+    if ( role == Nome ){
         return data.nome;
-    case Roles::CognomePerson:
-        return data.cognome;
-    case Roles::Eta:
-        return data.eta;
-    default:
-        return QVariant("Sto cazzo 2");
     }
+    else if ( role == Cognome )
+        return data.flag;
+    else if ( role == Eta )
+        return data.population;
+    else
+        return QVariant();
 }
+
+//--> slide
+QHash<int, QByteArray> controllerList::roleNames() const
+{
+    static QHash<int, QByteArray> mapping {
+        {Nome, "nome"},
+        {Cognome, "cognome"},
+        {Eta, "eta"}
+    };
+
+    qDebug() << "roleNames";
+
+    return mapping;
+}
+//<-- slide
 
 void controllerList::duplicateData(int row)
 {
     if (row < 0 || row >= m_data.count())
         return;
 
-    const DataTesting data = m_data[row];
+    const Data data = m_data[row];
     const int rowOfInsert = row + 1;
 
     beginInsertRows(QModelIndex(), rowOfInsert, rowOfInsert);
@@ -81,7 +90,7 @@ void controllerList::growPopulation()
 
     const int count = m_data.count();
     for (int i = 0; i < count; ++i) {
-        m_data[i].eta += m_data[i].eta * rand() * growthFactor;
+        m_data[i].population += m_data[i].population * rand() * growthFactor;
     }
 
     // we've just updated all rows...
@@ -89,9 +98,9 @@ void controllerList::growPopulation()
     const QModelIndex endIndex   = index(count - 1, 0);
 
     // ...but only the population field
-    emit dataChanged(startIndex, endIndex, QVector<int>() << Roles::Eta);
-
-    emit beginInsertRows(QModelIndex(), m_data.length() - 1, m_data.length() - 1);
-    m_data << DataTesting("g6", "c6", 54);
-    emit endInsertRows();
+    emit dataChanged(startIndex, endIndex, QVector<int>() << Eta);
 }
+    //emit beginInsertRows(QModelIndex(), m_data.length() - 1, m_data.length() - 1);
+    //m_data << DataTesting("g6", "c6", 54);
+    //emit endInsertRows();
+

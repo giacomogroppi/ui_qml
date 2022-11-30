@@ -8,17 +8,15 @@ Rectangle {
     ListView {
         anchors.fill: parent
         model: _controllerListPreview
-
         delegate: Rectangle {
             color: Qt.rgba(0.9,0.9,0.9)
             height: childrenRect.height
             width: parent.width
 
             Text {
-                text: "nome: " + model.nome
-                anchors.left: parent.left
+                text: model.nome +" "+ model.cognome +" "+ model.eta
+                anchors { left:image.right; verticalCenter: image.verticalCenter; leftMargin: 5 }
             }
-
             MouseArea {
                 anchors.fill: parent
                 acceptedButtons: Qt.LeftButton | Qt.RightButton

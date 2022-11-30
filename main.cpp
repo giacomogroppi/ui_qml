@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<TextBalloon>("TextBalloon", 1, 0, "Disegnatore");
 
     QQmlContext *context = engine.rootContext();
-    context->setContextProperty("_controllerListPreview", &controller);
+    context->setContextProperty("_controller", &controller);
 
     engine.load(url);
 
