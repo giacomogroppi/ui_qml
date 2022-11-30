@@ -2,7 +2,7 @@
 #include <QQmlApplicationEngine>
 #include "textballoon.h"
 #include <QStringLiteral>
-#include "controller/controllerList/controllerList.h"
+#include "controller/Controller.h"
 #include <QQmlContext>
 
 int main(int argc, char *argv[])
@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/testing_qml/main.qml"));
 
-    controllerList controller(nullptr);
+    Controller controller(nullptr, engine.rootContext());
 
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
