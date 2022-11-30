@@ -10,14 +10,12 @@
 class DataTesting {
 public:
     DataTesting(const QString &name, const QString &cognome, int eta)
-    {
-        _nome = name;
-        _cognome = cognome;
-        _eta = eta;
-    }
+        : nome(name),
+          cognome(cognome),
+          eta(eta) {}
 
-    int _eta;
-    QString _nome, _cognome;
+    int eta;
+    QString nome, cognome;
 };
 
 class controllerList: public QAbstractListModel
@@ -35,7 +33,17 @@ public:
 
     int rowCount(const QModelIndex& parent) const override;
     QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const override;
-    QHash<int, QByteArray> roleNames() const override;
+    QHash<int, QByteArray> roleNames() const override {
+        static QHash<int, QByteArray> mapping {
+            {Roles::NamePerson,     "nome"},
+            {Roles::CognomePerson,  "cognome"},
+            {Roles::Eta,            "eta"}
+        };
+
+        qDebug() << "roleNames";
+
+        return mapping;
+    }
 
 public slots:
     void duplicateData(int row);

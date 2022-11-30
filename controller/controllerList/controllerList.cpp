@@ -15,44 +15,42 @@ controllerList::controllerList(QObject *parent) :
     QTimer *growthTimer = new QTimer(this);
     connect(growthTimer, &QTimer::timeout, this, &controllerList::growPopulation);
     growthTimer->start(2000);
+
+    qDebug() << "Constructor call";
 }
 
 int controllerList::rowCount( const QModelIndex& parent) const
 {
+    qDebug() << "rowCount 1";
     if (parent.isValid())
         return 0;
+
+    qDebug() << "rowCount 2";
 
     return m_data.count();
 }
 
 QVariant controllerList::data(const QModelIndex &index, int role) const
 {
-    if ( !index.isValid() )
-        return QVariant();
+    if ( !index.isValid() ) {
+        qDebug() << "Index not valid" << role;
+        return QVariant("Sto cazzo 1");
+    }
+
+    qDebug() << "Ask for data" << role;
 
     const auto &data = m_data.at(index.row());
-    if ( role == Roles::NamePerson ){
-        return data._nome;
+    switch (role) {
+    case Roles::NamePerson:
+        return data.nome;
+    case Roles::CognomePerson:
+        return data.cognome;
+    case Roles::Eta:
+        return data.eta;
+    default:
+        return QVariant("Sto cazzo 2");
     }
-    else if ( role == Roles::CognomePerson )
-        return data._cognome;
-    else if( role == Roles::Eta )
-        return data._eta;
-    else
-        return QVariant();
 }
-
-//--> slide
-QHash<int, QByteArray> controllerList::roleNames() const
-{
-    static QHash<int, QByteArray> mapping {
-        {Roles::NamePerson, "nome"},
-        {Roles::CognomePerson, "cognome"},
-        {Roles::Eta, "eta"}
-    };
-    return mapping;
-}
-//<-- slide
 
 void controllerList::duplicateData(int row)
 {
@@ -83,7 +81,7 @@ void controllerList::growPopulation()
 
     const int count = m_data.count();
     for (int i = 0; i < count; ++i) {
-        m_data[i]._eta += m_data[i]._eta * rand() * growthFactor;
+        m_data[i].eta += m_data[i].eta * rand() * growthFactor;
     }
 
     // we've just updated all rows...

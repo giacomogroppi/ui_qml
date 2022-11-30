@@ -52,7 +52,7 @@ Item {
                 bottom: parent.bottom
             }
 
-            width: 100
+            width: 200
 
             ListPreview {
                 id: previewList
