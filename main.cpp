@@ -11,7 +11,8 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/testing_qml/main.qml"));
 
-    Controller controller(nullptr, engine.rootContext());
+    Controller controller(nullptr, engine.rootContext(), &engine, engine.rootContext());
+    QQmlContext *context = engine.rootContext();
 
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
@@ -21,7 +22,6 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<TextBalloon>("TextBalloon", 1, 0, "Disegnatore");
 
-    QQmlContext *context = engine.rootContext();
     context->setContextProperty("_controller", &controller);
 
     engine.load(url);

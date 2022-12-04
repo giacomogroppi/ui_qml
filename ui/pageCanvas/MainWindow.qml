@@ -35,7 +35,7 @@ Item {
                 left: parent.left
                 top: parent.top
                 bottom: parent.bottom
-                right: containerPreviewList.right
+                right: containerPreviewList.left
             }
 
             CanvasSurface {

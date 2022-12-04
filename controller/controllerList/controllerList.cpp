@@ -22,7 +22,7 @@ int controllerList::rowCount( const QModelIndex& parent) const
     if (parent.isValid())
         return 0;
 
-    qDebug() << "rowCount";
+    //qDebug() << "rowCount";
 
     return m_data.count();
 }
@@ -32,7 +32,7 @@ QVariant controllerList::data(const QModelIndex &index, int role) const
     if ( !index.isValid() )
         return QVariant();
 
-    qDebug() << "data" << role << index.row();
+    //qDebug() << "data" << role << index.row();
 
     const Data &data = m_data.at(index.row());
     if ( role == Nome ){
@@ -55,7 +55,7 @@ QHash<int, QByteArray> controllerList::roleNames() const
         {Eta, "eta"}
     };
 
-    qDebug() << "roleNames";
+    //qDebug() << "roleNames";
 
     return mapping;
 }

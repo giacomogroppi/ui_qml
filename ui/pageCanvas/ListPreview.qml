@@ -15,7 +15,7 @@ Rectangle {
 
             Text {
                 text: model.nome +" "+ model.cognome +" "+ model.eta
-                anchors { left:image.right; verticalCenter: image.verticalCenter; leftMargin: 5 }
+
             }
             MouseArea {
                 anchors.fill: parent
