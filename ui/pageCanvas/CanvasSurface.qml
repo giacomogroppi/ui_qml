@@ -18,6 +18,14 @@ Item {
 
         ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
+        Text {
+            anchors.left: parent.left
+            anchors.top: parent.top
+
+            text: Disegnatore.heigthObject ? Disegnatore.heigthObject : "ciao"
+            font.pixelSize: 400
+        }
+
         Disegnatore {
             id: canvas_surface_private
             anchors.margins: 10
@@ -25,10 +33,14 @@ Item {
             anchors.left: parent.left
             anchors.top: parent.top
 
-            //width: Disegnatore.widthObject + 100
+            width: Disegnatore.widthObject + 100
             //height: Disegnatore.heigthObject
-            width: 5000
+            //width: 5000
             height: 5000
+
+            onWidthChanged: {
+                console.log("width change", width, "diventa", Disegnatore.widthObject);
+            }
         }
     }
 }

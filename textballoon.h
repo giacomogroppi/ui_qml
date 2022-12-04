@@ -4,7 +4,7 @@
 #include <QQuickPaintedItem>
 #include <QTimer>
 
-class TextBalloon : public QQuickPaintedItem
+class TextBalloon: public QQuickPaintedItem
 {
     Q_OBJECT
     Q_PROPERTY(bool rightAligned READ isRightAligned WRITE setRightAligned NOTIFY rightAlignedChanged)
@@ -25,13 +25,15 @@ public:
         rightAligned = rightAligned;
     };
 
-    Q_PROPERTY(int heigthObject READ heigthObject NOTIFY heigthChanged);
-    int heigthObject() const;
-    Q_SIGNAL void heigthChanged();
+    Q_PROPERTY(int heigthObject
+               READ heigthObject
+               NOTIFY heigthObjectChanged);
+    int heigthObject();
+    Q_SIGNAL void heigthObjectChanged();
 
-    Q_PROPERTY(int widthObject READ widthObject NOTIFY widthChanged);
+    Q_PROPERTY(int widthObject READ widthObject NOTIFY widthObjectChanged);
     int widthObject() const;
-    Q_SIGNAL void widthChanged();
+    Q_SIGNAL void widthObjectChanged();
 
     Q_PROPERTY(bool needRefresh READ needRefresh NOTIFY needRefreshChanged);
     bool needRefresh() const;

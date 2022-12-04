@@ -1,6 +1,8 @@
 #include "Controller.h"
+#include "textballoon.h"
 #include <QQmlContext>
 
+extern TextBalloon *_instanceText;
 
 Controller::Controller(QObject *parent, QQmlContext *content, QQmlApplicationEngine *engine)
     : QObject(parent),

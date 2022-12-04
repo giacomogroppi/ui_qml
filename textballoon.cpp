@@ -2,6 +2,8 @@
 #include <QPainter>
 #include <QBrush>
 
+TextBalloon *_instanceText;
+
 TextBalloon::TextBalloon(QQuickItem *parent)
     : QQuickPaintedItem(parent),
       rightAligned(false),
@@ -13,6 +15,9 @@ TextBalloon::TextBalloon(QQuickItem *parent)
     this->update();
     QObject::connect(_timer, &QTimer::timeout, this, &TextBalloon::endTimer);
     _timer->start(500);
+
+    _instanceText = this;
+    qDebug() << "TextBalloon constructor call";
 }
 
 void TextBalloon::paint(QPainter *painter)
@@ -33,7 +38,7 @@ bool TextBalloon::isRightAligned() const
     return this->rightAligned;
 }
 
-int TextBalloon::heigthObject() const
+int TextBalloon::heigthObject()
 {
     qDebug() << "heigth" << this->_heigth;
     return this->_heigth;
@@ -60,9 +65,9 @@ void TextBalloon::setNeedRefresh()
 
 void TextBalloon::endTimer()
 {
-    qDebug() << "Timer end";
+    qDebug() << "Timer end" << _width;
     _width += 1000;
     _heigth += 1000;
     _timer->start(500);
-    emit widthChanged();
+    emit widthObjectChanged();
 }
