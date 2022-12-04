@@ -6,7 +6,8 @@
 #include "controller/Controller.h"
 
 ControllerCanvas::ControllerCanvas()
-    : QQuickImageProvider(QQuickImageProvider::Pixmap)
+    : QQuickImageProvider(QQuickImageProvider::Pixmap),
+      _need_refresh(false)
 {
     this->_timer = new QTimer(this);
     QObject::connect(_timer, &QTimer::timeout, this, &ControllerCanvas::timerEnd);
@@ -43,15 +44,9 @@ QImage ControllerCanvas::requestImage(const QString &id, QSize *size, const QSiz
     return img;
 }
 
-void ControllerCanvas::updateImg()
-{
-    auto *o = Controller::instance();
-
-}
-
 void ControllerCanvas::timerEnd()
 {
     this->_value ++;
-    qDebug() << "value change";
+    //qDebug() << "value change";
     _timer->start(500);
 }

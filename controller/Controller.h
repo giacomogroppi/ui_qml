@@ -19,11 +19,7 @@ private:
 
     void registerType();
 
-    QObject *_instance;
-
 public:
-    explicit Controller(QObject *parent, QQmlContext* content, QQmlApplicationEngine* engine, QObject *instance);
+    explicit Controller(QObject *parent, QQmlContext* content, QQmlApplicationEngine* engine);
     ~Controller();
-
-    QObject *instance();
 };

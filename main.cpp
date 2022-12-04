@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/testing_qml/main.qml"));
 
-    Controller controller(nullptr, engine.rootContext(), &engine, engine.rootContext());
+    Controller controller(nullptr, engine.rootContext(), &engine);
     QQmlContext *context = engine.rootContext();
 
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

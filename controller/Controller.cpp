@@ -1,11 +1,11 @@
 #include "Controller.h"
 #include <QQmlContext>
 
-Controller::Controller(QObject *parent, QQmlContext *content, QQmlApplicationEngine *engine, QObject *instance)
+
+Controller::Controller(QObject *parent, QQmlContext *content, QQmlApplicationEngine *engine)
     : QObject(parent),
       _content(content),
-      _engine(engine),
-      _instance(instance)
+      _engine(engine)
 {
     this->_audio = new ControllerAudio(this);
     this->_listPreview = new controllerList(this);
@@ -16,12 +16,6 @@ Controller::Controller(QObject *parent, QQmlContext *content, QQmlApplicationEng
 
 Controller::~Controller()
 {
-    delete this->_instance;
-}
-
-QObject *Controller::instance()
-{
-    return _instance;
 }
 
 void Controller::registerType()

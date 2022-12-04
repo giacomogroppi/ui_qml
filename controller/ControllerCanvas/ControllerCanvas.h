@@ -9,12 +9,11 @@ class ControllerCanvas: public QQuickImageProvider {
 private:
     QTimer *_timer = nullptr;
     int _value = 5;
+    bool _need_refresh;
 public:
     ControllerCanvas();
     QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize) override;
     QImage requestImage(const QString &id, QSize *size, const QSize& requestedSize) override;
-
-    void updateImg();
 
 private slots:
     void timerEnd();

@@ -10,20 +10,25 @@ Item {
         anchors.fill: parent
         clip: true
 
+        ScrollBar.horizontal.interactive: true
+        ScrollBar.vertical.interactive: true
+
+        contentHeight: canvas_surface_private.height
+        contentWidth: canvas_surface_private.width
+
         ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
-        Image {
-            id: img_id_canvas_private
-            source: "image://_controllerCanvas/prova"
-            fillMode: Image.PreserveAspectFit
+        Disegnatore {
+            id: canvas_surface_private
+            anchors.margins: 10
 
-            function updateImg() {
-                var last_source = img_id_canvas_private.source
-                img_id_canvas_private.source = ""
-                img_id_canvas_private.source = last_source
-            }
+            anchors.left: parent.left
+            anchors.top: parent.top
+
+            //width: Disegnatore.widthObject + 100
+            //height: Disegnatore.heigthObject
+            width: 5000
+            height: 5000
         }
-
-        scale: .99
     }
 }
