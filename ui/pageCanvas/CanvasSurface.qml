@@ -1,6 +1,6 @@
-import QtQuick
+import QtQuick 2.15
 import QtQuick.Controls 2.12
-import WQMLCanvasComponent 1.0
+import com.github.giacomogroppi.writernoteqt.WQMLCanvasComponent 1.0
 
 Item {
     id: canvas_surface
@@ -26,7 +26,7 @@ Item {
             font.pixelSize: 400
         }
 
-        WQMLCanvasComponent {
+        WCanvasComponent {
             id: canvas_surface_private
             anchors.margins: 10
 

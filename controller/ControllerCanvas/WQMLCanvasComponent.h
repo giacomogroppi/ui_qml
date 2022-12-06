@@ -7,8 +7,8 @@
 class WQMLCanvasComponent: public QQuickPaintedItem
 {
     Q_OBJECT
-    Q_PROPERTY(bool rightAligned READ isRightAligned WRITE setRightAligned NOTIFY rightAlignedChanged)
     QML_ELEMENT
+    QML_NAMED_ELEMENT(CanvasController)
 
     QTimer *_timer;
 
@@ -20,6 +20,7 @@ public:
     WQMLCanvasComponent(QQuickItem *parent = nullptr);
     void paint(QPainter *painter) override;
 
+    Q_PROPERTY(bool rightAligned READ isRightAligned WRITE setRightAligned NOTIFY rightAlignedChanged)
     bool isRightAligned() const;
     void setRightAligned (bool rightAligned) {
         rightAligned = rightAligned;
@@ -28,6 +29,7 @@ public:
     Q_PROPERTY(int heigthObject
                READ heigthObject
                NOTIFY heigthObjectChanged);
+
     int heigthObject();
     Q_SIGNAL void heigthObjectChanged();
 

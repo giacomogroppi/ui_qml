@@ -7,5 +7,7 @@
 ControllerCanvas::ControllerCanvas(QObject *parent)
     : QObject(parent)
 {
-    qmlRegisterType<WQMLCanvasComponent>("WQMLCanvasComponent", 1, 0, "WQMLCanvasComponent");
+    qmlRegisterType<WQMLCanvasComponent>("com.github.giacomogroppi.writernoteqt.WQMLCanvasComponent",
+                                         1, 0,
+                                         "WCanvasComponent");
 }

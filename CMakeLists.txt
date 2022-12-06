@@ -5,8 +5,6 @@ project(testing_qml VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.3 COMPONENTS Quick REQUIRED)
-
 file(GLOB_RECURSE cpp_file
     *.cpp
     *.h
@@ -15,6 +13,23 @@ file(GLOB_RECURSE cpp_file
 file(GLOB_RECURSE PROJECT_MOC
     *.qrc
 )
+
+if(UNIX AND NOT APPLE AND NOT MINGW)
+    set(LINUX TRUE)
+endif()
+
+if(LINUX)
+    if(NOT "$ENV{QT_VER_WRITERNOTE}" STREQUAL "")
+        message("-- QT_VER_WRITERNOTE set")
+        set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "~/Qt/$ENV{QT_VER_WRITERNOTE}/gcc_64/lib/cmake")
+    else()
+        set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "~/Qt/6.4.0/gcc_64/lib/cmake")
+    endif()
+
+    message("-- search qt in " ${CMAKE_PREFIX_PATH})
+endif()
+
+find_package(Qt6 6.3 COMPONENTS Quick REQUIRED)
 
 qt_add_executable(apptesting_qml
     ${cpp_file}
