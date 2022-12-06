@@ -1,6 +1,5 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include "textballoon.h"
 #include <QStringLiteral>
 #include "controller/Controller.h"
 #include <QQmlContext>
@@ -19,8 +18,6 @@ int main(int argc, char *argv[])
         if (!obj && url == objUrl)
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
-
-    qmlRegisterType<TextBalloon>("TextBalloon", 1, 0, "Disegnatore");
 
     context->setContextProperty("_controller", &controller);
 

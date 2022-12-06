@@ -1,10 +1,8 @@
-#include "textballoon.h"
+#include "WQMLCanvasComponent.h"
 #include <QPainter>
 #include <QBrush>
 
-TextBalloon *_instanceText;
-
-TextBalloon::TextBalloon(QQuickItem *parent)
+WQMLCanvasComponent::WQMLCanvasComponent(QQuickItem *parent)
     : QQuickPaintedItem(parent),
       rightAligned(false),
       _timer(new QTimer(this)),
@@ -13,14 +11,13 @@ TextBalloon::TextBalloon(QQuickItem *parent)
       _need_refresh(true)
 {
     this->update();
-    QObject::connect(_timer, &QTimer::timeout, this, &TextBalloon::endTimer);
+    QObject::connect(_timer, &QTimer::timeout, this, &WQMLCanvasComponent::endTimer);
     _timer->start(500);
 
-    _instanceText = this;
-    qDebug() << "TextBalloon constructor call";
+    qDebug() << "WQMLCanvasComponent constructor call";
 }
 
-void TextBalloon::paint(QPainter *painter)
+void WQMLCanvasComponent::paint(QPainter *painter)
 {
     QPen _pen(QColor(127, 127, 127, 255));
 
@@ -33,37 +30,37 @@ void TextBalloon::paint(QPainter *painter)
     painter->drawRect(0, 0, width(), height());
 }
 
-bool TextBalloon::isRightAligned() const
+bool WQMLCanvasComponent::isRightAligned() const
 {
     return this->rightAligned;
 }
 
-int TextBalloon::heigthObject()
+int WQMLCanvasComponent::heigthObject()
 {
     qDebug() << "heigth" << this->_heigth;
     return this->_heigth;
 }
 
-int TextBalloon::widthObject() const
+int WQMLCanvasComponent::widthObject() const
 {
     qDebug() << "width" << this->_width;
     return this->_width;
 }
 
-bool TextBalloon::needRefresh() const
+bool WQMLCanvasComponent::needRefresh() const
 {
     qDebug() << "needRefresh" << this->_need_refresh;
     return this->_need_refresh;
 }
 
-void TextBalloon::setNeedRefresh()
+void WQMLCanvasComponent::setNeedRefresh()
 {
     qDebug() << "setNeedRefresh";
     this->_need_refresh = true;
     emit needRefreshChanged();
 }
 
-void TextBalloon::endTimer()
+void WQMLCanvasComponent::endTimer()
 {
     qDebug() << "Timer end" << _width;
     _width += 1000;

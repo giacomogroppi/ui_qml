@@ -4,17 +4,13 @@
 #include <QQuickImageProvider>
 #include <QTimer>
 
-class ControllerCanvas: public QQuickImageProvider {
+#include "WQMLCanvasComponent.h"
+
+class ControllerCanvas: public QObject {
     Q_OBJECT
 private:
-    QTimer *_timer = nullptr;
-    int _value = 5;
-    bool _need_refresh;
+    WQMLCanvasComponent *_component;
 public:
-    ControllerCanvas();
-    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize) override;
-    QImage requestImage(const QString &id, QSize *size, const QSize& requestedSize) override;
-
-private slots:
-    void timerEnd();
+    ControllerCanvas(QObject *parent);
+    ~ControllerCanvas() = default;
 };

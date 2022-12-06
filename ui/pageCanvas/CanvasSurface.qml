@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Controls 2.12
-import TextBalloon 1.0
+import WQMLCanvasComponent 1.0
 
 Item {
     id: canvas_surface
@@ -26,15 +26,15 @@ Item {
             font.pixelSize: 400
         }
 
-        Disegnatore {
+        WQMLCanvasComponent {
             id: canvas_surface_private
             anchors.margins: 10
 
             anchors.left: parent.left
             anchors.top: parent.top
 
-            width: Disegnatore.widthObject + 100
-            //height: Disegnatore.heigthObject
+            width: CanvasSurface.widthObject + 100
+            //height: CanvasSurface.heigthObject
             //width: 5000
             height: 5000
 

@@ -4,7 +4,7 @@
 #include <QQuickPaintedItem>
 #include <QTimer>
 
-class TextBalloon: public QQuickPaintedItem
+class WQMLCanvasComponent: public QQuickPaintedItem
 {
     Q_OBJECT
     Q_PROPERTY(bool rightAligned READ isRightAligned WRITE setRightAligned NOTIFY rightAlignedChanged)
@@ -17,7 +17,7 @@ class TextBalloon: public QQuickPaintedItem
 
     bool _need_refresh;
 public:
-    TextBalloon(QQuickItem *parent = nullptr);
+    WQMLCanvasComponent(QQuickItem *parent = nullptr);
     void paint(QPainter *painter) override;
 
     bool isRightAligned() const;
