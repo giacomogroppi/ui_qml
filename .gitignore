@@ -5,3 +5,5 @@ CMakeLists.txt.user
 *.user
 CMakeFiles/*
 CMakeCache.txt
+build/*
+build
