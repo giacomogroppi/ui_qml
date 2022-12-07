@@ -22,8 +22,8 @@ Item {
             anchors.left: parent.left
             anchors.top: parent.top
 
-            text: Disegnatore.heigthObject ? Disegnatore.heigthObject : "ciao"
-            font.pixelSize: 400
+            text: _controllerCanvas.heigthObject ? _controllerCanvas.heigthObject : "ciao"
+            font.pixelSize: 100
         }
 
         WCanvasComponent {
@@ -33,13 +33,13 @@ Item {
             anchors.left: parent.left
             anchors.top: parent.top
 
-            width: CanvasSurface.widthObject + 100
-            //height: CanvasSurface.heigthObject
+            width: _controllerCanvas.widthObject
+            height: _controllerCanvas.heigthObject
             //width: 5000
-            height: 5000
+            //height: 5000
 
             onWidthChanged: {
-                console.log("width change", width, "diventa", Disegnatore.widthObject);
+                console.log("width change", width, "diventa", _controllerCanvas.widthObject);
             }
         }
     }
