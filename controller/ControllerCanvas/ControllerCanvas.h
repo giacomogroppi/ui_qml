@@ -30,6 +30,9 @@ public:
     int widthObject() const;
     Q_SIGNAL void widthObjectChanged();
 
+public slots:
+    void refresh();
+
 private slots:
     void endTimer();
 };

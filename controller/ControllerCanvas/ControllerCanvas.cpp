@@ -3,6 +3,7 @@
 #include <QImage>
 #include <QTimer>
 #include <QDebug>
+#include "controller/Controller.h"
 
 ControllerCanvas::ControllerCanvas(QObject *parent)
     : QObject(parent),
@@ -10,11 +11,11 @@ ControllerCanvas::ControllerCanvas(QObject *parent)
       _heigth(1000),
       _width(1000)
 {
-    qmlRegisterType<WQMLCanvasComponent>("com.github.giacomogroppi.writernoteqt.WQMLCanvasComponent",
+    qmlRegisterType<WQMLCanvasComponent>("writernote.WQMLCanvasComponent",
                                          1, 0,
                                          "WCanvasComponent");
     QObject::connect(_timer, &QTimer::timeout, this, &ControllerCanvas::endTimer);
-    _timer->start(500);
+    //_timer->start(500);
 }
 
 void ControllerCanvas::endTimer()
@@ -44,4 +45,10 @@ int ControllerCanvas::heigthObject()
 int ControllerCanvas::widthObject() const
 {
     return this->_width;
+}
+
+void ControllerCanvas::refresh()
+{
+    emit this->widthObjectChanged();
+    emit this->heigthObjectChanged();
 }

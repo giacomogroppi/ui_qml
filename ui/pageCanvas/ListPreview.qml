@@ -1,22 +1,30 @@
 import QtQuick 2.15
+import writernote.WQMLItemListPreview 1.0
 
 Rectangle {
     property int w: 200
 
     color: "#0000ff"
 
-    ListView {
+   ListView {
         anchors.fill: parent
         model: _controllerListPreview
+
         delegate: Rectangle {
             color: Qt.rgba(0.9,0.9,0.9)
             height: childrenRect.height
             width: parent.width
 
-            Text {
-                text: model.nome +" "+ model.cognome +" "+ model.eta
-
+            WItemListPreview {
+                id: tmp
+                width: parent.width - 20
+                indexObject: index
+                anchors.centerIn: parent
             }
+
+            //Text {
+            //    text: model.nome +" "+ model.cognome +" "+ model.eta
+            //}
             MouseArea {
                 anchors.fill: parent
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
@@ -31,5 +39,4 @@ Rectangle {
         }
     }
 }
-
 

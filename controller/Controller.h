@@ -3,14 +3,15 @@
 #include <QObject>
 #include <QQmlApplicationEngine>
 
-#include "controllerList/controllerList.h"
+#include "ControllerList/ControllerList.h"
 #include "ControllerAudio/ControllerAudio.h"
 #include "ControllerCanvas/ControllerCanvas.h"
+
 
 class Controller: public QObject {
     Q_OBJECT
 private:
-    controllerList *_listPreview;
+    ControllerList *_listPreview;
     ControllerAudio *_audio;
     ControllerCanvas *_canvas;
 
