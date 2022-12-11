@@ -6,33 +6,68 @@ Rectangle {
 
     color: "#0000ff"
 
-   ListView {
+    ListView {
         anchors.fill: parent
         model: _controllerListPreview
 
         delegate: Rectangle {
+            property int heigthItem: 260
             color: Qt.rgba(0.9,0.9,0.9)
-            height: childrenRect.height
+            height: heigthItem
             width: parent.width
 
-            WItemListPreview {
-                id: tmp
-                width: parent.width - 20
-                indexObject: index
-                anchors.centerIn: parent
-            }
-
-            //Text {
-            //    text: model.nome +" "+ model.cognome +" "+ model.eta
-            //}
-            MouseArea {
+            Rectangle {
                 anchors.fill: parent
-                acceptedButtons: Qt.LeftButton | Qt.RightButton
-                onDoubleClicked: {
-                    if (mouse.button === Qt.LeftButton) {
-                        _myModel.duplicateData(model.index);
-                    } else if (mouse.button === Qt.RightButton) {
-                        _myModel.removeData(model.index);
+
+                color: index % 2 === 1 ? "white" : "brown"
+
+                Rectangle {
+                    color: "red"
+                    anchors {
+                        top: parent.top
+                        right: parent.right
+                        left: parent.left
+                        bottom: text_label.top
+                    }
+
+                    border.color: "black"
+                    border.width: 5
+
+                    WItemListPreview {
+                        visible: false
+                        id: imagePreview
+                        width: parent.width - 20
+                        indexObject: index
+                        anchors.fill: parent
+                    }
+                }
+
+                Rectangle {
+                    id: text_label
+                    anchors {
+                        bottom: parent.bottom
+                        left: parent.left
+                        right: parent.right
+                    }
+                    color: "transparent"
+                    height: 30
+
+                    Text {
+                        anchors.centerIn: parent
+
+                        text: "Index: " + (index + 1)
+                    }
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
+                    onDoubleClicked: {
+                        if (mouse.button === Qt.LeftButton) {
+                            _myModel.duplicateData(model.index);
+                        } else if (mouse.button === Qt.RightButton) {
+                            _myModel.removeData(model.index);
+                        }
                     }
                 }
             }
