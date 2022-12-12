@@ -10,6 +10,12 @@ Rectangle {
         anchors.fill: parent
         model: _controllerListPreview
 
+        visible: _controllerListPreview.isVisible
+
+        onVisibleChanged: {
+            console.log("Visible change to " + _controllerListPreview.isVisible)
+        }
+
         delegate: Rectangle {
             property int heigthItem: 260
             color: Qt.rgba(0.9,0.9,0.9)
@@ -31,7 +37,7 @@ Rectangle {
                     }
 
                     border.color: "black"
-                    border.width: 5
+                    border.width: 2
 
                     WItemListPreview {
                         visible: false

@@ -9,10 +9,15 @@
 static ControllerList *instanceObject;
 static QList<WQMLItemListComponent*> item = {};
 
+static bool init = false;
+
 ControllerList::ControllerList(QObject *parent) :
     QAbstractListModel(parent),
     _isVisible(true)
 {
+    Q_ASSERT(init == false);
+    init = true;
+
     qmlRegisterType<WQMLItemListComponent>("writernote.WQMLItemListPreview",
                                            1, 0,
                                            "WItemListPreview");
@@ -28,6 +33,7 @@ ControllerList::ControllerList(QObject *parent) :
 
     instanceObject = this;
 
+    qDebug() << "Controller List constructor" << this;
     //growthTimer->start(2000);
 }
 
@@ -74,7 +80,7 @@ bool ControllerList::isVisible() const
 
 void ControllerList::setVisible(bool visibility)
 {
-    const auto change = visibility == this->_isVisible;
+    const auto change = visibility != this->_isVisible;
     this->_isVisible = visibility;
 
     if (change) {

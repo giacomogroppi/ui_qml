@@ -35,7 +35,9 @@ Item {
                 left: parent.left
                 top: parent.top
                 bottom: parent.bottom
-                right: containerPreviewList.left
+                right: containerPreviewList.visible ?
+                           containerPreviewList.left :
+                           parent.right
             }
 
             CanvasSurface {
@@ -46,6 +48,8 @@ Item {
 
         Rectangle {
             id: containerPreviewList
+            visible: previewList.visible
+
             anchors {
                 right: parent.right
                 top: parent.top
