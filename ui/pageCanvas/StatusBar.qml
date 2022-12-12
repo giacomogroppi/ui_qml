@@ -48,6 +48,11 @@ Rectangle {
             anchors {
                 left: parent.left
             }
+
+            onClicked: {
+                _controllerToolBar.clickSelectPen()
+            }
+
             Text {
                 text: qsTr("1")
             }
@@ -59,6 +64,9 @@ Rectangle {
             anchors {
                 left: penButton.right
             }
+
+            onClicked: _controllerToolBar.clickRubber()
+
             Text {
                 text: qsTr("2")
             }
@@ -70,6 +78,9 @@ Rectangle {
             anchors {
                 left: rubberButton.right
             }
+
+            onClicked: _controllerToolBar.clickHighlighter()
+
             Text {
                 text: qsTr("3")
             }
@@ -81,6 +92,9 @@ Rectangle {
             anchors {
                 left: highlighterButton.right
             }
+
+            onClicked: _controllerToolBar.clickCut()
+
             Text {
                 text: qsTr("4")
             }
@@ -92,6 +106,9 @@ Rectangle {
             anchors {
                 left: cutButton.right
             }
+
+            onClicked: _controllerToolBar.clickHand()
+
             Text {
                 text: qsTr("5")
             }
