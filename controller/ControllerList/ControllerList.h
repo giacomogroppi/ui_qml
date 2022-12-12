@@ -16,6 +16,8 @@ struct Data {
 class ControllerList : public QAbstractListModel
 {
     Q_OBJECT
+private:
+    bool _isVisible;
 
 public:
     enum Roles {
@@ -29,6 +31,11 @@ public:
     int rowCount(const QModelIndex& parent) const override;
     QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const override;
     QHash<int, QByteArray> roleNames() const override;
+
+    Q_PROPERTY(bool isVisible READ isVisible WRITE setVisible NOTIFY isVisibleChanged);
+    bool isVisible() const;
+    void setVisible(bool visible);
+    Q_SIGNAL void isVisibleChanged();
 
 public slots:
     void duplicateData(int row);

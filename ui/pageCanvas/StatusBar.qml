@@ -111,4 +111,25 @@ Rectangle {
         }
     }
 
+    ButtonToolInstruments {
+        id: hidePreviewButton
+        buttonImageSource: ":/prefix_1/images/cut_option.png"
+        width: wButton
+        height: parent.height
+
+        anchors.right: parent.right
+
+        Text {
+            text: qsTr("hide preview")
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                console.log("Click on show/hide preview")
+                var isVisible = _controllerListPreview.isVisible
+                _controllerListPreview.isVisible = !isVisible
+            }
+        }
+    }
 }

@@ -5,9 +5,9 @@ RoundButton {
     property string buttonImageSource: ""
     property int margin: 4
 
-    //background: Rectangle {
-    //    color: "transparent"
-    //}
+    background: Rectangle {
+        color: "transparent"
+    }
 
     anchors.margins: margin
 
@@ -24,5 +24,4 @@ RoundButton {
         source: parent.buttonImageSource
         fillMode: Image.PreserveAspectFit
     }
-
 }

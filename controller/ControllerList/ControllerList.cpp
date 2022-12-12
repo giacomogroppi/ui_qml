@@ -10,7 +10,8 @@ static ControllerList *instanceObject;
 static QList<WQMLItemListComponent*> item = {};
 
 ControllerList::ControllerList(QObject *parent) :
-    QAbstractListModel(parent)
+    QAbstractListModel(parent),
+    _isVisible(true)
 {
     qmlRegisterType<WQMLItemListComponent>("writernote.WQMLItemListPreview",
                                            1, 0,
@@ -64,7 +65,22 @@ QHash<int, QByteArray> ControllerList::roleNames() const
 
     return mapping;
 }
-//<-- slide
+
+bool ControllerList::isVisible() const
+{
+    qDebug() << "ControllerList::isVisible" << this->_isVisible;
+    return this->_isVisible;
+}
+
+void ControllerList::setVisible(bool visibility)
+{
+    const auto change = visibility == this->_isVisible;
+    this->_isVisible = visibility;
+
+    if (change) {
+        emit isVisibleChanged();
+    }
+}
 
 void ControllerList::duplicateData(int row)
 {
