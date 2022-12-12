@@ -4,12 +4,12 @@
 Controller::Controller(QObject *parent, QQmlContext *content, QQmlApplicationEngine *engine)
     : QObject(parent),
       _content(content),
-      _engine(engine)
+      _engine(engine),
+      _audio(new ControllerAudio(this)),
+      _listPreview(new ControllerList(this)),
+      _canvas(new ControllerCanvas(this)),
+      _toolBar(new ControllerToolBar(this))
 {
-    this->_audio = new ControllerAudio(this);
-    this->_listPreview = new ControllerList(this);
-    this->_canvas = new ControllerCanvas(this);
-
     this->registerType();
 }
 
@@ -19,8 +19,13 @@ Controller::~Controller()
 
 void Controller::registerType()
 {
-    _content->setContextProperty("_controllerListPreview", this->_listPreview);
-    _content->setContextProperty("_controllerAudio", this->_audio);
-    _content->setContextProperty("_controllerCanvas", this->_canvas);
+    auto registerType = [this](const QString &name, QObject *object) {
+        _content->setContextProperty(name, object);
+    };
+
+    registerType("_controllerListPreview",  this->_listPreview);
+    registerType("_controllerAudio",        this->_audio);
+    registerType("_controllerCanvas",       this->_canvas);
+    registerType("_controllerToolBar",      this->_toolBar);
 }
 

@@ -6,14 +6,15 @@
 #include "ControllerList/ControllerList.h"
 #include "ControllerAudio/ControllerAudio.h"
 #include "ControllerCanvas/ControllerCanvas.h"
-
+#include "ControllerToolBar/ControllerToolBar.h"
 
 class Controller: public QObject {
     Q_OBJECT
 private:
-    ControllerList *_listPreview;
-    ControllerAudio *_audio;
-    ControllerCanvas *_canvas;
+    ControllerList      *_listPreview;
+    ControllerAudio     *_audio;
+    ControllerCanvas    *_canvas;
+    ControllerToolBar   *_toolBar;
 
     QQmlContext *_content;
     QQmlApplicationEngine *_engine;
