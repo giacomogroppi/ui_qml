@@ -48,7 +48,7 @@ Item {
 
         Rectangle {
             id: containerPreviewList
-            visible: previewList.visible
+            visible: _controllerListPreview.isVisible
 
             anchors {
                 right: parent.right
