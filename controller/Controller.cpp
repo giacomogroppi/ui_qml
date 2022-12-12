@@ -8,7 +8,8 @@ Controller::Controller(QObject *parent, QQmlContext *content, QQmlApplicationEng
       _audio(new ControllerAudio(this)),
       _listPreview(new ControllerList(this)),
       _canvas(new ControllerCanvas(this)),
-      _toolBar(new ControllerToolBar(this))
+      _toolBar(new ControllerToolBar(this)),
+      _pageCounter(new ControllerPageCounter(this))
 {
     this->registerType();
 }
@@ -27,5 +28,6 @@ void Controller::registerType()
     registerType("_controllerAudio",        this->_audio);
     registerType("_controllerCanvas",       this->_canvas);
     registerType("_controllerToolBar",      this->_toolBar);
+    registerType("_controllerPageCounter",  this->_pageCounter);
 }
 

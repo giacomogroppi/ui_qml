@@ -3,7 +3,7 @@ import QtQuick.Controls 6.3
 
 Rectangle {
     property string backColor: "#00248f"
-    property int hAll: 50
+    property int hAll: 80
     property int wButton: 30
 
     id: root

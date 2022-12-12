@@ -76,40 +76,17 @@ Item {
         Text {
             id: textWhatPageLeft
             anchors.bottom: parent.bottom
-            text: qsTr("Page: ")
-            anchors.right: textEdit.left
+            text: _controllerPageCounter.page + " of " + _controllerPageCounter.numberOfPage
+
+            anchors {
+                right: parent.right
+                top: parent.top
+                bottom: parent.bottom
+            }
+
             anchors.rightMargin: 5
+
             font.pixelSize: 12
-            height: parent.height
         }
-
-        TextEdit {
-            id: textEdit
-            width: 20
-            height: parent.height
-            text: qsTr("1")
-            anchors.right: textWhatPageRigth.left
-            font.pixelSize: 12
-            anchors.rightMargin: 0
-        }
-
-        Text {
-            id: textWhatPageRigth
-            text: qsTr(" of ")
-            anchors.right: totalPage.left
-            anchors.rightMargin: 6
-            font.pixelSize: 12
-            height: parent.height
-        }
-
-        Text {
-            id: totalPage
-            text: qsTr("Text")
-            anchors.right: parent.right
-            font.pixelSize: 12
-            anchors.rightMargin: 0
-        }
-
-
     }
 }
