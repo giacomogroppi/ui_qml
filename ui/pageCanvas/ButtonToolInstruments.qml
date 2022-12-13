@@ -2,7 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.12
 
 RoundButton {
-    property string buttonImageSource: ""
+    required property string buttonImageSource
     property int margin: 4
 
     background: Rectangle {

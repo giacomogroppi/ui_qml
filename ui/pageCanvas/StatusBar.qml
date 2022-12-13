@@ -1,10 +1,11 @@
 import QtQuick 2.0
-import QtQuick.Controls 6.3
+import QtQuick.Controls 2.12
 
 Rectangle {
     property string backColor: "#00248f"
     property int hAll: 80
     property int wButton: 30
+    property int wButtonColor: 30
 
     id: root
     width: parent.width
@@ -39,7 +40,7 @@ Rectangle {
         anchors.centerIn: parent
 
         height: parent.height
-        width: wButton * 5
+        width: wButton * 6
         color: backColor
 
         ButtonToolInstruments {
@@ -111,6 +112,15 @@ Rectangle {
 
             Text {
                 text: qsTr("5")
+            }
+        }
+
+        ButtonColorToolBar {
+            id: colorBlack
+            colorName: "black"
+            selected: true
+            anchors {
+                left: handButton.right
             }
         }
     }

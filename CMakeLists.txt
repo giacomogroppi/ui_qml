@@ -46,6 +46,7 @@ qt_add_qml_module(apptesting_qml
         ui/pageCanvas/ButtonToolInstruments.qml
         ui/pageCanvas/ListPreview.qml
         ui/pageCanvas/MainWindow.qml
+        ui/pageCanvas/ButtonColorToolBar.qml
         Prova.qml
 )
 
