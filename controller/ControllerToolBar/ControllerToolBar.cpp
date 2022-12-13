@@ -3,7 +3,8 @@
 
 ControllerToolBar::ControllerToolBar(QObject *parent)
     : QObject(parent),
-      _type(Pen)
+      _type(Pen),
+      _color(Qt::black)
 {
 }
 
@@ -39,6 +40,36 @@ void ControllerToolBar::clickCut()
 {
     _type = Cut;
     emit toolHasChanged();
+}
+
+void ControllerToolBar::clickBlack()
+{
+    _color = Qt::black;
+    emit colorChanged();
+}
+
+void ControllerToolBar::clickBrown()
+{
+    _color = brown;
+    emit colorChanged();
+}
+
+void ControllerToolBar::clickWhite()
+{
+    _color = Qt::white;
+    emit colorChanged();
+}
+
+void ControllerToolBar::clickYellow()
+{
+    _color = Qt::yellow;
+    emit colorChanged();
+}
+
+void ControllerToolBar::clickRed()
+{
+    _color = Qt::red;
+    emit colorChanged();
 }
 
 bool ControllerToolBar::isPen() const

@@ -3,7 +3,7 @@ import QtQuick.Controls 2.12
 
 Rectangle {
     property string backColor: "#00248f"
-    property int hAll: 80
+    property int hAll: 100
     property int wButton: 30
     property int wButtonColor: 30
 
@@ -118,9 +118,60 @@ Rectangle {
         ButtonColorToolBar {
             id: colorBlack
             colorName: "black"
-            selected: true
+            selected: _controllerToolBar.isBlack
             anchors {
                 left: handButton.right
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    _controllerToolBar.clickBlack()
+                }
+            }
+        }
+
+        ButtonColorToolBar {
+            id: colorYellow
+            colorName: "yellow"
+            selected: _controllerToolBar.isYellow
+            anchors {
+                left: colorBlack.right
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    _controllerToolBar.clickYellow()
+                }
+            }
+        }
+
+        ButtonColorToolBar {
+            id: colorRed
+            colorName: "red"
+            selected: _controllerToolBar.isRed
+            anchors {
+                left: colorYellow.right
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    _controllerToolBar.clickRed()
+                }
+            }
+        }
+
+        ButtonColorToolBar {
+            id: colorWhite
+            colorName: "white"
+            selected: _controllerToolBar.isWhite
+            anchors {
+                left: colorRed.right
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    _controllerToolBar.clickWhite()
+                }
             }
         }
     }

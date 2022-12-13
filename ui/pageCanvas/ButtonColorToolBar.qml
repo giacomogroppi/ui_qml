@@ -21,7 +21,7 @@ RoundButton {
     background: Rectangle {
         color: colorName
         border.color: selected ? "white" : parent.colorName
-        border.width: 1.1
+        border.width: 1.5
         radius: 50
     }
 }

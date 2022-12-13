@@ -10,7 +10,7 @@ Item {
         }
 
         width: parent.width
-        height: 30
+        height: 35
 
         StatusBar {
             id: statusBar
