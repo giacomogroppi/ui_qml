@@ -10,6 +10,9 @@ public:
     explicit ControllerPageCounter(QObject *parent);
     ~ControllerPageCounter() = default;
 
+    Q_INVOKABLE void pageUp();
+    Q_INVOKABLE void pageDown();
+
     Q_PROPERTY(int page READ page WRITE setPage NOTIFY pageChanged);
     int page() const;
     void setPage(int index);

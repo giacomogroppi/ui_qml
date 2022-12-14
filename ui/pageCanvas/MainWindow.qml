@@ -1,4 +1,5 @@
 import QtQuick 2.15
+import QtQuick.Controls 2.12
 
 Item {
     Rectangle {
@@ -24,7 +25,7 @@ Item {
             left: parent.left
             right: parent.right
             top: containerStatusBar.bottom
-            bottom: rowBottom.top
+            bottom: parent.bottom
             margins: 0
         }
 
@@ -47,6 +48,55 @@ Item {
         }
 
         Rectangle {
+            readonly property int wHeigthButton: 15
+            id: containerPageCounter
+            anchors {
+                right: containerCanvasSurface.right
+                bottom: parent.bottom
+            }
+
+            color:"red"
+            width: 30
+            height: 44
+            anchors.bottomMargin: 0
+
+            Button {
+                id: buttonPageUp
+                anchors {
+                    top: parent.top
+                    right: parent.right
+                    left: parent.left
+                }
+                height: 15
+                text: "X"
+            }
+
+            Text {
+                id: textWhatPageLeft
+                text: _controllerPageCounter.page + "/" + _controllerPageCounter.numberOfPage
+
+                anchors {
+                    top: buttonPageUp.bottom
+                    left: parent.left
+                    right: parent.right
+                }
+
+                font.pixelSize: 12
+            }
+
+            Button {
+                id: buttonPageDown
+                anchors {
+                    top: textWhatPageLeft.bottom
+                    right: parent.right
+                    left: parent.left
+                }
+                height: 15
+                text: "H"
+            }
+        }
+
+        Rectangle {
             id: containerPreviewList
             visible: _controllerListPreview.isVisible
 
@@ -63,30 +113,6 @@ Item {
                 anchors.fill: parent
                 w: 100
             }
-        }
-    }
-
-    Rectangle {
-        id: rowBottom
-        anchors.bottom: parent.bottom
-        width: parent.width
-        height: 20
-        anchors.bottomMargin: 0
-
-        Text {
-            id: textWhatPageLeft
-            anchors.bottom: parent.bottom
-            text: _controllerPageCounter.page + " of " + _controllerPageCounter.numberOfPage
-
-            anchors {
-                right: parent.right
-                top: parent.top
-                bottom: parent.bottom
-            }
-
-            anchors.rightMargin: 5
-
-            font.pixelSize: 12
         }
     }
 }
