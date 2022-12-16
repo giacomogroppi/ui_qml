@@ -20,3 +20,8 @@ void ControllerAudio::setRecording(bool recording)
 {
     emit isRecordingChange();
 }
+
+size_t ControllerAudio::getSecondRecording()
+{
+    return 0;
+}
