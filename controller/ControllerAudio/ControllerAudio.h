@@ -5,6 +5,11 @@
 class ControllerAudio: public QObject {
     Q_OBJECT
 public:
-    Q_INVOKABLE explicit ControllerAudio(QObject *parent);
+    explicit ControllerAudio(QObject *parent);
     ~ControllerAudio();
+
+    Q_PROPERTY(bool isRecording READ isRecording WRITE setRecording NOTIFY isRecordingChange);
+    bool isRecording();
+    void setRecording(bool recording);
+    Q_SIGNAL void isRecordingChange();
 };
