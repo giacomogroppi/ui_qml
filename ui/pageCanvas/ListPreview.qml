@@ -84,6 +84,9 @@ Rectangle {
                         Popup {
                             property int indexObject: -1
 
+                            width: 100
+                            height: 30*3
+
                             function showObject(index, x, y) {
                                 console.log("popupOptions show with index " + index + " x " + x + " y " + y)
                                 popupOptions.indexObject = index
@@ -95,14 +98,30 @@ Rectangle {
                             id: popupOptions
 
                             Rectangle {
+                                anchors.fill: parent
                                 Button {
                                     id: buttonAddPage
+                                    text: "Add page"
+                                    height: parent.height / 3
+                                    anchors.top: parent.top
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
                                 }
                                 Button {
                                     id: buttonRemovePage
+                                    text: "Remove page"
+                                    height: parent.height / 3
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+                                    anchors.top: buttonAddPage.bottom
                                 }
                                 Button {
                                     id: buttonCopyPage
+                                    text: "Copy page"
+                                    height: parent.height / 3
+                                    anchors.top: buttonRemovePage.bottom
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
                                 }
                             }
                         }
