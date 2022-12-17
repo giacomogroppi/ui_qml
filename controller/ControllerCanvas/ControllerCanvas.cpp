@@ -25,6 +25,12 @@ void ControllerCanvas::endTimer()
     qDebug() << "ControllerCanvas::endTimer" << this->heigthObject();
 }
 
+bool ControllerCanvas::event(QEvent *event)
+{
+    //qDebug() << event->type();
+    return QObject::event(event);
+}
+
 void ControllerCanvas::wSetWidth(int newWidth)
 {
     this->_width = newWidth;

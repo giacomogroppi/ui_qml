@@ -35,11 +35,20 @@ Item {
 
             width: _controllerCanvas.widthObject
             height: _controllerCanvas.heigthObject
-            //width: 5000
-            //height: 5000
 
             onWidthChanged: {
                 console.log("width change", width, "diventa", _controllerCanvas.widthObject);
+            }
+
+            TapHandler {
+                acceptedButtons: Qt.RightButton | Qt.LeftButton
+                onTapped: console.log("scroll action")
+            }
+
+            TapHandler {
+                //acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus
+                acceptedButtons: Qt.RightButton | Qt.LeftButton
+                onTapped: console.log("right clicked")
             }
         }
     }

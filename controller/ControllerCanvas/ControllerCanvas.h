@@ -35,4 +35,7 @@ public slots:
 
 private slots:
     void endTimer();
+
+protected:
+    bool event(QEvent *event) override;
 };
