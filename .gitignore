@@ -1,4 +1,3 @@
-
 CMakeLists.txt.user.7430213
 CMakeLists.txt.user
 CMakeLists.txt.user
@@ -7,3 +6,4 @@ CMakeFiles/*
 CMakeCache.txt
 build/*
 build
+.idea/*
