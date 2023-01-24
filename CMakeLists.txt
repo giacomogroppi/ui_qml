@@ -1,76 +1,204 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.14)
 
-project(testing_qml VERSION 0.1 LANGUAGES CXX)
+set(A_NAME_TARGET testing_qml)
+set(A_DIR_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
+set(A_DIR_MODULES_BINARY_LIBRARIES "${CMAKE_CURRENT_BINARY_DIR}/${A_NAME_TARGET}_libraries")
 
+project(${A_NAME_TARGET} LANGUAGES CXX)
+
+option(A_OPTION_USING_PCH "${A_NAME_TARGET} using PCH support" ON)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-file(GLOB_RECURSE cpp_file
-    *.cpp
-    *.h
-)
+set(A_QT_MODULES)
+set(A_QT_MODULE_TARGETS)
 
-file(GLOB_RECURSE PROJECT_MOC
-    *.qrc
-)
+set(A_TARGET_MODULES_PUBLIC)
+set(A_TARGET_MODULES_PRIVATE)
+set(A_TARGET_COMPILE_DEFINITIONS_PUBLIC)
+set(A_TARGET_COMPILE_DEFINITIONS_PRIVATE)
+set(A_TARGET_INCLUDE_DIRECTORIES_PUBLIC)
+set(A_TARGET_INCLUDE_DIRECTORIES_PRIVATE)
 
-if(UNIX AND NOT APPLE AND NOT MINGW)
-    set(LINUX TRUE)
+set(A_SOURCES_RESOURCES)
+set(A_SOURCES_CPP_HEADERS)
+set(A_SOURCES_CPP)
+set(A_SOURCES_C_HEADERS)
+set(A_SOURCES_C)
+set(A_SOURCES_PRECOMPILED_HEADERS_PUBLIC)
+set(A_SOURCES_PRECOMPILED_HEADERS_PRIVATE)
+
+if(IOS)
+	enable_language(OBJCXX OBJC Swift)
+
+	#set(A_SOURCES_SWIFT_OBJC_INTERFACE_HEADER_NAME "aswiftobjcinterface.h")
+	set(A_SOURCES_SWIFT_OBJC_INTERFACE_HEADER_NAME)
+    
+    #set(A_SOURCES_SWIFT_OBJC_BRIDGING_HEADER "${A_DIR_ROOT}/aswiftobjcbridging.h")
+    set(A_SOURCES_SWIFT_OBJC_BRIDGING_HEADER)
+
+	set(A_SOURCES_OBJECTIVE_HEADERS)
+	set(A_SOURCES_OBJECTIVE_CPP)
+	set(A_SOURCES_SWIFT)
+
 endif()
 
-if(LINUX OR APPLE)
-    message("$ENV{QT_VER_WRITERNOTE}")
+# QtCreator supports the following variables for Android, which are identical to qmake Android variables.
+# Check https://doc.qt.io/qt/deployment-android.html for more information.
+# They need to be set before the find_package(...) calls below.
 
-    if(LINUX)
-        set(LIB_TARGET "gcc_64")
-    elseif(APPLE)
-        set(LIB_TARGET "macos")
-    endif()
+#if(ANDROID)
+#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
+#    if (ANDROID_ABI STREQUAL "armeabi-v7a")
+#        set(ANDROID_EXTRA_LIBS
+#            ${CMAKE_CURRENT_SOURCE_DIR}/path/to/libcrypto.so
+#            ${CMAKE_CURRENT_SOURCE_DIR}/path/to/libssl.so)
+#    endif()
+#endif()
 
-    if(NOT ("$ENV{QT_VER_WRITERNOTE}" STREQUAL ""))
-        message("-- QT_VER_WRITERNOTE set")
-        set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "~/Qt/$ENV{QT_VER_WRITERNOTE}/${LIB_TARGET}/lib/cmake")
-    else()
-        message("-- QT_VER_WRITERNOTE not set")
-        set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "~/Qt/6.4.0/${LIB_TARGET}/lib/cmake")
-    endif()
+set(A_QT_MODULES
+	${A_QT_MODULES}
+	Core
+	Quick
+)
 
-    message("-- search qt in " ${CMAKE_PREFIX_PATH})
+set(A_TARGET_MODULES_PUBLIC
+	${A_TARGET_MODULES}
+#	ALogger
+#	ABackend
+#	AConfig
+)
+
+set(A_QT_TARGET_MODULES
+	Qt${QT_VERSION_MAJOR}::Core
+	Qt${QT_VERSION_MAJOR}::Quick
+)
+
+set(A_SOURCES_RESOURCES
+	${A_SOURCES_RESOURCES}
+	${A_DIR_ROOT}/resource.qrc
+)
+
+set(A_SOURCES_CPP
+	${A_SOURCES_CPP}
+	${A_DIR_ROOT}/main.cpp
+    ${A_DIR_ROOT}/controller/controller.cpp
+    ${A_DIR_ROOT}/controller/ControllerAudio/ControllerAudio.cpp
+    ${A_DIR_ROOT}/controller/ControllerCanvas/ControllerCanvas.cpp
+    ${A_DIR_ROOT}/controller/ControllerCanvas/WQMLCanvasComponent.cpp
+    ${A_DIR_ROOT}/controller/ControllerList/ControllerList.cpp
+    ${A_DIR_ROOT}/controller/ControllerList/WQMLItemListComponent.cpp
+    ${A_DIR_ROOT}/controller/ControllerListFiles/ControllerListFiles.cpp
+    ${A_DIR_ROOT}/controller/ControllerListFiles/ControllerListFilesFolder.cpp
+    ${A_DIR_ROOT}/controller/ControllerPageCounter/ControllerPageCounter.cpp
+    ${A_DIR_ROOT}/controller/ControllerToolBar/ControllerToolBar.cpp
+
+)
+
+set(A_SOURCES_PRECOMPILED_HEADERS_PRIVATE
+	${A_SOURCES_PRECOMPILED_HEADERS_PRIVATE}
+	#${A_DIR_ROOT}/amainpch.h
+    # header privati
+)
+
+foreach(I_MODULE IN LISTS A_QT_MODULES)
+	set(A_QT_MODULE_TARGETS
+		${A_QT_MODULE_TARGETS}
+		Qt${QT_VERSION_MAJOR}::${I_MODULE}
+	)
+endforeach()
+
+find_package(QT NAMES Qt6 Qt5 COMPONENTS ${A_QT_MODULES} REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS ${A_QT_MODULES} REQUIRED)
+
+set(A_SOURCES
+	${A_SOURCES}
+	${A_CMAKE_APPLICATION_CONF}
+	${A_CMAKE_ENVIRONMENT_CONF}
+	${A_SOURCES_RESOURCES}
+	${A_SOURCES_CPP_HEADERS}
+	${A_SOURCES_CPP}
+	${A_SOURCES_C_HEADERS}
+	${A_SOURCES_C}
+	${A_SOURCES_PRECOMPILED_HEADERS_PUBLIC}
+	${A_SOURCES_PRECOMPILED_HEADERS_PRIVATE}
+)
+
+if(IOS)
+	set(A_SOURCES
+		${A_SOURCES}
+		${A_SOURCES_SWIFT_OBJC_BRIDGING_HEADER}
+		${A_SOURCES_OBJECTIVE_HEADERS}
+		${A_SOURCES_OBJECTIVE_CPP}
+		${A_SOURCES_SWIFT}
+	)
 endif()
 
-find_package(Qt6 6.3 COMPONENTS Quick REQUIRED)
+if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+	qt_add_executable(${A_NAME_TARGET}
+		${A_SOURCES}
+	)
+else()
+	if(ANDROID)
+		add_library(${A_NAME_TARGET}
+			SHARED
+				${A_SOURCES}
+		)
+	else()
+		add_executable(${A_NAME_TARGET}
+			${A_SOURCES}
+		)
+	endif()
+endif()
 
-qt_add_executable(apptesting_qml
-    ${cpp_file}
-    ${PROJECT_MOC}
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.16 AND A_OPTION_USING_PCH)
+	message(STATUS "Using PCH for ${A_NAME_TARGET}")
+	target_precompile_headers(${A_NAME_TARGET}
+		PRIVATE ${A_SOURCES_PRECOMPILED_HEADERS_PRIVATE}
+		PUBLIC ${A_SOURCES_PRECOMPILED_HEADERS_PUBLIC}
+	)
+	set(CMAKE_PCH_INSTANTIATE_TEMPLATES ON)
+else()
+	message(STATUS "No PCH for ${A_NAME_TARGET}")
+endif()
+
+set(A_TARGET_COMPILE_DEFINITIONS_PRIVATE
+	${A_TARGET_COMPILE_DEFINITIONS_PRIVATE}
+	$<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>
 )
 
-qt_add_qml_module(apptesting_qml
-    URI testing_qml
-    VERSION 1.0
-    QML_FILES
-        main.qml
-        ui/pageCanvas/StatusBar.qml
-        ui/pageCanvas/CanvasSurface.qml
-        ui/pageCanvas/ButtonToolInstruments.qml
-        ui/pageCanvas/ListPreview.qml
-        ui/pageCanvas/MainWindow.qml
-        ui/pageCanvas/ButtonColorToolBar.qml
-        ui/listOfFiles/MainWindowListFile.qml
-        Prova.qml
+target_compile_definitions(${A_NAME_TARGET}
+	PRIVATE ${A_TARGET_COMPILE_DEFINITIONS_PRIVATE}
+	PUBLIC ${A_TARGET_COMPILE_DEFINITIONS_PUBLIC}
 )
 
-set_target_properties(apptesting_qml PROPERTIES
-    MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-    MACOSX_BUNDLE TRUE
-    WIN32_EXECUTABLE TRUE
+target_include_directories(${A_NAME_TARGET}
+	PRIVATE ${A_TARGET_INCLUDE_DIRECTORIES_PRIVATE}
+	PUBLIC ${A_TARGET_INCLUDE_DIRECTORIES_PUBLIC}
 )
 
-target_link_libraries(apptesting_qml
-    PRIVATE Qt6::Quick)
+target_link_libraries(${A_NAME_TARGET}
+	PRIVATE
+		${A_QT_TARGET_MODULES}
+		${A_TARGET_MODULES_PRIVATE}
+	PUBLIC
+		${A_TARGET_MODULES_PUBLIC}
+)
 
-install(TARGETS apptesting_qml
-    BUNDLE DESTINATION .
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+if(IOS)
+	set_target_properties(${A_NAME_TARGET}
+		PROPERTIES
+			XCODE_ATTRIBUTE_SWIFT_OBJC_INTERFACE_HEADER_NAME "${A_SOURCES_SWIFT_OBJC_INTERFACE_HEADER_NAME}"
+			XCODE_ATTRIBUTE_SWIFT_OBJC_BRIDGING_HEADER "${A_SOURCES_SWIFT_OBJC_BRIDGING_HEADER}"
+			XCODE_ATTRIBUTE_ENABLE_BITCODE "NO"
+			XCODE_ATTRIBUTE_ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES "YES"
+			XCODE_ATTRIBUTE_SWIFT_VERSION "5.0"
+	)
+endif()

@@ -9,9 +9,18 @@ Window {
     visible: true
     title: qsTr("Writernote")
 
+
+    Rectangle {
+        anchors.fill: parent
+        Text {
+            text : "ciao"
+
+        }
+    }
+
     StackView {
         id: stackViewMain
         anchors.fill: parent
-        initialItem: "qrc:/testing_qml/ui/pageCanvas/MainWindow.qml"
+        initialItem: "qrc:/ui/pageCanvas/MainWindow.qml"
     }
 }

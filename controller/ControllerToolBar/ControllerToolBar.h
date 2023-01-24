@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <QColor>
+#include <QQmlApplicationEngine>
 
 class ControllerToolBar: public QObject {
     Q_OBJECT
