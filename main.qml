@@ -10,17 +10,13 @@ Window {
     title: qsTr("Writernote")
 
 
-    Rectangle {
-        anchors.fill: parent
-        Text {
-            text : "ciao"
-
-        }
-    }
-
     StackView {
         id: stackViewMain
         anchors.fill: parent
-        initialItem: "qrc:/ui/pageCanvas/MainWindow.qml"
+        // pagina di scrittura
+        //initialItem: "qrc:/ui/pageCanvas/MainWindow.qml"
+
+        // pagina in cui vengono mostrati i file
+        initialItem: "qrc:/ui/listOfFiles/MainWindowListFile.qml"
     }
 }

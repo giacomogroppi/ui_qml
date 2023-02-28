@@ -7,6 +7,20 @@ Item {
     }
 
     Rectangle {
+        id: address
+        Rectangle {
+            id: containterFolderAddress
+        }
+
+        Rectangle {
+            id: containerFileAddress
+            Text{
+
+            }
+        }
+    }
+
+    Rectangle {
         id: listFolderListFiles
     }
 

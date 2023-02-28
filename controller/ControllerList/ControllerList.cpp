@@ -28,7 +28,7 @@ ControllerList::ControllerList(QObject *parent) :
         << Data("Norway", "Forlanini", 5.1)
         << Data("Finland", "Agnelli", 5.4);
 
-    QTimer *growthTimer = new QTimer(this);
+    auto *growthTimer = new QTimer(this);
     connect(growthTimer, &QTimer::timeout, this, &ControllerList::growPopulation);
 
     instanceObject = this;

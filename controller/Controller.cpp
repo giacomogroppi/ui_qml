@@ -9,14 +9,14 @@ Controller::Controller(QObject *parent, QQmlContext *content, QQmlApplicationEng
       _listPreview(new ControllerList(this)),
       _canvas(new ControllerCanvas(this)),
       _toolBar(new ControllerToolBar(this)),
-      _pageCounter(new ControllerPageCounter(this))
+      _pageCounter(new ControllerPageCounter(this)),
+      _listFiles(new ControllerListFilesFolder(this))
 {
     this->registerType();
 }
 
 Controller::~Controller()
-{
-}
+= default;
 
 void Controller::registerType()
 {
@@ -24,10 +24,11 @@ void Controller::registerType()
         _content->setContextProperty(name, object);
     };
 
-    registerType("_controllerListPreview",  this->_listPreview);
-    registerType("_controllerAudio",        this->_audio);
-    registerType("_controllerCanvas",       this->_canvas);
-    registerType("_controllerToolBar",      this->_toolBar);
-    registerType("_controllerPageCounter",  this->_pageCounter);
+    registerType("_controllerListPreview",      this->_listPreview);
+    registerType("_controllerAudio",            this->_audio);
+    registerType("_controllerCanvas",           this->_canvas);
+    registerType("_controllerToolBar",          this->_toolBar);
+    registerType("_controllerPageCounter",      this->_pageCounter);
+    registerType("_controllerListFilesFolder",  this->_listFiles);
 }
 

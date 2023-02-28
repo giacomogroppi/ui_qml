@@ -7,3 +7,13 @@ CMakeCache.txt
 build/*
 build
 .idea/*
+*.cmake
+cmake-build-debug/CMakeFiles/3.24.2/CompilerIdCXX/CMakeCXXCompilerId.cpp
+*.bin
+cmake-build-debug/CMakeFiles/clion-Debug-log.txt
+*.o
+*.check_cache
+cmake-build-debug/CMakeFiles/CMakeError.log
+cmake-build-debug/CMakeFiles/CMakeOutput.log
+cmake-build-debug/CMakeFiles/clion-environment.txt
+cmake-build-debug/Testing/Temporary/LastTest.log
