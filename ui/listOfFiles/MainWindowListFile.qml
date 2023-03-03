@@ -16,14 +16,6 @@ Item {
         ListOfFiles {
             anchors.fill: toolBarListFiles
         }
-
-        Rectangle {
-            anchors.fill: parent
-            color: "orange"
-            Text {
-                text: "ciao"
-            }
-        }
     }
 
     Rectangle {
