@@ -4,6 +4,26 @@ import QtQuick.Controls 2.12
 Item {
     Rectangle {
         id: toolBarListFiles
+
+        width: 300
+
+        anchors {
+            top: parent.top
+            left: parent.left
+            bottom: parent.bottom
+        }
+
+        ListOfFiles {
+            anchors.fill: toolBarListFiles
+        }
+
+        Rectangle {
+            anchors.fill: parent
+            color: "orange"
+            Text {
+                text: "ciao"
+            }
+        }
     }
 
     Rectangle {

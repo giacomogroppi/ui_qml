@@ -10,7 +10,7 @@ private:
     QDate _lastMod;
     QByteArray _name;
 public:
-    Files(const QByteArray &path, const QDate &_lastMod);
+    Files(const QByteArray &path, const QDate &lastMod);
     ~Files() = default;
 
     const QByteArray &getName() const;

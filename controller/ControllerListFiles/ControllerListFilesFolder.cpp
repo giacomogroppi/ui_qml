@@ -10,6 +10,11 @@ ControllerListFilesFolder::ControllerListFilesFolder(QObject *parent)
     qmlRegisterType<ControllerListFilesFolder>("writernote.WQMLControllerListFile",
                                                1, 0,
                                                "WItemListFiles");
+
+    this->_files.append(Files("/home/giacomo/prova1", QDate(2023, 05, 22)));
+    this->_files.append(Files("/home/giacomo/prova2", QDate(2018, 07, 34)));
+    this->_files.append(Files("/home/giacomo/prova3", QDate(2019, 03, 2)));
+    this->_files.append(Files("/home/giacomo/prova4", QDate(1998, 12, 9)));
 }
 
 int ControllerListFilesFolder::rowCount(const QModelIndex &parent) const
@@ -74,8 +79,10 @@ void ControllerListFilesFolder::removeData(int row)
 
 QVariant ControllerListFilesFolder::data(const QModelIndex& index, int role) const
 {
-    if ( !index.isValid() )
+    if (not index.isValid()) {
+        qWarning() << "Index is not valid";
         return {};
+    }
 
     qDebug() << "data" << role << index.row();
 
@@ -85,8 +92,12 @@ QVariant ControllerListFilesFolder::data(const QModelIndex& index, int role) con
     const auto &data = _files.at(index.row());
 
     switch (role) {
-        case Roles::Path: return { data.getName() };
-        case Roles::LastModification: return {data.getLastMod() };
+        case Roles::Path: return {
+            data.getName()
+        };
+        case Roles::LastModification: return {
+            data.getLastMod()
+        };
         default: break;
     }
 

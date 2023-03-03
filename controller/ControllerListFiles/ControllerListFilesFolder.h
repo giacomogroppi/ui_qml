@@ -28,8 +28,6 @@ public:
 public slots:
     void duplicateData(int row);
     void removeData(int row);
-    void modifiedPages(int page);
-    void modifiedPages(const std::vector<int> &page);
 
 private:
     QVector<Files> _files;

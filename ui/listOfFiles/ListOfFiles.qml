@@ -5,7 +5,15 @@ Rectangle {
         anchors.fill: parent
         model: _controllerListFilesFolder
 
-        Rectangle {
+        delegate: Rectangle {
+            width: 100
+            color: index % 2 === 0 ? "blue" : "red"
+
+
+            Text {
+                anchors.fill: parent
+                text: model.path
+            }
         }
     }
 }
