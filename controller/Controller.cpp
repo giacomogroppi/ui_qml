@@ -15,6 +15,12 @@ Controller::Controller(QObject *parent, QQmlContext *content, QQmlApplicationEng
     this->registerType();
 }
 
+void Controller::newFile()
+{
+    qWarning() << "Need to implement";
+#pragma "need to implement"
+}
+
 Controller::~Controller()
 = default;
 

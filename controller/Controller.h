@@ -28,4 +28,7 @@ private:
 public:
     explicit Controller(QObject *parent, QQmlContext* content, QQmlApplicationEngine* engine);
     ~Controller();
+
+public slots:
+    void newFile();
 };

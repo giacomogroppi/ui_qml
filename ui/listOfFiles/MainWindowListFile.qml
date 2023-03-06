@@ -3,23 +3,18 @@ import QtQuick.Controls 2.12
 
 Item {
     Rectangle {
-        id: toolBarListFiles
+        id: address_box
 
-        width: 300
+        height: 40
 
         anchors {
             top: parent.top
             left: parent.left
-            bottom: parent.bottom
+            right: parent.right
         }
 
-        ListOfFiles {
-            anchors.fill: toolBarListFiles
-        }
-    }
+        color: "brown"
 
-    Rectangle {
-        id: address
         Rectangle {
             id: containterFolderAddress
         }
@@ -33,10 +28,40 @@ Item {
     }
 
     Rectangle {
-        id: listFolderListFiles
+        id: toolBarListFiles
+
+        width: 300
+
+        anchors {
+            top: address_box.bottom
+            left: parent.left
+            bottom: parent.bottom
+        }
+
+        ListOfFiles {
+            anchors.fill: toolBarListFiles
+        }
     }
 
     Rectangle {
-        id: listOfFiles
+        id: addFileContainer
+    }
+
+    RoundButton {
+        id: button_add_file
+
+        text: "New File"
+        anchors {
+            bottom: parent.bottom
+            right: parent.right
+        }
+
+        anchors.margins: 10
+
+        radius: width/2
+        onClicked: {
+            console.log("Button clicked")
+            _controller.newFile()
+        }
     }
 }
