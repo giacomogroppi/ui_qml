@@ -28,7 +28,7 @@ Item {
     }
 
     Rectangle {
-        id: toolBarListFiles
+        id: listFiles
 
         width: 300
 
@@ -38,8 +38,50 @@ Item {
             bottom: parent.bottom
         }
 
+        Rectangle {
+            id: toolBarListFile
+            anchors {
+                top: parent.top
+                left: parent.left
+                right: parent.right
+            }
+            height: 30
+            color: "yellow"
+
+            RoundButton {
+                text: "+"
+
+                anchors {
+                    right: parent.right
+                    top: parent.top
+                    bottom: parent.bottom
+                }
+
+                anchors.topMargin: 2
+                anchors.bottomMargin: 2
+                anchors.rightMargin: 5
+
+                width: height
+
+                background: Rectangle {
+                    color: "#3F51B5"
+                    border.width: 0
+                    radius: width / 2
+                }
+
+                onClicked: {
+                    console.log("New folder button")
+                }
+            }
+        }
+
         ListOfFiles {
-            anchors.fill: toolBarListFiles
+            visible: true
+            anchors {
+                left: parent.left
+                bottom: parent.bottom
+                top: toolBarListFile.bottom
+            }
         }
     }
 

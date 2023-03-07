@@ -1,8 +1,6 @@
 import QtQuick 2.15
 
 Rectangle {
-    anchors.fill: parent
-
     ListView {
         anchors.fill: parent
         model: _controllerListFilesFolder
