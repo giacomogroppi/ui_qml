@@ -1,4 +1,5 @@
 import QtQuick 2.15
+import QtQuick.Controls 2.12
 
 ListView {
     model: _controllerListFilesFolder
@@ -28,6 +29,27 @@ ListView {
             onClicked: {
                 console.log("ListOfFolders click on " + index)
                 _controllerListFilesFolder.click(index)
+            }
+
+            pressAndHoldInterval: 400
+            onPressAndHold: menu.popup()
+
+            Menu {
+                id: menu
+
+                MenuItem {
+                    text: "Elimina"
+                    onTriggered: {
+                        console.log("ListOfFolders function not implemented")
+                    }
+                }
+
+                MenuItem {
+                    text: "Rinomina"
+                    onTriggered: {
+                        console.log("ListOfFolders function not implemented")
+                    }
+                }
             }
         }
     }

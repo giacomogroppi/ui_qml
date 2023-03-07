@@ -77,7 +77,7 @@ Item {
 
         ListOfFolders {
             id: listOfFolders
-            visible: _controllerListFilesFolder.isVisible()
+            visible: _controllerListFilesFolder.isVisible
             anchors {
                 left: parent.left
                 bottom: parent.bottom
