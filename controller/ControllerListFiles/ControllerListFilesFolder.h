@@ -2,7 +2,8 @@
 
 #include <QObject>
 #include <QAbstractListModel>
-#include "Files.h"
+#include "Folder.h"
+#include "ControllerListFiles.h"
 
 class ControllerListFilesFolder: public QAbstractListModel
 {
@@ -10,10 +11,10 @@ class ControllerListFilesFolder: public QAbstractListModel
 
 public:
     explicit ControllerListFilesFolder(QObject *parent = nullptr);
+    ~ControllerListFilesFolder() = default;
 
     enum Roles {
-        Path = Qt::UserRole, /* QByteArray */
-        LastModification /*  */
+        FolderName = Qt::UserRole, /* QByteArray */
     };
 
     [[nodiscard]] int rowCount(const QModelIndex& parent) const override;
@@ -28,8 +29,11 @@ public:
 public slots:
     void duplicateData(int row);
     void removeData(int row);
+    void click(int index);
 
 private:
-    QVector<Files> _files;
+    QList<Folder> _folder;
     bool _is_visible;
+    int _selected;
+    ControllerListFiles *_controllerListFiles;
 };

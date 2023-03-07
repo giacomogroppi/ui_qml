@@ -30,7 +30,7 @@ Item {
     Rectangle {
         id: listFiles
 
-        width: 300
+        width: 200
 
         anchors {
             top: address_box.bottom
@@ -75,18 +75,30 @@ Item {
             }
         }
 
-        ListOfFiles {
-            visible: true
+        Rectangle {
             anchors {
                 left: parent.left
                 bottom: parent.bottom
                 top: toolBarListFile.bottom
             }
+
+            width: parent.width
+
+            ListOfFolders {
+                id: listOfFolders
+                visible: true
+                anchors.fill: parent
+            }
         }
     }
 
-    Rectangle {
-        id: addFileContainer
+    ListOfFiles {
+        id: listOfFiles
+        anchors {
+            right: parent.right
+            left: listFiles.right
+            top: address_box.bottom
+        }
     }
 
     RoundButton {

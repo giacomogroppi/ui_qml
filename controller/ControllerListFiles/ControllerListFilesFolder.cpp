@@ -2,19 +2,30 @@
 #include "QtQml/qqml.h"
 #include <qqml.h>
 #include <QByteArray>
+#include "Controller/Controller.h"
 
 ControllerListFilesFolder::ControllerListFilesFolder(QObject *parent)
     : QAbstractListModel(parent)
     , _is_visible(true)
+    , _selected(0)
+    , _controllerListFiles(new ControllerListFiles(this, [this]() {
+        return &_folder[_selected].getFiles();
+    }))
 {
-    qmlRegisterType<ControllerListFilesFolder>("writernote.WQMLControllerListFile",
-                                               1, 0,
-                                               "WItemListFiles");
+    qmlRegisterType<ControllerListFilesFolder>(
+        "writernote.WQMLControllerListFile", 1, 0, "WItemListFiles");
 
-    this->_files.append(Files("/home/giacomo/prova1", QDate(2023, 05, 22)));
-    this->_files.append(Files("/home/giacomo/prova2", QDate(2018, 07, 34)));
-    this->_files.append(Files("/home/giacomo/prova3", QDate(2019, 03, 2)));
-    this->_files.append(Files("/home/giacomo/prova4", QDate(1998, 12, 9)));
+    Controller::registerType("_controllerListFiles",  this->_controllerListFiles);
+
+    this->_folder.append(Folder("/home/giacomo/writernote", "Elettronica"));
+    this->_folder.append(Folder("/home/giacomo/writernote", "Economia"));
+    this->_folder.append(Folder("/home/giacomo/writernote", "Robotica"));
+    this->_folder.append(Folder("/home/giacomo/writernote", "Bioinformatica"));
+
+    this->_folder[0].addFile(File("Elettronica lez 1", QDate(15, 05, 2001)));
+    this->_folder[1].addFile(File("Economica lez 2", QDate(22, 2, 2012)));
+
+    this->_controllerListFiles->updateList();
 }
 
 int ControllerListFilesFolder::rowCount(const QModelIndex &parent) const
@@ -22,14 +33,13 @@ int ControllerListFilesFolder::rowCount(const QModelIndex &parent) const
     if (parent.isValid())
         return 0;
 
-    return this->_files.size();
+    return this->_folder.size();
 }
 
 QHash<int, QByteArray> ControllerListFilesFolder::roleNames() const
 {
     static QHash<int, QByteArray> mapping {
-        {Roles::Path, "path"},
-        {Roles::LastModification, "last_mod"}
+        {Roles::FolderName, "folder_name"}
     };
 
     return mapping;
@@ -52,29 +62,36 @@ void ControllerListFilesFolder::setVisible(bool visible)
 
 void ControllerListFilesFolder::duplicateData(int row)
 {
-    if (row < 0 or row >= this->_files.size()) {
+    if (row < 0 or row >= this->_folder.size()) {
         qWarning() << "ControllerListFilesFolder::duplicateData index out of bound";
         return;
     }
 
-    const Files &data = _files[row];
+    const Folder &data = _folder[row];
     const int rowOfInsert = row + 1;
 
     beginInsertRows(QModelIndex(), rowOfInsert, rowOfInsert);
-    _files.insert(rowOfInsert, data);
+    _folder.insert(rowOfInsert, data);
     endInsertRows();
 }
 
 void ControllerListFilesFolder::removeData(int row)
 {
-    if (row < 0 or row >= this->_files.size()) {
+    if (row < 0 or row >= this->_folder.size()) {
         qWarning() << "ControllerListFilesFolder::duplicateData index out of bound";
         return;
     }
 
     beginRemoveRows(QModelIndex(), row, row);
-    _files.removeAt(row);
+    _folder.removeAt(row);
     endRemoveRows();
+}
+
+void ControllerListFilesFolder::click(int index)
+{
+    Q_ASSERT(index >= 0 and index < this->_folder.size());
+    this->_selected = index;
+    this->_controllerListFiles->updateList();
 }
 
 QVariant ControllerListFilesFolder::data(const QModelIndex& index, int role) const
@@ -86,17 +103,14 @@ QVariant ControllerListFilesFolder::data(const QModelIndex& index, int role) con
 
     qDebug() << "data" << role << index.row();
 
-    if (index.row() < 0 || index.row() >= _files.count())
+    if (index.row() < 0 || index.row() >= _folder.count())
         return {};
 
-    const auto &data = _files.at(index.row());
+    const auto &data = _folder.at(index.row());
 
     switch (role) {
-        case Roles::Path: return {
-            data.getName()
-        };
-        case Roles::LastModification: return {
-            data.getLastMod()
+        case Roles::FolderName: return {
+            data.getFolderName()
         };
         default: break;
     }

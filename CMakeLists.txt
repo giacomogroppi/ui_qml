@@ -100,6 +100,7 @@ set(A_SOURCES_CPP
     ${A_DIR_ROOT}/controller/ControllerPageCounter/ControllerPageCounter.cpp
     ${A_DIR_ROOT}/controller/ControllerToolBar/ControllerToolBar.cpp
     ${A_DIR_ROOT}/controller/ControllerListFiles/Files.cpp
+    ${A_DIR_ROOT}/controller/ControllerListFiles/Folder.cpp
 )
 
 set(A_SOURCES_PRECOMPILED_HEADERS_PRIVATE

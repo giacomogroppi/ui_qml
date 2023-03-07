@@ -4,26 +4,27 @@
 #include <QString>
 #include <QByteArray>
 
-class Files
+class File
 {
 private:
     QDate _lastMod;
     QByteArray _name;
 public:
-    Files(const QByteArray &path, const QDate &lastMod);
-    ~Files() = default;
+    File(const QByteArray &name, const QDate &lastMod);
+    ~File() = default;
 
     const QByteArray &getName() const;
     const QDate &getLastMod() const;
 
+    bool operator==(const File &other) const;
 };
 
-inline const QByteArray& Files::getName() const
+inline const QByteArray& File::getName() const
 {
     return this->_name;
 }
 
-inline const QDate &Files::getLastMod() const
+inline const QDate &File::getLastMod() const
 {
     return this->_lastMod;
 }

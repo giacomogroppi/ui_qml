@@ -4,12 +4,15 @@
 #include "controller/Controller.h"
 #include <QQmlContext>
 
+extern QQmlContext *_content;
+
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));
 
+    _content = engine.rootContext();
     Controller controller(nullptr, engine.rootContext(), &engine);
     QQmlContext *context = engine.rootContext();
 

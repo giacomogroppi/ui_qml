@@ -14,5 +14,6 @@
         <file>ui/pageCanvas/ButtonColorToolBar.qml</file>
         <file>ui/listOfFiles/MainWindowListFile.qml</file>
         <file>ui/listOfFiles/ListOfFiles.qml</file>
+        <file>ui/listOfFiles/ListOfFolders.qml</file>
     </qresource>
 </RCC>

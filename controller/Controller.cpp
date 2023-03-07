@@ -1,9 +1,18 @@
 #include "Controller.h"
 #include <QQmlContext>
 
-Controller::Controller(QObject *parent, QQmlContext *content, QQmlApplicationEngine *engine)
+QQmlContext *_content;
+
+QQmlContext *Controller::getContent()
+{
+    Q_ASSERT(_content != nullptr);
+    return _content;
+}
+
+Controller::Controller(QObject *parent,
+                       QQmlContext *content,
+                       QQmlApplicationEngine *engine)
     : QObject(parent),
-      _content(content),
       _engine(engine),
       _audio(new ControllerAudio(this)),
       _listPreview(new ControllerList(this)),
@@ -12,7 +21,7 @@ Controller::Controller(QObject *parent, QQmlContext *content, QQmlApplicationEng
       _pageCounter(new ControllerPageCounter(this)),
       _listFiles(new ControllerListFilesFolder(this))
 {
-    this->registerType();
+    this->registerPrivateType();
 }
 
 void Controller::newFile()
@@ -21,15 +30,10 @@ void Controller::newFile()
 #pragma "need to implement"
 }
 
-Controller::~Controller()
-= default;
+Controller::~Controller() = default;
 
-void Controller::registerType()
+void Controller::registerPrivateType()
 {
-    auto registerType = [this](const QString &name, QObject *object) {
-        _content->setContextProperty(name, object);
-    };
-
     registerType("_controllerListPreview",      this->_listPreview);
     registerType("_controllerAudio",            this->_audio);
     registerType("_controllerCanvas",           this->_canvas);
