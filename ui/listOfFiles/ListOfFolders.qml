@@ -6,8 +6,6 @@ ListView {
     height: parent.height
     width: parent.width
 
-    anchors.fill: parent
-
     delegate: Rectangle {
         width: parent.width
         height: 40

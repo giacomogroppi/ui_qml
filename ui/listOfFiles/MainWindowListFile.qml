@@ -75,19 +75,13 @@ Item {
             }
         }
 
-        Rectangle {
+        ListOfFolders {
+            id: listOfFolders
+            visible: _controllerListFilesFolder.isVisible()
             anchors {
                 left: parent.left
                 bottom: parent.bottom
                 top: toolBarListFile.bottom
-            }
-
-            width: parent.width
-
-            ListOfFolders {
-                id: listOfFolders
-                visible: true
-                anchors.fill: parent
             }
         }
     }
