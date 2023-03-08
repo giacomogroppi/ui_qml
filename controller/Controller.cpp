@@ -21,8 +21,26 @@ Controller::Controller(QObject *parent,
     , _pageCounter(new ControllerPageCounter(this))
     , _listFiles(new ControllerListFilesFolder(this))
     , _color(new ControllerColor(this))
+    , _uiSelected(uiSelected::ListFiles)
 {
     this->registerPrivateType();
+}
+
+QString Controller::getUiSelected() const
+{
+    constexpr auto listFiles = "qrc:/ui/listOfFiles/MainWindowListFile.qml";
+    constexpr auto settings  = "";
+    constexpr auto main      = "qrc:/ui/pageCanvas/MainWindow.qml";
+
+    switch (_uiSelected) {
+    case uiSelected::Main:
+        return main;
+    case uiSelected::Settings:
+        return settings;
+    case uiSelected::ListFiles:
+        return listFiles;
+    }
+    Q_ASSERT(0);
 }
 
 void Controller::newFile()

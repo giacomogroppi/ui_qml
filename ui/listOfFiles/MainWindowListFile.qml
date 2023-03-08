@@ -23,8 +23,6 @@ Item {
                 text: _controllerListFilesFolder.dir_selected
                 anchors.fill: parent
                 font.pointSize: 16
-                //horizontalAlignment: Text.AlignHCenter
-                //verticalAlignment: Text.AlignVCenter
             }
         }
     }
@@ -82,8 +80,43 @@ Item {
             visible: _controllerListFilesFolder.isVisible
             anchors {
                 left: parent.left
-                bottom: parent.bottom
+                bottom: containerBottom.top
                 top: toolBarListFile.bottom
+            }
+        }
+
+        Rectangle {
+            id: containerBottom
+            height: 45
+            anchors {
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+            }
+            color: "yellow"
+
+            RoundButton {
+                id: buttonTrash
+                radius: width / 2
+
+                anchors.verticalCenter: parent.verticalCenter
+
+                anchors {
+                    right: parent.right
+                }
+            }
+
+            RoundButton {
+                id: buttonSettings
+                radius: width / 2
+
+                anchors.verticalCenter: parent.verticalCenter
+
+                anchors {
+                    right: buttonTrash.left
+                }
+
+                anchors.rightMargin: 5
             }
         }
     }

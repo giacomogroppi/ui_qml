@@ -29,6 +29,14 @@ private:
 
     static QQmlContext *getContent();
 
+    enum uiSelected {
+        Main,
+        Settings,
+        ListFiles
+    };
+
+    enum uiSelected _uiSelected;
+
 public:
     explicit Controller(QObject *parent, QQmlContext* content, QQmlApplicationEngine* engine);
     ~Controller();
@@ -38,6 +46,10 @@ public:
         QQmlContext *content = Controller::getContent();
         content->setContextProperty(name, object);
     };
+
+    Q_PROPERTY(QString uiSelected READ getUiSelected NOTIFY onUiSelectedChanged);
+    [[nodiscard]] QString getUiSelected() const;
+    Q_SIGNAL void onUiSelectedChanged();
 
 public slots:
     void newFile();
