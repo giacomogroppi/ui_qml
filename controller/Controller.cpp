@@ -12,14 +12,15 @@ QQmlContext *Controller::getContent()
 Controller::Controller(QObject *parent,
                        QQmlContext *content,
                        QQmlApplicationEngine *engine)
-    : QObject(parent),
-      _engine(engine),
-      _audio(new ControllerAudio(this)),
-      _listPreview(new ControllerList(this)),
-      _canvas(new ControllerCanvas(this)),
-      _toolBar(new ControllerToolBar(this)),
-      _pageCounter(new ControllerPageCounter(this)),
-      _listFiles(new ControllerListFilesFolder(this))
+    : QObject(parent)
+    , _engine(engine)
+    ,  _audio(new ControllerAudio(this))
+    , _listPreview(new ControllerList(this))
+    , _canvas(new ControllerCanvas(this))
+    , _toolBar(new ControllerToolBar(this))
+    , _pageCounter(new ControllerPageCounter(this))
+    , _listFiles(new ControllerListFilesFolder(this))
+    , _color(new ControllerColor(this))
 {
     this->registerPrivateType();
 }
@@ -40,5 +41,6 @@ void Controller::registerPrivateType()
     registerType("_controllerToolBar",          this->_toolBar);
     registerType("_controllerPageCounter",      this->_pageCounter);
     registerType("_controllerListFilesFolder",  this->_listFiles);
+    registerType("_controllerColor",            this->_color);
 }
 

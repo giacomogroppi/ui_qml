@@ -9,6 +9,7 @@
 #include "ControllerToolBar/ControllerToolBar.h"
 #include "ControllerPageCounter/ControllerPageCounter.h"
 #include "ControllerListFiles/ControllerListFilesFolder.h"
+#include "ControllerColor/ControllerColor.h"
 #include "QtQml/qqmlcontext.h"
 
 class Controller: public QObject {
@@ -20,6 +21,7 @@ private:
     ControllerToolBar           *_toolBar;
     ControllerPageCounter       *_pageCounter;
     ControllerListFilesFolder   *_listFiles;
+    ControllerColor             *_color;
 
     QQmlApplicationEngine *_engine;
 

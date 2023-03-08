@@ -22,8 +22,9 @@ ControllerListFilesFolder::ControllerListFilesFolder(QObject *parent)
     this->_folder.append(Folder("/home/giacomo/writernote", "Robotica"));
     this->_folder.append(Folder("/home/giacomo/writernote", "Bioinformatica"));
 
-    this->_folder[0].addFile(File("Elettronica lez 1", QDate(15, 05, 2001)));
-    this->_folder[1].addFile(File("Economica lez 2", QDate(22, 2, 2012)));
+
+    this->_folder[0].addFile(File("Elettronica lez 1", QDate(2012, 05, 15)));
+    this->_folder[1].addFile(File("Economica lez 2", QDate(2022, 2, 21)));
 
     this->_controllerListFiles->updateList();
 }
@@ -60,6 +61,11 @@ void ControllerListFilesFolder::setVisible(bool visible)
     }
 }
 
+QString ControllerListFilesFolder::getDirSelected() const
+{
+    return this->_folder[_selected].getFolderName();
+}
+
 void ControllerListFilesFolder::duplicateData(int row)
 {
     if (row < 0 or row >= this->_folder.size()) {
@@ -90,8 +96,13 @@ void ControllerListFilesFolder::removeData(int row)
 void ControllerListFilesFolder::click(int index)
 {
     Q_ASSERT(index >= 0 and index < this->_folder.size());
+    const auto last_index = _selected;
     this->_selected = index;
     this->_controllerListFiles->updateList();
+
+    if (last_index != _selected) {
+        emit this->onDirSelectedChanged();
+    }
 }
 
 QVariant ControllerListFilesFolder::data(const QModelIndex& index, int role) const

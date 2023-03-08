@@ -26,6 +26,10 @@ public:
     void setVisible(bool visible);
     Q_SIGNAL void isVisibleChanged();
 
+    Q_PROPERTY(QString dir_selected READ getDirSelected NOTIFY onDirSelectedChanged);
+    [[nodiscard]] QString getDirSelected() const;
+    Q_SIGNAL void onDirSelectedChanged();
+
 public slots:
     void duplicateData(int row);
     void removeData(int row);

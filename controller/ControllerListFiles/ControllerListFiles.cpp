@@ -88,7 +88,7 @@ QVariant ControllerListFiles::data(const QModelIndex& index, int role) const
             data.getName()
         };
         case Roles::LastModification: return {
-            data.getLastMod()
+            data.getLastMod().toString()
         };
         default: break;
     }

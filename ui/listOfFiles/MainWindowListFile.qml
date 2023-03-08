@@ -16,13 +16,15 @@ Item {
         color: "brown"
 
         Rectangle {
-            id: containterFolderAddress
-        }
-
-        Rectangle {
             id: containerFileAddress
-            Text{
+            anchors.centerIn: parent
 
+            Text{
+                text: _controllerListFilesFolder.dir_selected
+                anchors.fill: parent
+                font.pointSize: 16
+                //horizontalAlignment: Text.AlignHCenter
+                //verticalAlignment: Text.AlignVCenter
             }
         }
     }
@@ -92,6 +94,7 @@ Item {
             right: parent.right
             left: listFiles.right
             top: address_box.bottom
+            bottom: parent.bottom
         }
     }
 

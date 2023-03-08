@@ -13,8 +13,15 @@ Rectangle {
             border.color: "black"
 
             Text {
-                anchors.fill: parent
-                text: model.name_file
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+                text : model.name_file
+            }
+
+            Text {
+                text: model.last_mod
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
             }
         }
     }
