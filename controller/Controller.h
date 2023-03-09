@@ -51,6 +51,11 @@ public:
     [[nodiscard]] QString getUiSelected() const;
     Q_SIGNAL void onUiSelectedChanged();
 
+    static Controller *instance();
+
 public slots:
     void newFile();
+    void clickSetting();
+    void clickBack();
+    void showMain();
 };

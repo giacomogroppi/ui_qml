@@ -1,4 +1,5 @@
 #include "ControllerListFiles.h"
+#include "controller/Controller.h"
 
 ControllerListFiles::ControllerListFiles(QObject *parent)
 {
@@ -95,4 +96,10 @@ QVariant ControllerListFiles::data(const QModelIndex& index, int role) const
 
     qWarning() << "ControllerListFiles::data unkown role" << role;
     return {};
+}
+
+void ControllerListFiles::clickFile(int index)
+{
+    Q_ASSERT(index >= 0 and index < this->_getFile()->size());
+    Controller::instance()->showMain();
 }

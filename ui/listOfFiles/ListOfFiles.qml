@@ -23,6 +23,13 @@ Rectangle {
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
             }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    _controllerListFiles.clickFile(index)
+                }
+            }
         }
     }
 }

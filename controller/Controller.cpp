@@ -2,6 +2,7 @@
 #include <QQmlContext>
 
 QQmlContext *_content;
+Controller *controller = nullptr;
 
 QQmlContext *Controller::getContent()
 {
@@ -21,16 +22,17 @@ Controller::Controller(QObject *parent,
     , _pageCounter(new ControllerPageCounter(this))
     , _listFiles(new ControllerListFilesFolder(this))
     , _color(new ControllerColor(this))
-    , _uiSelected(uiSelected::ListFiles)
+    , _uiSelected(uiSelected::Main)
 {
+    controller = this;
     this->registerPrivateType();
 }
 
 QString Controller::getUiSelected() const
 {
-    constexpr auto listFiles = "qrc:/ui/listOfFiles/MainWindowListFile.qml";
-    constexpr auto settings  = "";
-    constexpr auto main      = "qrc:/ui/pageCanvas/MainWindow.qml";
+    constexpr char const* listFiles = "qrc:/ui/listOfFiles/MainWindowListFile.qml";
+    constexpr char const* settings  = "";
+    constexpr char const* main      = "qrc:/ui/pageCanvas/MainWindow.qml";
 
     switch (_uiSelected) {
     case uiSelected::Main:
@@ -43,10 +45,34 @@ QString Controller::getUiSelected() const
     Q_ASSERT(0);
 }
 
+Controller *Controller::instance()
+{
+    Q_ASSERT(controller != nullptr);
+    return controller;
+}
+
 void Controller::newFile()
 {
     qWarning() << "Need to implement";
 #pragma "need to implement"
+}
+
+void Controller::clickSetting()
+{
+    this->_uiSelected = uiSelected::Settings;
+    emit onUiSelectedChanged();
+}
+
+void Controller::clickBack()
+{
+    this->_uiSelected = uiSelected::ListFiles;
+    emit onUiSelectedChanged();
+}
+
+void Controller::showMain()
+{
+    this->_uiSelected = uiSelected::Main;
+    emit onUiSelectedChanged();
 }
 
 Controller::~Controller() = default;

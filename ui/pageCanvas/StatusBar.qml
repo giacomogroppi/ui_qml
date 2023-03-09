@@ -22,6 +22,10 @@ Rectangle {
         Text {
             text: qsTr("back")
         }
+
+        onClicked: {
+            mainRoot.closeMain()
+        }
     }
 
     ButtonToolInstruments {

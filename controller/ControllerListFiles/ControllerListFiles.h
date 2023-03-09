@@ -24,6 +24,7 @@ public:
 public slots:
     void duplicateData(int row);
     void removeData(int row);
+    void clickFile(int index);
 
 private:
     std::function<QList<File> *()> _getFile;

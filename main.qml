@@ -9,14 +9,21 @@ Window {
     visible: true
     title: qsTr("Writernote")
 
+    id: mainRoot
 
     StackView {
         id: stackViewMain
         anchors.fill: parent
-        // pagina di scrittura
-        //initialItem: "qrc:/ui/pageCanvas/MainWindow.qml"
+        initialItem: _controller.uiSelected
+    }
 
-        // pagina in cui vengono mostrati i file
-        initialItem: "qrc:/ui/listOfFiles/MainWindowListFile.qml"
+    function showMain() {
+        var newView = Qt.createComponent("qrc:/ui/pageCanvas/MainWindow.qml")
+        stackViewMain.push(newView)
+    }
+
+    function closeMain() {
+        stackViewMain.pop()
+        console.log("Call close main")
     }
 }
