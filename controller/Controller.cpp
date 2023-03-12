@@ -22,7 +22,7 @@ Controller::Controller(QObject *parent,
     , _pageCounter(new ControllerPageCounter(this))
     , _listFiles(new ControllerListFilesFolder(this))
     , _color(new ControllerColor(this))
-    , _uiSelected(uiSelected::Main)
+    , _uiSelected(uiSelected::Settings)
 {
     controller = this;
     this->registerPrivateType();
@@ -31,7 +31,7 @@ Controller::Controller(QObject *parent,
 QString Controller::getUiSelected() const
 {
     constexpr char const* listFiles = "qrc:/ui/listOfFiles/MainWindowListFile.qml";
-    constexpr char const* settings  = "";
+    constexpr char const* settings  = "qrc:/ui/settings/Settings.qml";
     constexpr char const* main      = "qrc:/ui/pageCanvas/MainWindow.qml";
 
     switch (_uiSelected) {

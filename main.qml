@@ -20,10 +20,21 @@ Window {
     function showMain() {
         var newView = Qt.createComponent("qrc:/ui/pageCanvas/MainWindow.qml")
         stackViewMain.push(newView)
+        console.log("Call show main")
     }
 
     function closeMain() {
         stackViewMain.pop()
         console.log("Call close main")
+    }
+
+    function showSettings() {
+        stackViewMain.push(Qt.createComponent("qrc:/ui/settings/Settings.qml"))
+        console.log("Call show settings");
+    }
+
+    function closeSettings() {
+        stackViewMain.pop()
+        console.log("Call close settings");
     }
 }

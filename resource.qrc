@@ -15,5 +15,9 @@
         <file>ui/listOfFiles/MainWindowListFile.qml</file>
         <file>ui/listOfFiles/ListOfFiles.qml</file>
         <file>ui/listOfFiles/ListOfFolders.qml</file>
+        <file>ui/settings/Settings.qml</file>
+        <file>ui/settings/SettingFile.qml</file>
+        <file>ui/settings/SettingsPerformance.qml</file>
+        <file>ui/settings/SettingsButton.qml</file>
     </qresource>
 </RCC>
