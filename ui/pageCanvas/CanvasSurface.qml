@@ -50,45 +50,37 @@ Item {
 
             TapHandler {
                 acceptedDevices: PointerDevice.Stylus
-                onTapped: {
-                    canvasSurface.interactive = false
-                    console.log("right clicked 1")
-                }
-                onLongPressed: {
-                    canvasSurface.interactive = false
-                    console.log("Long press 1");
-                }
 
                 onPressedChanged: {
                     canvasSurface.interactive = false
-                    console.log("Pressed chang 1");
+                    //console.log("Pressed chang 1");
+                    console.log("Press1 with pen: [x, y]", point.position)
                 }
 
-                onCanceled: {
-                    canvasSurface.interactive = false
-                    console.log("Cancellato 1");
+                onPointChanged: {
+                    console.log("Press2 with pen: [x, y]", point.position)
                 }
+
+            }
+
+            // The MouseArea fills the whole page
+            MouseArea {
+                anchors.fill: parent
+                onPressed: console.log("Pressed")
+                onReleased: canvasSurface.interactive = true
+                onPositionChanged: {
+                    console.log("position changed " + mouseX +" "+ mouseY)
+
+                }
+                //onClicked: touchLog.text += "\nClicked"
             }
 
             TapHandler {
                 acceptedDevices: PointerDevice.TouchScreen | PointerDevice.Mouse
-                onTapped: {
-                    canvasSurface.interactive = true
-                    console.log("right clicked 2")
-                }
-                onLongPressed: {
-                    canvasSurface.interactive = true
-                    console.log("Long press 2");
-                }
 
                 onPressedChanged: {
                     canvasSurface.interactive = true
                     console.log("Pressed change 2");
-                }
-
-                onCanceled: {
-                    canvasSurface.interactive = true
-                    console.log("Cancellato 2");
                 }
             }
         }
