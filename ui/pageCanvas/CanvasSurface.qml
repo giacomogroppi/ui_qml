@@ -9,10 +9,22 @@ Item {
         id: canvasSurface
         anchors.fill: parent
         //clip: true
-        contentHeight: 0
-        contentWidth: 0
+        contentHeight: canvas_surface_private.height
+        contentWidth: canvas_surface_private.width
 
-        //boundsBehavior: Flickable.StopAtBounds
+        ScrollBar.vertical: ScrollBar {
+                width: 40
+                anchors.left: parent.right // adjust the anchor as suggested by derM
+                policy: ScrollBar.AlwaysOn
+            }
+
+        ScrollBar.horizontal: ScrollBar {
+                width: 40
+                anchors.bottom: parent.bottom
+                policy: ScrollBar.AlwaysOn
+            }
+
+        //boundsBehavior: Flickable.DragAndOvershootBounds
 
 //        Text {
 //            anchors.left: parent.left
@@ -59,7 +71,7 @@ Item {
             }
 
             TapHandler {
-                acceptedDevices: PointerDevice.TouchScreen
+                acceptedDevices: PointerDevice.TouchScreen | PointerDevice.Mouse
                 onTapped: {
                     canvasSurface.interactive = true
                     console.log("right clicked 2")
