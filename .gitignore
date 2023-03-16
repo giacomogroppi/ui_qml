@@ -14,3 +14,5 @@ cmake-build-debug/CMakeFiles/clion-Debug-log.txt
 *.o
 *.check_cache
 cmake-build-debug/*
+.DS_Store
+.DS_Store

@@ -5,26 +5,22 @@ import writernote.WQMLCanvasComponent 1.0
 Item {
     id: canvas_surface
 
-    ScrollView {
+    Flickable {
         id: canvasSurface
         anchors.fill: parent
-        clip: true
+        //clip: true
+        contentHeight: 0
+        contentWidth: 0
 
-        ScrollBar.horizontal.interactive: true
-        ScrollBar.vertical.interactive: true
+        //boundsBehavior: Flickable.StopAtBounds
 
-        contentHeight: canvas_surface_private.height
-        contentWidth: canvas_surface_private.width
-
-        ScrollBar.vertical.policy: ScrollBar.AlwaysOn
-
-        Text {
-            anchors.left: parent.left
-            anchors.top: parent.top
-
-            text: _controllerCanvas.heigthObject ? _controllerCanvas.heigthObject : "ciao"
-            font.pixelSize: 100
-        }
+//        Text {
+//            anchors.left: parent.left
+//            anchors.top: parent.top
+//
+//            text: _controllerCanvas.heigthObject ? ("height: " + _controllerCanvas.heigthObject) : "ciao"
+//            font.pixelSize: 100
+//        }
 
         WCanvasComponent {
             id: canvas_surface_private
@@ -41,14 +37,47 @@ Item {
             }
 
             TapHandler {
-                acceptedButtons: Qt.RightButton | Qt.LeftButton
-                onTapped: console.log("scroll action")
+                acceptedDevices: PointerDevice.Stylus
+                onTapped: {
+                    canvasSurface.interactive = false
+                    console.log("right clicked 1")
+                }
+                onLongPressed: {
+                    canvasSurface.interactive = false
+                    console.log("Long press 1");
+                }
+
+                onPressedChanged: {
+                    canvasSurface.interactive = false
+                    console.log("Pressed chang 1");
+                }
+
+                onCanceled: {
+                    canvasSurface.interactive = false
+                    console.log("Cancellato 1");
+                }
             }
 
             TapHandler {
-                //acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus
-                acceptedButtons: Qt.RightButton | Qt.LeftButton
-                onTapped: console.log("right clicked")
+                acceptedDevices: PointerDevice.TouchScreen
+                onTapped: {
+                    canvasSurface.interactive = true
+                    console.log("right clicked 2")
+                }
+                onLongPressed: {
+                    canvasSurface.interactive = true
+                    console.log("Long press 2");
+                }
+
+                onPressedChanged: {
+                    canvasSurface.interactive = true
+                    console.log("Pressed change 2");
+                }
+
+                onCanceled: {
+                    canvasSurface.interactive = true
+                    console.log("Cancellato 2");
+                }
             }
         }
     }

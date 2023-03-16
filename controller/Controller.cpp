@@ -22,7 +22,7 @@ Controller::Controller(QObject *parent,
     , _pageCounter(new ControllerPageCounter(this))
     , _listFiles(new ControllerListFilesFolder(this))
     , _color(new ControllerColor(this))
-    , _uiSelected(uiSelected::Settings)
+    , _uiSelected(uiSelected::Main)
 {
     controller = this;
     this->registerPrivateType();
