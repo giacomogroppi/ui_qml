@@ -81,6 +81,8 @@ set(A_QT_TARGET_MODULES
 	Qt${QT_VERSION_MAJOR}::Quick
 )
 
+include_directories(${A_DIR_ROOT}/src/)
+
 set(A_SOURCES_RESOURCES
 	${A_SOURCES_RESOURCES}
 	${A_DIR_ROOT}/resource.qrc
@@ -88,20 +90,20 @@ set(A_SOURCES_RESOURCES
 
 set(A_SOURCES_CPP
 	${A_SOURCES_CPP}
-	${A_DIR_ROOT}/main.cpp
-    ${A_DIR_ROOT}/controller/controller.cpp
-    ${A_DIR_ROOT}/controller/ControllerAudio/ControllerAudio.cpp
-    ${A_DIR_ROOT}/controller/ControllerCanvas/ControllerCanvas.cpp
-    ${A_DIR_ROOT}/controller/ControllerCanvas/WQMLCanvasComponent.cpp
-    ${A_DIR_ROOT}/controller/ControllerList/ControllerList.cpp
-    ${A_DIR_ROOT}/controller/ControllerList/WQMLItemListComponent.cpp
-    ${A_DIR_ROOT}/controller/ControllerListFiles/ControllerListFiles.cpp
-    ${A_DIR_ROOT}/controller/ControllerListFiles/ControllerListFilesFolder.cpp
-    ${A_DIR_ROOT}/controller/ControllerPageCounter/ControllerPageCounter.cpp
-    ${A_DIR_ROOT}/controller/ControllerToolBar/ControllerToolBar.cpp
-    ${A_DIR_ROOT}/controller/ControllerListFiles/Files.cpp
-    ${A_DIR_ROOT}/controller/ControllerListFiles/Folder.cpp
-    ${A_DIR_ROOT}/controller/ControllerColor/ControllerColor.cpp
+	${A_DIR_ROOT}/src/main.cpp
+    ${A_DIR_ROOT}/src/controller/controller.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerAudio/ControllerAudio.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerCanvas/ControllerCanvas.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerCanvas/WQMLCanvasComponent.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerList/ControllerList.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerList/WQMLItemListComponent.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerListFiles/ControllerListFiles.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerListFiles/ControllerListFilesFolder.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerPageCounter/ControllerPageCounter.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerToolBar/ControllerToolBar.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerListFiles/Files.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerListFiles/Folder.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerColor/ControllerColor.cpp
 )
 
 set(A_SOURCES_PRECOMPILED_HEADERS_PRIVATE

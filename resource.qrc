@@ -4,20 +4,19 @@
         <file>icon-hide-left.png</file>
     </qresource>
     <qresource prefix="/">
-        <file>main.qml</file>
-        <file>ui/pageCanvas/ListPreview.qml</file>
-        <file>ui/pageCanvas/MainWindow.qml</file>
-        <file>ui/pageCanvas/StatusBar.qml</file>
-        <file>ui/pageCanvas/CanvasSurface.qml</file>
-        <file>ui/pageCanvas/ButtonToolInstruments.qml</file>
-        <file>Prova.qml</file>
-        <file>ui/pageCanvas/ButtonColorToolBar.qml</file>
-        <file>ui/listOfFiles/MainWindowListFile.qml</file>
-        <file>ui/listOfFiles/ListOfFiles.qml</file>
-        <file>ui/listOfFiles/ListOfFolders.qml</file>
-        <file>ui/settings/Settings.qml</file>
-        <file>ui/settings/SettingFile.qml</file>
-        <file>ui/settings/SettingsPerformance.qml</file>
-        <file>ui/settings/SettingsButton.qml</file>
+        <file>src/main.qml</file>
+        <file>src/ui/pageCanvas/ListPreview.qml</file>
+        <file>src/ui/pageCanvas/MainWindow.qml</file>
+        <file>src/ui/pageCanvas/StatusBar.qml</file>
+        <file>src/ui/pageCanvas/CanvasSurface.qml</file>
+        <file>src/ui/pageCanvas/ButtonToolInstruments.qml</file>
+        <file>src/ui/pageCanvas/ButtonColorToolBar.qml</file>
+        <file>src/ui/listOfFiles/MainWindowListFile.qml</file>
+        <file>src/ui/listOfFiles/ListOfFiles.qml</file>
+        <file>src/ui/listOfFiles/ListOfFolders.qml</file>
+        <file>src/ui/settings/Settings.qml</file>
+        <file>src/ui/settings/SettingFile.qml</file>
+        <file>src/ui/settings/SettingsPerformance.qml</file>
+        <file>src/ui/settings/SettingsButton.qml</file>
     </qresource>
 </RCC>
