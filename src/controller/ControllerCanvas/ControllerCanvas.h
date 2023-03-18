@@ -18,8 +18,23 @@ private:
     void wSetWidth(int newWidth);
     void wSetHeigth(int newHeigth);
 
+#define DEBUGINFO
+#ifdef DEBUGINFO
+    enum waitingFor {
+        begin,
+        update,
+        end
+    };
+
+    /**
+     * indicates the last function call
+    */
+    enum waitingFor _status;
+
+#endif // DEBUGINFO
+
 public:
-    ControllerCanvas(QObject *parent);
+    explicit ControllerCanvas(QObject *parent = nullptr);
     ~ControllerCanvas() = default;
 
     Q_PROPERTY(int heigthObject READ heigthObject NOTIFY heigthObjectChanged);
@@ -32,10 +47,19 @@ public:
 
 public slots:
     void refresh();
+    void touchBegin(double x, double y);
+    void touchUpdate(double x, double y);
+    void touchEnd(double x, double y);
 
 private slots:
     void endTimer();
 
 protected:
     bool event(QEvent *event) override;
+
+
+signals:
+    void touchBegin(const QPointF &point);
+    void touchUpdate(const QPointF &point);
+    void touchEnd(const QPointF &point);
 };

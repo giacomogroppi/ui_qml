@@ -96,3 +96,18 @@ bool ControllerToolBar::isCut() const
 {
     return _type == Cut;
 }
+
+void ControllerToolBar::touchBegin(const QPointF &point)
+{
+
+}
+
+void ControllerToolBar::touchUpdate(const QPointF &point)
+{
+
+}
+
+void ControllerToolBar::touchEnd(const QPointF &point)
+{
+
+}

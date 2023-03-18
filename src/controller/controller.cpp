@@ -26,6 +26,11 @@ Controller::Controller(QObject *parent,
 {
     controller = this;
     this->registerPrivateType();
+
+    //QObject::connect(_canvas, ControllerCanvas::touchBegin, [](const QPointF &point){});
+
+    QObject::connect(_canvas, SIGNAL(touchBegin()),
+                     _toolBar, SLOT(touchBegin()));
 }
 
 QString Controller::getUiSelected() const

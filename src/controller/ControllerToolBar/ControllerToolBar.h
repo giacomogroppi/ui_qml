@@ -65,4 +65,9 @@ public:
 signals:
     void toolHasChanged();
     void colorChanged();
+
+public slots:
+    void touchBegin(const QPointF &point);
+    void touchUpdate(const QPointF &point);
+    void touchEnd(const QPointF &point);
 };

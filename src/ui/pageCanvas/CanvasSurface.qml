@@ -13,26 +13,16 @@ Item {
         contentWidth: canvas_surface_private.width
 
         ScrollBar.vertical: ScrollBar {
-                width: 40
-                anchors.left: parent.right // adjust the anchor as suggested by derM
-                policy: ScrollBar.AlwaysOn
-            }
+            width: 40
+            anchors.left: parent.right // adjust the anchor as suggested by derM
+            policy: ScrollBar.AlwaysOn
+        }
 
         ScrollBar.horizontal: ScrollBar {
-                width: 40
-                anchors.bottom: parent.bottom
-                policy: ScrollBar.AlwaysOn
-            }
-
-        //boundsBehavior: Flickable.DragAndOvershootBounds
-
-//        Text {
-//            anchors.left: parent.left
-//            anchors.top: parent.top
-//
-//            text: _controllerCanvas.heigthObject ? ("height: " + _controllerCanvas.heigthObject) : "ciao"
-//            font.pixelSize: 100
-//        }
+            width: 40
+            anchors.bottom: parent.bottom
+            policy: ScrollBar.AlwaysOn
+        }
 
         WCanvasComponent {
             id: canvas_surface_private
@@ -66,11 +56,17 @@ Item {
             // The MouseArea fills the whole page
             MouseArea {
                 anchors.fill: parent
-                onPressed: console.log("Pressed")
-                onReleased: canvasSurface.interactive = true
+                onPressed: {
+                    _controllerCanvas.touchBegin(mouseX, mouseY)
+                    //console.log("Pressed")
+                }
+                onReleased: {
+                    _controllerCanvas.touchEnd(mouseX, mouseY)
+                    canvasSurface.interactive = true
+                }
                 onPositionChanged: {
-                    console.log("position changed " + mouseX +" "+ mouseY)
-
+                    //console.log("position changed " + mouseX +" "+ mouseY)
+                    _controllerCanvas.touchUpdate(mouseX, mouseY)
                 }
                 //onClicked: touchLog.text += "\nClicked"
             }

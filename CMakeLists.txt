@@ -36,18 +36,18 @@ set(A_SOURCES_PRECOMPILED_HEADERS_PUBLIC)
 set(A_SOURCES_PRECOMPILED_HEADERS_PRIVATE)
 
 if(IOS)
-	enable_language(OBJCXX OBJC Swift)
+    message("Enable build for ios")
+    enable_language(OBJCXX OBJC Swift)
 
-	#set(A_SOURCES_SWIFT_OBJC_INTERFACE_HEADER_NAME "aswiftobjcinterface.h")
-	set(A_SOURCES_SWIFT_OBJC_INTERFACE_HEADER_NAME)
+    set(A_SOURCES_SWIFT_OBJC_INTERFACE_HEADER_NAME "aswiftobjcinterface.h")
+    set(A_SOURCES_SWIFT_OBJC_INTERFACE_HEADER_NAME)
     
     #set(A_SOURCES_SWIFT_OBJC_BRIDGING_HEADER "${A_DIR_ROOT}/aswiftobjcbridging.h")
     set(A_SOURCES_SWIFT_OBJC_BRIDGING_HEADER)
 
-	set(A_SOURCES_OBJECTIVE_HEADERS)
-	set(A_SOURCES_OBJECTIVE_CPP)
-	set(A_SOURCES_SWIFT)
-
+    set(A_SOURCES_OBJECTIVE_HEADERS src/ios/common.h)
+    set(A_SOURCES_OBJECTIVE_CPP src/ios/common.mm)
+    set(A_SOURCES_SWIFT)
 endif()
 
 # QtCreator supports the following variables for Android, which are identical to qmake Android variables.
@@ -104,6 +104,7 @@ set(A_SOURCES_CPP
     ${A_DIR_ROOT}/src/controller/ControllerListFiles/Files.cpp
     ${A_DIR_ROOT}/src/controller/ControllerListFiles/Folder.cpp
     ${A_DIR_ROOT}/src/controller/ControllerColor/ControllerColor.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerListFiles/ControllerCommonFiles.mm
 )
 
 set(A_SOURCES_PRECOMPILED_HEADERS_PRIVATE
