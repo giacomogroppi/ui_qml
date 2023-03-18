@@ -82,15 +82,23 @@ set(A_QT_TARGET_MODULES
 )
 
 include_directories(${A_DIR_ROOT}/src/)
+include_directories($ENV{HOME}/writernote-qt/src)
 
 set(A_SOURCES_RESOURCES
 	${A_SOURCES_RESOURCES}
 	${A_DIR_ROOT}/resource.qrc
 )
 
+file(GLOB_RECURSE PROJECT_SOURCES_WRITERNOTE
+    $ENV{HOME}/writernote-qt/src/*.cpp
+    $ENV{HOME}/writernote-qt/src/*.h
+)
+
+
+
 set(A_SOURCES_CPP
-	${A_SOURCES_CPP}
-	${A_DIR_ROOT}/src/main.cpp
+    ${A_SOURCES_CPP}
+    ${A_DIR_ROOT}/src/main.cpp
     ${A_DIR_ROOT}/src/controller/controller.cpp
     ${A_DIR_ROOT}/src/controller/ControllerAudio/ControllerAudio.cpp
     ${A_DIR_ROOT}/src/controller/ControllerCanvas/ControllerCanvas.cpp
@@ -105,7 +113,10 @@ set(A_SOURCES_CPP
     ${A_DIR_ROOT}/src/controller/ControllerListFiles/Folder.cpp
     ${A_DIR_ROOT}/src/controller/ControllerColor/ControllerColor.cpp
     ${A_DIR_ROOT}/src/controller/ControllerListFiles/ControllerCommonFiles.mm
+    ${PROJECT_SOURCES_WRITERNOTE}
 )
+
+message(${A_SOURCES_CPP})
 
 set(A_SOURCES_PRECOMPILED_HEADERS_PRIVATE
 	${A_SOURCES_PRECOMPILED_HEADERS_PRIVATE}
