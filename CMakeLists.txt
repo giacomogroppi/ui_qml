@@ -10,6 +10,8 @@ option(A_OPTION_USING_PCH "${A_NAME_TARGET} using PCH support" ON)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "$ENV{HOME}/Qt/6.4.2/macos/lib/cmake")
+
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -67,6 +69,7 @@ set(A_QT_MODULES
 	${A_QT_MODULES}
 	Core
 	Quick
+        Multimedia
 )
 
 set(A_TARGET_MODULES_PUBLIC
@@ -79,6 +82,7 @@ set(A_TARGET_MODULES_PUBLIC
 set(A_QT_TARGET_MODULES
 	Qt${QT_VERSION_MAJOR}::Core
 	Qt${QT_VERSION_MAJOR}::Quick
+        Qt${QT_VERSION_MAJOR}::Multimedia
 )
 
 include_directories(${A_DIR_ROOT}/src/)
@@ -115,6 +119,8 @@ set(A_SOURCES_CPP
     ${A_DIR_ROOT}/src/controller/ControllerListFiles/ControllerCommonFiles.mm
     ${PROJECT_SOURCES_WRITERNOTE}
 )
+
+
 
 message(${A_SOURCES_CPP})
 
@@ -183,6 +189,17 @@ if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.16 AND A_OPTION_USING_PCH)
 	set(CMAKE_PCH_INSTANTIATE_TEMPLATES ON)
 else()
 	message(STATUS "No PCH for ${A_NAME_TARGET}")
+endif()
+
+SET(QT_USE_QTMULTIMEDIA TRUE)
+
+if(MACOS_BUILD OR APPLE)
+    include_directories(/opt/homebrew/Cellar/libzip/1.9.2/include/)
+    target_link_libraries(${PROJECT_NAME} PRIVATE /opt/homebrew/Cellar/libzip/1.9.2/lib/libzip.dylib)
+elseif(WIN)
+    include_directories(${PROJECT_SOURCE_DIR}/3rdparty/libzip/install/include/)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/3rdparty/libzip/install/lib/libzip.a)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/3rdparty/zlib-ng/install/lib/libzlib.a)
 endif()
 
 set(A_TARGET_COMPILE_DEFINITIONS_PRIVATE

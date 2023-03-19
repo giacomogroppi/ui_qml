@@ -3,6 +3,7 @@
 #include <QStringLiteral>
 #include "controller/Controller.h"
 #include <QQmlContext>
+#include <QTimer>
 
 extern QQmlContext *_content;
 
