@@ -68,8 +68,11 @@ endif()
 set(A_QT_MODULES
 	${A_QT_MODULES}
 	Core
+        Gui
 	Quick
         Multimedia
+        Widgets
+        #PrintSupport
 )
 
 set(A_TARGET_MODULES_PUBLIC
@@ -83,6 +86,8 @@ set(A_QT_TARGET_MODULES
 	Qt${QT_VERSION_MAJOR}::Core
 	Qt${QT_VERSION_MAJOR}::Quick
         Qt${QT_VERSION_MAJOR}::Multimedia
+        Qt${QT_VERSION_MAJOR}::Gui
+        Qt${QT_VERSION_MAJOR}::Widgets
 )
 
 include_directories(${A_DIR_ROOT}/src/)
