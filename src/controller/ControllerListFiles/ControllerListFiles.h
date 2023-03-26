@@ -2,7 +2,7 @@
 
 #include <QObject>
 #include <QAbstractListModel>
-#include "Files.h"
+#include "file/File.h"
 
 class ControllerListFiles: public QAbstractListModel
 {

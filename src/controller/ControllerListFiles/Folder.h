@@ -2,7 +2,8 @@
 
 #include <QtGlobal>
 #include <QByteArray>
-#include "Files.h"
+#include "file/File.h"
+#include <QList>
 
 class Folder
 {

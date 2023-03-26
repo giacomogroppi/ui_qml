@@ -65,6 +65,8 @@ endif()
 #    endif()
 #endif()
 
+add_definitions(-DVERSION_STRING="TESTING")
+
 set(A_QT_MODULES
 	${A_QT_MODULES}
 	Core
@@ -118,7 +120,6 @@ set(A_SOURCES_CPP
     ${A_DIR_ROOT}/src/controller/ControllerListFiles/ControllerListFilesFolder.cpp
     ${A_DIR_ROOT}/src/controller/ControllerPageCounter/ControllerPageCounter.cpp
     ${A_DIR_ROOT}/src/controller/ControllerToolBar/ControllerToolBar.cpp
-    ${A_DIR_ROOT}/src/controller/ControllerListFiles/Files.cpp
     ${A_DIR_ROOT}/src/controller/ControllerListFiles/Folder.cpp
     ${A_DIR_ROOT}/src/controller/ControllerColor/ControllerColor.cpp
     ${A_DIR_ROOT}/src/controller/ControllerListFiles/ControllerCommonFiles.mm
