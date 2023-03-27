@@ -16,3 +16,5 @@ cmake-build-debug/CMakeFiles/clion-Debug-log.txt
 cmake-build-debug/*
 .DS_Store
 .DS_Store
+uml/.$Model.svg.bkp
+uml/.$Model.svg.dtmp
