@@ -59,7 +59,7 @@ protected:
 
 
 signals:
-    void touchBegin(const QPointF &point);
-    void touchUpdate(const QPointF &point);
-    void touchEnd(const QPointF &point);
+    void onTouchBegin(const QPointF &point);
+    void onTouchUpdate(const QPointF &point);
+    void onTouchEnd(const QPointF &point);
 };

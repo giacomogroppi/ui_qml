@@ -64,19 +64,19 @@ void ControllerCanvas::touchBegin(double x, double y)
 {
     Q_ASSERT(_status == waitingFor::end);
     _status = waitingFor::begin;
-    emit this->touchBegin(QPointF(x, y));
+    emit this->onTouchBegin(QPointF(x, y));
 }
 
 void ControllerCanvas::touchUpdate(double x, double y)
 {
     Q_ASSERT(_status == waitingFor::begin || _status == waitingFor::update);
     _status = waitingFor::update;
-    emit this->touchUpdate(QPointF(x, y));
+    emit this->onTouchUpdate(QPointF(x, y));
 }
 
 void ControllerCanvas::touchEnd(double x, double y)
 {
     Q_ASSERT(_status == waitingFor::begin || _status == waitingFor::update);
     _status = waitingFor::end;
-    emit this->touchEnd(QPointF(x, y));
+    emit this->onTouchEnd(QPointF(x, y));
 }

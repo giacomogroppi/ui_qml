@@ -18,7 +18,7 @@ Window {
     }
 
     function showMain() {
-        var newView = Qt.createComponent("qrc:/ui/pageCanvas/MainWindow.qml")
+        var newView = Qt.createComponent("qrc:/src/ui/pageCanvas/MainWindow.qml")
         stackViewMain.push(newView)
         console.log("Call show main")
     }
@@ -29,7 +29,7 @@ Window {
     }
 
     function showSettings() {
-        stackViewMain.push(Qt.createComponent("qrc:/ui/settings/Settings.qml"))
+        stackViewMain.push(Qt.createComponent("qrc:/src/ui/settings/Settings.qml"))
         console.log("Call show settings");
     }
 

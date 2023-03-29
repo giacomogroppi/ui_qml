@@ -14,11 +14,12 @@ Controller::Controller(QObject *parent,
                        QQmlContext *content,
                        QQmlApplicationEngine *engine)
     : QObject(parent)
+    , _tabletController(new TabletController(this, [this]() { return _audio->getSecondRecording(); }))
     , _engine(engine)
     ,  _audio(new ControllerAudio(this))
     , _listPreview(new ControllerList(this))
     , _canvas(new ControllerCanvas(this))
-    , _toolBar(new ControllerToolBar(this))
+    , _toolBar(new ControllerToolBar(this, _tabletController))
     , _pageCounter(new ControllerPageCounter(this))
     , _listFiles(new ControllerListFilesFolder(this))
     , _color(new ControllerColor(this))
@@ -27,17 +28,16 @@ Controller::Controller(QObject *parent,
     controller = this;
     this->registerPrivateType();
 
-    //QObject::connect(_canvas, ControllerCanvas::touchBegin, [](const QPointF &point){});
-
-    QObject::connect(_canvas, SIGNAL(touchBegin()),
-                     _toolBar, SLOT(touchBegin()));
+    QObject::connect(_canvas, &ControllerCanvas::onTouchBegin,    _toolBar, &ControllerToolBar::touchBegin);
+    QObject::connect(_canvas, &ControllerCanvas::onTouchUpdate,   _toolBar, &ControllerToolBar::touchUpdate);
+    QObject::connect(_canvas, &ControllerCanvas::onTouchEnd,      _toolBar, &ControllerToolBar::touchEnd);
 }
 
 QString Controller::getUiSelected() const
 {
-    constexpr char const* listFiles = "qrc:/ui/listOfFiles/MainWindowListFile.qml";
-    constexpr char const* settings  = "qrc:/ui/settings/Settings.qml";
-    constexpr char const* main      = "qrc:/ui/pageCanvas/MainWindow.qml";
+    constexpr char const* listFiles = "qrc:/src/ui/listOfFiles/MainWindowListFile.qml";
+    constexpr char const* settings  = "qrc:/src/ui/settings/Settings.qml";
+    constexpr char const* main      = "qrc:/src/ui/pageCanvas/MainWindow.qml";
 
     switch (_uiSelected) {
     case uiSelected::Main:

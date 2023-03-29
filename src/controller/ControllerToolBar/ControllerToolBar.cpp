@@ -1,10 +1,11 @@
 #include "ControllerToolBar.h"
 #include <QDebug>
 
-ControllerToolBar::ControllerToolBar(QObject *parent)
-    : QObject(parent),
-      _type(Pen),
-      _color(Qt::black)
+ControllerToolBar::ControllerToolBar(QObject *parent, TabletController *tabletController)
+    : QObject(parent)
+    ,  _type(Pen)
+    ,  _color(Qt::black)
+    , _tabletController(tabletController)
 {
 }
 

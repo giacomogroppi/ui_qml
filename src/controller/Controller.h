@@ -12,9 +12,14 @@
 #include "ControllerColor/ControllerColor.h"
 #include "QtQml/qqmlcontext.h"
 
+/* writernote include */
+#include "touch/TabletController.h"
+
 class Controller: public QObject {
     Q_OBJECT
 private:
+    TabletController *_tabletController;
+
     ControllerList              *_listPreview;
     ControllerAudio             *_audio;
     ControllerCanvas            *_canvas;

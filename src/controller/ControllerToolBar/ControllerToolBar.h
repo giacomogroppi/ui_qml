@@ -4,6 +4,8 @@
 #include <QColor>
 #include <QQmlApplicationEngine>
 
+#include "touch/TabletController.h"
+
 class ControllerToolBar: public QObject {
     Q_OBJECT
 
@@ -17,10 +19,12 @@ class ControllerToolBar: public QObject {
 
     QColor _color;
 
+    TabletController *_tabletController;
+
 #define brown QColor(165,42,42)
 
 public:
-    explicit ControllerToolBar(QObject *parent = nullptr);
+    explicit ControllerToolBar(QObject *parent, TabletController *tabletController);
     ~ControllerToolBar();
 
     Q_INVOKABLE void clickSelectPen();
