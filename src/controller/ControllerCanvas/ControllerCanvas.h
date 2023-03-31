@@ -18,7 +18,6 @@ private:
     void wSetWidth(int newWidth);
     void wSetHeigth(int newHeigth);
 
-#define DEBUGINFO
 #ifdef DEBUGINFO
     enum waitingFor {
         begin,
@@ -47,9 +46,9 @@ public:
 
 public slots:
     void refresh();
-    void touchBegin(double x, double y);
-    void touchUpdate(double x, double y);
-    void touchEnd(double x, double y);
+    void touchBegin(double x, double y, double pressure);
+    void touchUpdate(double x, double y, double pressure);
+    void touchEnd(double x, double y, double pressure);
 
 private slots:
     void endTimer();
@@ -59,7 +58,7 @@ protected:
 
 
 signals:
-    void onTouchBegin(const QPointF &point);
-    void onTouchUpdate(const QPointF &point);
-    void onTouchEnd(const QPointF &point);
+    void onTouchBegin(const QPointF &point, double pressure);
+    void onTouchUpdate(const QPointF &point, double pressure);
+    void onTouchEnd(const QPointF &point, double pressure);
 };

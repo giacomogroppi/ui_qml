@@ -7,6 +7,9 @@ ControllerToolBar::ControllerToolBar(QObject *parent, TabletController *tabletCo
     ,  _color(Qt::black)
     , _tabletController(tabletController)
 {
+    QObject::connect(this, &ControllerToolBar::colorChanged, [this]() {
+        _tabletController->selectColor(this->_color);
+    }) ;
 }
 
 ControllerToolBar::~ControllerToolBar()
@@ -16,36 +19,42 @@ ControllerToolBar::~ControllerToolBar()
 void ControllerToolBar::clickSelectPen()
 {
     _type = Pen;
+    this->_tabletController->selectPen();
     emit toolHasChanged();
 }
 
 void ControllerToolBar::clickRubber()
 {
     _type = Rubber;
+    this->_tabletController->selectRubber();
     emit toolHasChanged();
 }
 
 void ControllerToolBar::clickHand()
 {
     _type = Hand;
+    W_ASSERT_TEXT(false, "to_do");
     emit toolHasChanged();
 }
 
 void ControllerToolBar::clickHighlighter()
 {
     _type = Highlighter;
+    this->_tabletController->selectHighligter();
     emit toolHasChanged();
 }
 
 void ControllerToolBar::clickCut()
 {
     _type = Cut;
+    this->_tabletController->selectSquare();
     emit toolHasChanged();
 }
 
 void ControllerToolBar::clickBlack()
 {
     _color = Qt::black;
+    this->_tabletController->selectColor(_color);
     emit colorChanged();
 }
 
@@ -98,17 +107,17 @@ bool ControllerToolBar::isCut() const
     return _type == Cut;
 }
 
-void ControllerToolBar::touchBegin(const QPointF &point)
+void ControllerToolBar::touchBegin(const QPointF &point, double pressure)
 {
-
+    this->_tabletController->touchBegin(point, pressure);
 }
 
-void ControllerToolBar::touchUpdate(const QPointF &point)
+void ControllerToolBar::touchUpdate(const QPointF &point, double pressure)
 {
-
+    this->_tabletController->touchUpdate(point, pressure);
 }
 
-void ControllerToolBar::touchEnd(const QPointF &point)
+void ControllerToolBar::touchEnd(const QPointF &point, double pressure)
 {
-
+    this->_tabletController->touchEnd(point, pressure);
 }

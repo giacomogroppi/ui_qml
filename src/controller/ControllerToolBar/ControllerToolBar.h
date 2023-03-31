@@ -71,7 +71,7 @@ signals:
     void colorChanged();
 
 public slots:
-    void touchBegin(const QPointF &point);
-    void touchUpdate(const QPointF &point);
-    void touchEnd(const QPointF &point);
+    void touchBegin(const QPointF &point, double pressure);
+    void touchUpdate(const QPointF &point, double pressure);
+    void touchEnd(const QPointF &point, double pressure);
 };
