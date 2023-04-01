@@ -22,3 +22,9 @@ void WQMLCanvasComponent::paint(QPainter *painter)
     painter->drawLine(0, 0, width(), height());
     painter->drawRect(0, 0, width(), height());
 }
+
+void WQMLCanvasComponent::touchEventPrivate(QTouchEvent *event)
+{
+    qDebug() << "WQMLCanvasComponent::touchEvent " << event->type();
+    return QQuickPaintedItem::touchEvent(event);
+}

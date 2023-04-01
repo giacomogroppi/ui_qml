@@ -28,6 +28,8 @@ Item {
             id: canvas_surface_private
             anchors.margins: 10
 
+            targetTouchArea: canvasSurface
+
             anchors.left: parent.left
             anchors.top: parent.top
 
@@ -57,16 +59,16 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 onPressed: {
-                    _controllerCanvas.touchBegin(mouseX, mouseY)
+                    //_controllerCanvas.touchBegin(mouseX, mouseY)
                     //console.log("Pressed")
                 }
                 onReleased: {
-                    _controllerCanvas.touchEnd(mouseX, mouseY)
+                    //_controllerCanvas.touchEnd(mouseX, mouseY)
                     canvasSurface.interactive = true
                 }
                 onPositionChanged: {
                     //console.log("position changed " + mouseX +" "+ mouseY)
-                    _controllerCanvas.touchUpdate(mouseX, mouseY)
+                    //_controllerCanvas.touchUpdate(mouseX, mouseY)
                 }
                 //onClicked: touchLog.text += "\nClicked"
             }

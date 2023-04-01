@@ -39,7 +39,7 @@ set(A_SOURCES_PRECOMPILED_HEADERS_PRIVATE)
 
 if(IOS)
     message("Enable build for ios")
-    enable_language(OBJCXX OBJC Swift)
+    enable_language(OBJCXX OBJC)
 
     set(A_SOURCES_SWIFT_OBJC_INTERFACE_HEADER_NAME "aswiftobjcinterface.h")
     set(A_SOURCES_SWIFT_OBJC_INTERFACE_HEADER_NAME)
@@ -73,7 +73,6 @@ set(A_QT_MODULES
         Gui
 	Quick
         Multimedia
-        Widgets
         #PrintSupport
 )
 
@@ -86,10 +85,9 @@ set(A_TARGET_MODULES_PUBLIC
 
 set(A_QT_TARGET_MODULES
 	Qt${QT_VERSION_MAJOR}::Core
+        Qt${QT_VERSION_MAJOR}::Gui
 	Qt${QT_VERSION_MAJOR}::Quick
         Qt${QT_VERSION_MAJOR}::Multimedia
-        Qt${QT_VERSION_MAJOR}::Gui
-        Qt${QT_VERSION_MAJOR}::Widgets
 )
 
 include_directories(${A_DIR_ROOT}/src/)
@@ -125,10 +123,6 @@ set(A_SOURCES_CPP
     ${A_DIR_ROOT}/src/controller/ControllerListFiles/ControllerCommonFiles.mm
     ${PROJECT_SOURCES_WRITERNOTE}
 )
-
-
-
-message(${A_SOURCES_CPP})
 
 set(A_SOURCES_PRECOMPILED_HEADERS_PRIVATE
 	${A_SOURCES_PRECOMPILED_HEADERS_PRIVATE}
@@ -199,7 +193,11 @@ endif()
 
 SET(QT_USE_QTMULTIMEDIA TRUE)
 
-if(MACOS_BUILD OR APPLE)
+if(IOS)
+    message("-- Configure libzip for ios")
+    include_directories(/opt/homebrew/Cellar/libzip/1.9.2/include/)
+    target_link_libraries(${PROJECT_NAME} PRIVATE $ENV{HOME}/writernote-qt/3rdparty/libzip_ios.a)
+elseif(MACOS_BUILD OR APPLE)
     include_directories(/opt/homebrew/Cellar/libzip/1.9.2/include/)
     target_link_libraries(${PROJECT_NAME} PRIVATE /opt/homebrew/Cellar/libzip/1.9.2/lib/libzip.dylib)
 elseif(WIN)
@@ -238,6 +236,6 @@ if(IOS)
 			XCODE_ATTRIBUTE_SWIFT_OBJC_BRIDGING_HEADER "${A_SOURCES_SWIFT_OBJC_BRIDGING_HEADER}"
 			XCODE_ATTRIBUTE_ENABLE_BITCODE "NO"
 			XCODE_ATTRIBUTE_ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES "YES"
-			XCODE_ATTRIBUTE_SWIFT_VERSION "5.0"
+                        XCODE_ATTRIBUTE_SWIFT_VERSION "5.8"
 	)
 endif()
