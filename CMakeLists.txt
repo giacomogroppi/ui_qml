@@ -108,7 +108,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUGINFO -O0")
 set(A_SOURCES_CPP
     ${A_SOURCES_CPP}
     ${A_DIR_ROOT}/src/main.cpp
-    ${A_DIR_ROOT}/src/controller/controller.cpp
+    ${A_DIR_ROOT}/src/controller/Controller.cpp
     ${A_DIR_ROOT}/src/controller/ControllerAudio/ControllerAudio.cpp
     ${A_DIR_ROOT}/src/controller/ControllerCanvas/ControllerCanvas.cpp
     ${A_DIR_ROOT}/src/controller/ControllerCanvas/WQMLCanvasComponent.cpp

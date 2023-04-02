@@ -35,51 +35,12 @@ Item {
             width: _controllerCanvas.widthObject
             height: _controllerCanvas.heigthObject
 
+            xPosition: canvasSurface.originX
+            yPosition: canvasSurface.originY
+
             onWidthChanged: {
                 console.log("width change", width, "diventa", _controllerCanvas.widthObject);
             }
-
-            //TapHandler {
-            //    acceptedDevices: PointerDevice.Stylus
-
-            //    onPressedChanged: {
-            //        canvasSurface.interactive = false
-                    //console.log("Pressed chang 1");
-                    //console.log("Press1 with pen: [x, y]", point.position)
-            //    }
-
-            //    onPointChanged: {
-                    //console.log("Press2 with pen: [x, y]", point.position)
-            //    }
-
-            //}
-
-            // The MouseArea fills the whole page
-            //MouseArea {
-            //    anchors.fill: parent
-            //    onPressed: {
-                    //_controllerCanvas.touchBegin(mouseX, mouseY)
-                    //console.log("Pressed")
-            //    }
-            //    onReleased: {
-                    //_controllerCanvas.touchEnd(mouseX, mouseY)
-            //        canvasSurface.interactive = true
-            //    }
-            //    onPositionChanged: {
-                    //console.log("position changed " + mouseX +" "+ mouseY)
-                    //_controllerCanvas.touchUpdate(mouseX, mouseY)
-            //    }
-                //onClicked: touchLog.text += "\nClicked"
-            //}
-
-            //TapHandler {
-            //    acceptedDevices: PointerDevice.TouchScreen | PointerDevice.Mouse
-
-            //    onPressedChanged: {
-            //        canvasSurface.interactive = true
-            //        console.log("Pressed change 2");
-            //    }
-
         }
     }
 

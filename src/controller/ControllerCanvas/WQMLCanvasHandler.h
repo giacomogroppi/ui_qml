@@ -29,6 +29,9 @@ private:
 signals:
     void targetTouchAreaChanged();
 
+    void touchBegin(const QPointF &point, double pressure);
+    void touchUpdate(const QPointF &point, double pressure);
+    void touchEnd(const QPointF &point, double pressure);
 };
 
 

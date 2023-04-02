@@ -4,6 +4,7 @@
 #include <QQuickImageProvider>
 #include <QTimer>
 
+#include "WQMLCanvasHandler.h"
 #include "WQMLCanvasComponent.h"
 
 class ControllerCanvas: public QObject {
@@ -44,11 +45,13 @@ public:
     int widthObject() const;
     Q_SIGNAL void widthObjectChanged();
 
+    static void registerHangler(WQMLCanvasHandler *object);
+
 public slots:
     void refresh();
-    void touchBegin(double x, double y, double pressure);
-    void touchUpdate(double x, double y, double pressure);
-    void touchEnd(double x, double y, double pressure);
+    void touchBegin(const QPointF &point, double pressure);
+    void touchUpdate(const QPointF &point, double pressure);
+    void touchEnd(const QPointF &point, double pressure);
 
 private slots:
     void endTimer();

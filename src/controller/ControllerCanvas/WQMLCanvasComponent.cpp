@@ -4,9 +4,8 @@
 
 WQMLCanvasComponent::WQMLCanvasComponent(QQuickItem *parent)
     : QQuickPaintedItem(parent)
+    , _img(nullptr)
 {
-    this->update();
-
     qDebug() << "WQMLCanvasComponent constructor call";
 }
 
@@ -23,4 +22,37 @@ void WQMLCanvasComponent::paint(QPainter *painter)
 
     painter->drawLine(0, 0, width, height);
     painter->drawRect(0, 0, width, height);
+}
+
+void WQMLCanvasComponent::setXPosition(double x)
+{
+    this->_x = x;
+    emit onXPositionChanged();
+}
+
+double WQMLCanvasComponent::xPosition() const
+{
+    return this->_x;
+}
+
+double WQMLCanvasComponent::yPosition() const
+{
+    return this->_y;
+}
+
+void WQMLCanvasComponent::update(const QImage &img)
+{
+    this->_img = &img;
+    callUpdate();
+}
+
+void WQMLCanvasComponent::callUpdate()
+{
+    QQuickPaintedItem::update();
+}
+
+void WQMLCanvasComponent::setYPosition(double y)
+{
+    this->_y = y;
+    emit onYPositionChanged();
 }

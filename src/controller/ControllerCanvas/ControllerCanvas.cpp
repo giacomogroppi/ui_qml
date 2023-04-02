@@ -3,15 +3,18 @@
 #include <QImage>
 #include <QTimer>
 #include <QDebug>
-#include "controller/Controller.h"
 #include "WQMLCanvasHandler.h"
+#include "utils/WCommonScript.h"
+
+WQMLCanvasHandler *handler = nullptr;
+ControllerCanvas *controllerCanvas = nullptr;
 
 ControllerCanvas::ControllerCanvas(QObject *parent)
     : QObject(parent),
       _timer(new QTimer(this)),
       _heigth(1000),
       _width(1000),
-      _status(waitingFor::begin)
+      _status(waitingFor::end)
 {
     qmlRegisterType<WQMLCanvasComponent>("writernote.WQMLCanvasComponent",
                                          1, 0,
@@ -20,6 +23,7 @@ ControllerCanvas::ControllerCanvas(QObject *parent)
                                        1, 0,
                                        "WCanvasHandler");
     QObject::connect(_timer, &QTimer::timeout, this, &ControllerCanvas::endTimer);
+    controllerCanvas = this;
     //_timer->start(500);
 }
 
@@ -64,23 +68,33 @@ void ControllerCanvas::refresh()
     emit this->heigthObjectChanged();
 }
 
-void ControllerCanvas::touchBegin(double x, double y, double pressure)
+void ControllerCanvas::touchBegin(const QPointF &point, double pressure)
 {
     Q_ASSERT(_status == waitingFor::end);
     _status = waitingFor::begin;
-    emit this->onTouchBegin(QPointF(x, y), pressure);
+    emit this->onTouchBegin(point, pressure);
 }
 
-void ControllerCanvas::touchUpdate(double x, double y, double pressure)
+void ControllerCanvas::touchUpdate(const QPointF &point, double pressure)
 {
     Q_ASSERT(_status == waitingFor::begin || _status == waitingFor::update);
     _status = waitingFor::update;
-    emit this->onTouchUpdate(QPointF(x, y), pressure);
+    emit this->onTouchUpdate(point, pressure);
 }
 
-void ControllerCanvas::touchEnd(double x, double y, double pressure)
+void ControllerCanvas::touchEnd(const QPointF &point, double pressure)
 {
     Q_ASSERT(_status == waitingFor::begin || _status == waitingFor::update);
     _status = waitingFor::end;
-    emit this->onTouchEnd(QPointF(x, y), pressure);
+    emit this->onTouchEnd(point, pressure);
+}
+
+void ControllerCanvas::registerHangler(WQMLCanvasHandler *object)
+{
+    W_ASSERT(controllerCanvas != nullptr);
+    W_ASSERT(handler == nullptr);
+    handler = object;
+    QObject::connect(handler, &WQMLCanvasHandler::touchBegin,   controllerCanvas, &ControllerCanvas::touchBegin);
+    QObject::connect(handler, &WQMLCanvasHandler::touchUpdate,  controllerCanvas, &ControllerCanvas::touchUpdate);
+    QObject::connect(handler, &WQMLCanvasHandler::touchEnd,     controllerCanvas, &ControllerCanvas::touchEnd);
 }
