@@ -1,12 +1,14 @@
 #include "WQMLCanvasComponent.h"
 #include <QPainter>
 #include <QBrush>
+#include "ControllerCanvas.h"
 
 WQMLCanvasComponent::WQMLCanvasComponent(QQuickItem *parent)
     : QQuickPaintedItem(parent)
     , _img(nullptr)
 {
     qDebug() << "WQMLCanvasComponent constructor call";
+    ControllerCanvas::registerDrawer(this);
 }
 
 void WQMLCanvasComponent::paint(QPainter *painter)
