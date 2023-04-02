@@ -8,6 +8,7 @@
 
 WQMLCanvasHandler *handler = nullptr;
 ControllerCanvas *controllerCanvas = nullptr;
+WQMLCanvasComponent *drawer = nullptr;
 
 ControllerCanvas::ControllerCanvas(QObject *parent)
     : QObject(parent),
@@ -60,6 +61,20 @@ int ControllerCanvas::heigthObject()
 int ControllerCanvas::widthObject() const
 {
     return this->_width;
+}
+
+void ControllerCanvas::registerDrawer(WQMLCanvasComponent *object)
+{
+    W_ASSERT(drawer == nullptr);
+    W_ASSERT(controllerCanvas != nullptr);
+
+    QObject::connect(drawer, &WQMLCanvasComponent::onXPositionChanged, []() {
+        emit controllerCanvas->positionChanged(QPointF(drawer->xPosition(), 0.));
+    });
+
+    QObject::connect(drawer, &WQMLCanvasComponent::onYPositionChanged, []() {
+        emit controllerCanvas->positionChanged(QPointF(0., drawer->yPosition()));
+    });
 }
 
 void ControllerCanvas::refresh()

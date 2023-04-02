@@ -31,6 +31,8 @@ Controller::Controller(QObject *parent,
     QObject::connect(_canvas, &ControllerCanvas::onTouchBegin,    _toolBar, &ControllerToolBar::touchBegin);
     QObject::connect(_canvas, &ControllerCanvas::onTouchUpdate,   _toolBar, &ControllerToolBar::touchUpdate);
     QObject::connect(_canvas, &ControllerCanvas::onTouchEnd,      _toolBar, &ControllerToolBar::touchEnd);
+
+    QObject::connect(_canvas, &ControllerCanvas::positionChanged, _toolBar, &ControllerToolBar::positionChanged, Qt::ConnectionType::DirectConnection);
 }
 
 QString Controller::getUiSelected() const

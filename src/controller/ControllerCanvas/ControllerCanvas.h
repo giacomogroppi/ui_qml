@@ -45,6 +45,7 @@ public:
     int widthObject() const;
     Q_SIGNAL void widthObjectChanged();
 
+    static void registerDrawer(WQMLCanvasComponent *object);
     static void registerHangler(WQMLCanvasHandler *object);
 
 public slots:
@@ -59,9 +60,13 @@ private slots:
 protected:
     bool event(QEvent *event) override;
 
-
 signals:
     void onTouchBegin(const QPointF &point, double pressure);
     void onTouchUpdate(const QPointF &point, double pressure);
     void onTouchEnd(const QPointF &point, double pressure);
+
+    /**
+     * Il parametro newPosition indica la nuova posizione in pixel
+    */
+    void positionChanged(const QPointF &newPosition);
 };

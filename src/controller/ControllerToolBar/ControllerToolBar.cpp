@@ -121,3 +121,8 @@ void ControllerToolBar::touchEnd(const QPointF &point, double pressure)
 {
     this->_tabletController->touchEnd(point, pressure);
 }
+
+void ControllerToolBar::positionChanged(const QPointF &newPosition)
+{
+    this->_tabletController->positionDocChanged(newPosition);
+}
