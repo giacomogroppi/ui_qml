@@ -11,6 +11,7 @@ option(A_OPTION_USING_PCH "${A_NAME_TARGET} using PCH support" ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "$ENV{HOME}/Qt/6.4.2/macos/lib/cmake")
+set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "$ENV{HOME}/Qt/6.5.0/gcc_64/lib/cmake")
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -120,11 +121,18 @@ set(A_SOURCES_CPP
     ${A_DIR_ROOT}/src/controller/ControllerToolBar/ControllerToolBar.cpp
     ${A_DIR_ROOT}/src/controller/ControllerListFiles/Folder.cpp
     ${A_DIR_ROOT}/src/controller/ControllerColor/ControllerColor.cpp
-    ${A_DIR_ROOT}/src/controller/ControllerListFiles/ControllerCommonFiles.mm
     ${A_DIR_ROOT}/src/controller/ControllerCanvas/WQMLCanvasHandler.h
     ${A_DIR_ROOT}/src/controller/ControllerCanvas/WQMLCanvasHandler.cpp
     ${PROJECT_SOURCES_WRITERNOTE}
 )
+
+if (IOS)
+    set(A_SOURCES_CPP
+        ${A_SOURCES_CPP}
+        ${A_DIR_ROOT}/src/controller/ControllerListFiles/ControllerCommonFiles.mm
+    )
+
+endif()
 
 set(A_SOURCES_PRECOMPILED_HEADERS_PRIVATE
 	${A_SOURCES_PRECOMPILED_HEADERS_PRIVATE}
@@ -139,7 +147,7 @@ foreach(I_MODULE IN LISTS A_QT_MODULES)
 	)
 endforeach()
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS ${A_QT_MODULES} REQUIRED)
+find_package(QT NAMES Qt6 COMPONENTS ${A_QT_MODULES} REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS ${A_QT_MODULES} REQUIRED)
 
 set(A_SOURCES
