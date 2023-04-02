@@ -4,6 +4,7 @@
 #include <QTimer>
 #include <QDebug>
 #include "controller/Controller.h"
+#include "WQMLCanvasHandler.h"
 
 ControllerCanvas::ControllerCanvas(QObject *parent)
     : QObject(parent),
@@ -15,6 +16,9 @@ ControllerCanvas::ControllerCanvas(QObject *parent)
     qmlRegisterType<WQMLCanvasComponent>("writernote.WQMLCanvasComponent",
                                          1, 0,
                                          "WCanvasComponent");
+    qmlRegisterType<WQMLCanvasHandler>("writernote.WQMLCanvasHandler",
+                                       1, 0,
+                                       "WCanvasHandler");
     QObject::connect(_timer, &QTimer::timeout, this, &ControllerCanvas::endTimer);
     //_timer->start(500);
 }

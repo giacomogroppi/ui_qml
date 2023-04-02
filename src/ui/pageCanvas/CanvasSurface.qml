@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.12
 import writernote.WQMLCanvasComponent 1.0
+import writernote.WQMLCanvasHandler 1.0
 
 Item {
     id: canvas_surface
@@ -28,8 +29,6 @@ Item {
             id: canvas_surface_private
             anchors.margins: 10
 
-            targetTouchArea: canvasSurface
-
             anchors.left: parent.left
             anchors.top: parent.top
 
@@ -40,47 +39,51 @@ Item {
                 console.log("width change", width, "diventa", _controllerCanvas.widthObject);
             }
 
-            TapHandler {
-                acceptedDevices: PointerDevice.Stylus
+            //TapHandler {
+            //    acceptedDevices: PointerDevice.Stylus
 
-                onPressedChanged: {
-                    canvasSurface.interactive = false
+            //    onPressedChanged: {
+            //        canvasSurface.interactive = false
                     //console.log("Pressed chang 1");
-                    console.log("Press1 with pen: [x, y]", point.position)
-                }
+                    //console.log("Press1 with pen: [x, y]", point.position)
+            //    }
 
-                onPointChanged: {
-                    console.log("Press2 with pen: [x, y]", point.position)
-                }
+            //    onPointChanged: {
+                    //console.log("Press2 with pen: [x, y]", point.position)
+            //    }
 
-            }
+            //}
 
             // The MouseArea fills the whole page
-            MouseArea {
-                anchors.fill: parent
-                onPressed: {
+            //MouseArea {
+            //    anchors.fill: parent
+            //    onPressed: {
                     //_controllerCanvas.touchBegin(mouseX, mouseY)
                     //console.log("Pressed")
-                }
-                onReleased: {
+            //    }
+            //    onReleased: {
                     //_controllerCanvas.touchEnd(mouseX, mouseY)
-                    canvasSurface.interactive = true
-                }
-                onPositionChanged: {
+            //        canvasSurface.interactive = true
+            //    }
+            //    onPositionChanged: {
                     //console.log("position changed " + mouseX +" "+ mouseY)
                     //_controllerCanvas.touchUpdate(mouseX, mouseY)
-                }
+            //    }
                 //onClicked: touchLog.text += "\nClicked"
-            }
+            //}
 
-            TapHandler {
-                acceptedDevices: PointerDevice.TouchScreen | PointerDevice.Mouse
+            //TapHandler {
+            //    acceptedDevices: PointerDevice.TouchScreen | PointerDevice.Mouse
 
-                onPressedChanged: {
-                    canvasSurface.interactive = true
-                    console.log("Pressed change 2");
-                }
-            }
+            //    onPressedChanged: {
+            //        canvasSurface.interactive = true
+            //        console.log("Pressed change 2");
+            //    }
+
         }
+    }
+
+    WCanvasHandler {
+        targetTouchArea: canvasSurface
     }
 }

@@ -12,6 +12,8 @@ WQMLCanvasComponent::WQMLCanvasComponent(QQuickItem *parent)
 
 void WQMLCanvasComponent::paint(QPainter *painter)
 {
+    const auto width = this->width();
+    const auto height = this->height();
     QPen _pen(QColor(127, 127, 127, 255));
 
     qDebug() << "paint";
@@ -19,12 +21,6 @@ void WQMLCanvasComponent::paint(QPainter *painter)
     painter->setPen(_pen);
     painter->setRenderHint(QPainter::Antialiasing);
 
-    painter->drawLine(0, 0, width(), height());
-    painter->drawRect(0, 0, width(), height());
-}
-
-void WQMLCanvasComponent::touchEventPrivate(QTouchEvent *event)
-{
-    qDebug() << "WQMLCanvasComponent::touchEvent " << event->type();
-    return QQuickPaintedItem::touchEvent(event);
+    painter->drawLine(0, 0, width, height);
+    painter->drawRect(0, 0, width, height);
 }

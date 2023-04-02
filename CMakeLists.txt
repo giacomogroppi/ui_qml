@@ -121,6 +121,8 @@ set(A_SOURCES_CPP
     ${A_DIR_ROOT}/src/controller/ControllerListFiles/Folder.cpp
     ${A_DIR_ROOT}/src/controller/ControllerColor/ControllerColor.cpp
     ${A_DIR_ROOT}/src/controller/ControllerListFiles/ControllerCommonFiles.mm
+    ${A_DIR_ROOT}/src/controller/ControllerCanvas/WQMLCanvasHandler.h
+    ${A_DIR_ROOT}/src/controller/ControllerCanvas/WQMLCanvasHandler.cpp
     ${PROJECT_SOURCES_WRITERNOTE}
 )
 
