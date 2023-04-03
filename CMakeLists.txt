@@ -74,6 +74,7 @@ set(A_QT_MODULES
         Gui
 	Quick
         Multimedia
+        Test
         #PrintSupport
 )
 
@@ -85,10 +86,11 @@ set(A_TARGET_MODULES_PUBLIC
 )
 
 set(A_QT_TARGET_MODULES
-	Qt${QT_VERSION_MAJOR}::Core
+		Qt${QT_VERSION_MAJOR}::Core
         Qt${QT_VERSION_MAJOR}::Gui
-	Qt${QT_VERSION_MAJOR}::Quick
+		Qt${QT_VERSION_MAJOR}::Quick
         Qt${QT_VERSION_MAJOR}::Multimedia
+        Qt${QT_VERSION_MAJOR}::Test
 )
 
 include_directories(${A_DIR_ROOT}/src/)
@@ -249,3 +251,26 @@ if(IOS)
                         XCODE_ATTRIBUTE_SWIFT_VERSION "5.8"
 	)
 endif()
+
+
+enable_testing()
+
+function(SETUP_TESTS)
+	foreach(_testname ${ARGN})
+		string(REPLACE "/" ";" List_file ${_testname})
+		list(LENGTH List_file len)
+		list(GET List_file -1 last_item)
+
+		add_executable(${last_item} ${_testname}.cpp )
+		add_test(NAME ${last_item} COMMAND ${last_item})
+		target_link_libraries(${last_item} Qt${QT_MAJOR_VERISION}::Test)
+		target_link_libraries(${last_item} Qt${QT_MAJOR_VERISION}::Core)
+		target_link_libraries(${last_item} Qt${QT_MAJOR_VERISION}::Gui)
+		target_link_libraries(${last_item} Qt${QT_MAJOR_VERISION}::Quick)
+	endforeach()
+endfunction()
+
+SETUP_TESTS(
+		src/test/model/test_utils/test_WCommonScript
+		src/test/controller/ControllerTest
+)
