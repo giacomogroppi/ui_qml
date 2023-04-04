@@ -7,7 +7,10 @@
 
 WQMLCanvasComponent::WQMLCanvasComponent(QQuickItem *parent)
     : QQuickPaintedItem(parent)
-    , _getImg([]() {return QImage(); })
+    , _getImg([]() {
+        return QImage();
+    })
+    , _functionSet(false)
 {
     qDebug() << "WQMLCanvasComponent constructor call";
     ControllerCanvas::registerDrawer(this);
@@ -21,7 +24,7 @@ void WQMLCanvasComponent::paint(QPainter *painter)
     core::painter_set_antialiasing(*painter);
     //painter->setRenderHint(QPainter::LosslessImageRendering);
     const auto &img = this->_getImg();
-    if (1) {
+    if (this->_functionSet) {
         const QRect target = QRect(0, 0, width, img.height() * width / img.width());
 
         painter->drawImage(target, img);
@@ -32,7 +35,15 @@ void WQMLCanvasComponent::paint(QPainter *painter)
 
     x += 1;
     y += 1;*/
-    WDebug(true, "update call");
+    static std::chrono::milliseconds ms;
+    const auto old = ms;
+    ms = std::chrono::duration_cast< std::chrono::milliseconds >(
+        std::chrono::system_clock::now().time_since_epoch()
+        );
+
+    const int diff = (ms - old).count();
+    WDebug(true, diff);
+    WDebug(true, "update call" << 1 / (diff / 1000) << rand() % 2000);
 }
 
 void WQMLCanvasComponent::setXPosition(double x)
@@ -53,7 +64,10 @@ double WQMLCanvasComponent::yPosition() const
 
 void WQMLCanvasComponent::setFunc(std::function<const QImage &()> getImg)
 {
-    this->_getImg = getImg;
+    this->_functionSet = true;
+    this->_getImg = std::move(getImg);
+    const auto &img = this->_getImg();
+    WDebug(false, "ciao");
 }
 
 void WQMLCanvasComponent::callUpdate()

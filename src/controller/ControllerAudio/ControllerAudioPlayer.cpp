@@ -1,4 +1,4 @@
-#include "controlleraudioplayer.h"
+#include "ControllerAudioPlayer.h"
 
 ControllerAudioPlayer::ControllerAudioPlayer(QObject *parent)
     : QObject{parent}

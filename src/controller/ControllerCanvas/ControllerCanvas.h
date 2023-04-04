@@ -36,7 +36,7 @@ public:
     ~ControllerCanvas() = default;
 
     Q_PROPERTY(int heigthObject READ heigthObject NOTIFY heigthObjectChanged);
-    int heigthObject();
+    int heigthObject() const;
     Q_SIGNAL void heigthObjectChanged();
 
     Q_PROPERTY(int widthObject READ widthObject NOTIFY widthObjectChanged);

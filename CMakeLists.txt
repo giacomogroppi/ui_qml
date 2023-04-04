@@ -207,6 +207,10 @@ endif()
 
 SET(QT_USE_QTMULTIMEDIA TRUE)
 
+if(UNIX AND NOT APPLE AND NOT MINGW)
+    set(LINUX TRUE)
+endif()
+
 if(IOS)
     message("-- Configure libzip for ios")
     include_directories(/opt/homebrew/Cellar/libzip/1.9.2/include/)
@@ -218,6 +222,10 @@ elseif(WIN)
     include_directories(${PROJECT_SOURCE_DIR}/3rdparty/libzip/install/include/)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/3rdparty/libzip/install/lib/libzip.a)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/3rdparty/zlib-ng/install/lib/libzlib.a)
+else(UNIX)
+    message("Set target linux")
+    target_link_libraries(${PROJECT_NAME} PRIVATE /usr/lib/x86_64-linux-gnu/libzip.so)
+    #target_link_libraries(${PROJECT_NAME} PRIVATE /usr/lib/libzip.so)
 endif()
 
 set(A_TARGET_COMPILE_DEFINITIONS_PRIVATE

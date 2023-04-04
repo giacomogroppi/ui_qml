@@ -30,4 +30,5 @@ public slots:
 private:
     int _x, _y;
     std::function<const QImage&()> _getImg;
+    bool _functionSet;
 };

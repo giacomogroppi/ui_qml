@@ -15,7 +15,7 @@ ControllerCanvas::ControllerCanvas(QObject *parent, std::function<const QImage &
     , _timer(new QTimer(nullptr))
     , _heigth(1000)
     , _width(1000)
-    , _getImg(getImg)
+    , _getImg(std::move(getImg))
 #ifdef DEBUGINFO
     , _status(waitingFor::begin)
 #endif
@@ -59,7 +59,7 @@ void ControllerCanvas::wSetHeigth(int newHeigth)
     emit heigthObjectChanged();
 }
 
-int ControllerCanvas::heigthObject()
+int ControllerCanvas::heigthObject() const
 {
     return this->_heigth;
 }
