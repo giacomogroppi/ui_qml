@@ -81,7 +81,7 @@ public:
     Q_PROPERTY(bool isYellow    READ isYellow   NOTIFY colorChanged);
     Q_PROPERTY(bool isRed       READ isRed      NOTIFY colorChanged);
 
-    const QImage &getImg();
+    const QPixmap &getImg();
 
 signals:
     void toolHasChanged();

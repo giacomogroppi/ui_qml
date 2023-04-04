@@ -22,7 +22,7 @@ Controller::Controller(QObject *parent,
     , _audioRecorder(new ControllerAudioRecorder(this))
     , _audioPlayer(new ControllerAudioPlayer(this))
     , _listPreview(new ControllerList(this))
-    , _canvas(new ControllerCanvas(this, [this]() -> const QImage &{ return this->_tabletController->getImg(); }))
+    , _canvas(new ControllerCanvas(this, [this]() -> const QPixmap &{ return this->_tabletController->getImg(); }))
     , _toolBar(new ControllerToolBar(this, _tabletController))
     , _pageCounter(new ControllerPageCounter(this))
     , _listFiles(new ControllerListFilesFolder(this))

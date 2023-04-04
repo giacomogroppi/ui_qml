@@ -111,7 +111,7 @@ bool ControllerToolBar::isCut() const
     return _type == Cut;
 }
 
-const QImage &ControllerToolBar::getImg()
+const QPixmap &ControllerToolBar::getImg()
 {
     return this->_tabletController->getImg();
 }

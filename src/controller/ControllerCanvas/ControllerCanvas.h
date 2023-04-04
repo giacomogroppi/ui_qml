@@ -32,7 +32,7 @@ private:
 #endif // DEBUGINFO
 
 public:
-    explicit ControllerCanvas(QObject *parent, std::function<const QImage &()> getImg);
+    explicit ControllerCanvas(QObject *parent, std::function<const QPixmap &()> getImg);
     ~ControllerCanvas() = default;
 
     Q_PROPERTY(int heigthObject READ heigthObject NOTIFY heigthObjectChanged);
@@ -46,7 +46,7 @@ public:
     static void registerDrawer(WQMLCanvasComponent *object);
     static void registerHangler(WQMLCanvasHandler *object);
 private:
-    std::function<const QImage &()> _getImg;
+    std::function<const QPixmap &()> _getImg;
 public slots:
     void refresh();
     void touchBegin(const QPointF &point, double pressure);

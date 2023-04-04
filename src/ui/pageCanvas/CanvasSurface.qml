@@ -46,5 +46,7 @@ Item {
 
     WCanvasHandler {
         targetTouchArea: canvasSurface
+        heightObject: canvas_surface_private.height
+        widthObject: canvas_surface_private.width
     }
 }
