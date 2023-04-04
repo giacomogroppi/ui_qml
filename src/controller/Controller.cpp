@@ -14,11 +14,15 @@ Controller::Controller(QObject *parent,
                        QQmlContext *content,
                        QQmlApplicationEngine *engine)
     : QObject(parent)
-    , _tabletController(new TabletController(this, [this]() { return _audio->getSecondRecording(); }))
+    , _tabletController(new TabletController(this,
+            [this]() { return _audioRecorder->getSecondRecording(); },
+            [this] () { return this->_audioPlayer->isPlaying(); },
+            [this] () { return this->_audioPlayer->getPositionInSeconds(); }))
     , _engine(engine)
-    ,  _audio(new ControllerAudio(this))
+    , _audioRecorder(new ControllerAudioRecorder(this))
+    , _audioPlayer(new ControllerAudioPlayer(this))
     , _listPreview(new ControllerList(this))
-    , _canvas(new ControllerCanvas(this))
+    , _canvas(new ControllerCanvas(this, [this]() { return this->_tabletController->getImg(); }))
     , _toolBar(new ControllerToolBar(this, _tabletController))
     , _pageCounter(new ControllerPageCounter(this))
     , _listFiles(new ControllerListFilesFolder(this))
@@ -28,11 +32,12 @@ Controller::Controller(QObject *parent,
     controller = this;
     this->registerPrivateType();
 
-    QObject::connect(_canvas, &ControllerCanvas::onTouchBegin,    _toolBar, &ControllerToolBar::touchBegin);
-    QObject::connect(_canvas, &ControllerCanvas::onTouchUpdate,   _toolBar, &ControllerToolBar::touchUpdate);
-    QObject::connect(_canvas, &ControllerCanvas::onTouchEnd,      _toolBar, &ControllerToolBar::touchEnd);
+    QObject::connect(_canvas, &ControllerCanvas::onTouchBegin,    _toolBar, &ControllerToolBar::touchBegin, Qt::ConnectionType::DirectConnection);
+    QObject::connect(_canvas, &ControllerCanvas::onTouchUpdate,   _toolBar, &ControllerToolBar::touchUpdate, Qt::ConnectionType::DirectConnection);
+    QObject::connect(_canvas, &ControllerCanvas::onTouchEnd,      _toolBar, &ControllerToolBar::touchEnd, Qt::ConnectionType::DirectConnection);
 
-    QObject::connect(_canvas, &ControllerCanvas::positionChanged, _toolBar, &ControllerToolBar::positionChanged, Qt::ConnectionType::DirectConnection);
+    QObject::connect(_canvas,   &ControllerCanvas::positionChanged, _toolBar, &ControllerToolBar::positionChanged, Qt::ConnectionType::DirectConnection);
+    QObject::connect(_toolBar,  &ControllerToolBar::onNeedRefresh, _canvas, &ControllerCanvas::refresh, Qt::ConnectionType::DirectConnection);
 }
 
 QString Controller::getUiSelected() const
@@ -87,7 +92,8 @@ Controller::~Controller() = default;
 void Controller::registerPrivateType()
 {
     registerType("_controllerListPreview",      this->_listPreview);
-    registerType("_controllerAudio",            this->_audio);
+    registerType("_controllerAudioRecorder",    this->_audioRecorder);
+    registerType("_controllerAudioPlayer",      this->_audioPlayer);
     registerType("_controllerCanvas",           this->_canvas);
     registerType("_controllerToolBar",          this->_toolBar);
     registerType("_controllerPageCounter",      this->_pageCounter);

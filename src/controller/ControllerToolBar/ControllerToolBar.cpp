@@ -3,13 +3,17 @@
 
 ControllerToolBar::ControllerToolBar(QObject *parent, TabletController *tabletController)
     : QObject(parent)
-    ,  _type(Pen)
-    ,  _color(Qt::black)
+    , _type(Pen)
+    , _color(Qt::black)
     , _tabletController(tabletController)
 {
     QObject::connect(this, &ControllerToolBar::colorChanged, [this]() {
         _tabletController->selectColor(this->_color);
-    }) ;
+    });
+
+    QObject::connect(this->_tabletController, &TabletController::onNeedRefresh, [this] () {
+        emit onNeedRefresh();
+    });
 }
 
 ControllerToolBar::~ControllerToolBar()
@@ -107,18 +111,26 @@ bool ControllerToolBar::isCut() const
     return _type == Cut;
 }
 
+const QImage &ControllerToolBar::getImg()
+{
+    return this->_tabletController->getImg();
+}
+
 void ControllerToolBar::touchBegin(const QPointF &point, double pressure)
 {
+    //this->points.append(EventStack(point, pressure, 0));
     this->_tabletController->touchBegin(point, pressure);
 }
 
 void ControllerToolBar::touchUpdate(const QPointF &point, double pressure)
 {
+    //this->points.append(EventStack(point, pressure, 1));
     this->_tabletController->touchUpdate(point, pressure);
 }
 
 void ControllerToolBar::touchEnd(const QPointF &point, double pressure)
 {
+    //this->points.append(EventStack(point, pressure, 2));
     this->_tabletController->touchEnd(point, pressure);
 }
 
@@ -126,3 +138,23 @@ void ControllerToolBar::positionChanged(const QPointF &newPosition)
 {
     this->_tabletController->positionDocChanged(newPosition);
 }
+
+/*
+void ControllerToolBar::endDraw()
+{
+    if (points.isEmpty())
+        return;
+    const auto &first = this->points.at(0);
+    points.removeFirst();
+    switch (first.type) {
+    case 0:
+        //_tabletController->touchBegin(first.point, first.pressure);
+        break;
+    case 1:
+        _tabletController->touchUpdate(first.point, first.pressure);
+        break;
+    case 2:
+        _tabletController->touchEnd(first.point, first.pressure);
+    };
+}
+*/

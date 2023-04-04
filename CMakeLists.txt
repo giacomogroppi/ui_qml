@@ -112,7 +112,8 @@ set(A_SOURCES_CPP
     ${A_SOURCES_CPP}
     ${A_DIR_ROOT}/src/main.cpp
     ${A_DIR_ROOT}/src/controller/Controller.cpp
-    ${A_DIR_ROOT}/src/controller/ControllerAudio/ControllerAudio.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerAudio/ControllerAudioRecorder.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerAudio/ControllerAudioPlayer.cpp
     ${A_DIR_ROOT}/src/controller/ControllerCanvas/ControllerCanvas.cpp
     ${A_DIR_ROOT}/src/controller/ControllerCanvas/WQMLCanvasComponent.cpp
     ${A_DIR_ROOT}/src/controller/ControllerList/ControllerList.cpp
@@ -121,6 +122,7 @@ set(A_SOURCES_CPP
     ${A_DIR_ROOT}/src/controller/ControllerListFiles/ControllerListFilesFolder.cpp
     ${A_DIR_ROOT}/src/controller/ControllerPageCounter/ControllerPageCounter.cpp
     ${A_DIR_ROOT}/src/controller/ControllerToolBar/ControllerToolBar.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerToolBar/ControllerDocument.cpp
     ${A_DIR_ROOT}/src/controller/ControllerListFiles/Folder.cpp
     ${A_DIR_ROOT}/src/controller/ControllerColor/ControllerColor.cpp
     ${A_DIR_ROOT}/src/controller/ControllerCanvas/WQMLCanvasHandler.h
@@ -270,7 +272,9 @@ function(SETUP_TESTS)
 	endforeach()
 endfunction()
 
+if (NOT IOS)
 SETUP_TESTS(
 		src/test/model/test_utils/test_WCommonScript
 		src/test/controller/ControllerTest
 )
+endif()

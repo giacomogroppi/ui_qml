@@ -21,6 +21,21 @@ class ControllerToolBar: public QObject {
 
     TabletController *_tabletController;
 
+    struct EventStack {
+        EventStack(const QPointF &point, double pressure, int type) : point(point), pressure(pressure), type(type) {};
+        QPointF point;
+        double pressure;
+
+        /**
+         * 0 --> begin
+         * 1 --> update
+         * 2 --> end
+        */
+        int type;
+    };
+
+    //QList<EventStack> points;
+
 #define brown QColor(165,42,42)
 
 public:
@@ -66,14 +81,17 @@ public:
     Q_PROPERTY(bool isYellow    READ isYellow   NOTIFY colorChanged);
     Q_PROPERTY(bool isRed       READ isRed      NOTIFY colorChanged);
 
+    const QImage &getImg();
+
 signals:
     void toolHasChanged();
     void colorChanged();
-
+    void onNeedRefresh();
 public slots:
     void touchBegin(const QPointF &point, double pressure);
     void touchUpdate(const QPointF &point, double pressure);
     void touchEnd(const QPointF &point, double pressure);
 
     void positionChanged(const QPointF &newPosition);
+    //void endDraw();
 };

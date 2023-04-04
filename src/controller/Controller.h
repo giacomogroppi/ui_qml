@@ -4,12 +4,13 @@
 #include <QQmlApplicationEngine>
 
 #include "ControllerList/ControllerList.h"
-#include "ControllerAudio/ControllerAudio.h"
 #include "ControllerCanvas/ControllerCanvas.h"
 #include "ControllerToolBar/ControllerToolBar.h"
 #include "ControllerPageCounter/ControllerPageCounter.h"
 #include "ControllerListFiles/ControllerListFilesFolder.h"
 #include "ControllerColor/ControllerColor.h"
+#include "ControllerAudio/ControllerAudioRecorder.h"
+#include "ControllerAudio/ControllerAudioPlayer.h"
 #include "QtQml/qqmlcontext.h"
 
 /* writernote include */
@@ -21,7 +22,8 @@ private:
     TabletController *_tabletController;
 
     ControllerList              *_listPreview;
-    ControllerAudio             *_audio;
+    ControllerAudioRecorder     *_audioRecorder;
+    ControllerAudioPlayer       *_audioPlayer;
     ControllerCanvas            *_canvas;
     ControllerToolBar           *_toolBar;
     ControllerPageCounter       *_pageCounter;

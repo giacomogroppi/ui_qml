@@ -2,10 +2,12 @@
 #include <QPainter>
 #include <QBrush>
 #include "ControllerCanvas.h"
+#include "core/core.h"
+#include <functional>
 
 WQMLCanvasComponent::WQMLCanvasComponent(QQuickItem *parent)
     : QQuickPaintedItem(parent)
-    , _img(nullptr)
+    , _getImg([]() {return QImage(); })
 {
     qDebug() << "WQMLCanvasComponent constructor call";
     ControllerCanvas::registerDrawer(this);
@@ -15,15 +17,22 @@ void WQMLCanvasComponent::paint(QPainter *painter)
 {
     const auto width = this->width();
     const auto height = this->height();
-    QPen _pen(QColor(127, 127, 127, 255));
 
-    qDebug() << "paint";
+    core::painter_set_antialiasing(*painter);
+    //painter->setRenderHint(QPainter::LosslessImageRendering);
+    const auto &img = this->_getImg();
+    if (1) {
+        const QRect target = QRect(0, 0, width, img.height() * width / img.width());
 
-    painter->setPen(_pen);
-    painter->setRenderHint(QPainter::Antialiasing);
+        painter->drawImage(target, img);
+    }
+    /*static int x = 0;
+    static int y = 0;
+    painter->drawLine(x, y, x + 100, y + 100);
 
-    painter->drawLine(0, 0, width, height);
-    painter->drawRect(0, 0, width, height);
+    x += 1;
+    y += 1;*/
+    WDebug(true, "update call");
 }
 
 void WQMLCanvasComponent::setXPosition(double x)
@@ -42,15 +51,14 @@ double WQMLCanvasComponent::yPosition() const
     return this->_y;
 }
 
-void WQMLCanvasComponent::update(const QImage &img)
+void WQMLCanvasComponent::setFunc(std::function<const QImage &()> getImg)
 {
-    this->_img = &img;
-    callUpdate();
+    this->_getImg = getImg;
 }
 
 void WQMLCanvasComponent::callUpdate()
 {
-    QQuickPaintedItem::update();
+    this->update();
 }
 
 void WQMLCanvasComponent::setYPosition(double y)

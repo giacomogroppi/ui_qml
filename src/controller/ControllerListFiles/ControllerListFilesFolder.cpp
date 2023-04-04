@@ -2,7 +2,7 @@
 #include "QtQml/qqml.h"
 #include <qqml.h>
 #include <QByteArray>
-#include "Controller/Controller.h"
+#include "controller/Controller.h"
 
 ControllerListFilesFolder::ControllerListFilesFolder(QObject *parent)
     : QAbstractListModel(parent)

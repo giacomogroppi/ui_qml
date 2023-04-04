@@ -46,7 +46,7 @@ void WQMLCanvasHandler::setTargetTouchArea(QQuickItem *targetTouchArea)
 bool WQMLCanvasHandler::eventFilter(QObject * obj, QEvent *event)
 {
     if (auto *e = dynamic_cast<QMouseEvent*>(event)) {
-        const double pressure = e->points().at(0).pressure() * 50;
+        const double pressure = e->points().at(0).pressure() * 5;
         if (e->isBeginEvent()) {
             emit touchBegin(e->position(), pressure);
         } else if (e->isUpdateEvent()) {

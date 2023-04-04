@@ -22,11 +22,12 @@ public:
     double yPosition() const;
     Q_SIGNAL void onYPositionChanged();
 
+    void setFunc(std::function<const QImage &()> getImg);
+
 public slots:
-    void update(const QImage &img);
     void callUpdate();
 
 private:
     int _x, _y;
-    const QImage *_img;
+    std::function<const QImage&()> _getImg;
 };

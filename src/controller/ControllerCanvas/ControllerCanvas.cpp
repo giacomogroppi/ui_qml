@@ -10,12 +10,15 @@ WQMLCanvasHandler *handler = nullptr;
 ControllerCanvas *controllerCanvas = nullptr;
 WQMLCanvasComponent *drawer = nullptr;
 
-ControllerCanvas::ControllerCanvas(QObject *parent)
-    : QObject(parent),
-      _timer(new QTimer(this)),
-      _heigth(1000),
-      _width(1000),
-      _status(waitingFor::end)
+ControllerCanvas::ControllerCanvas(QObject *parent, std::function<const QImage &()> getImg)
+    : QObject(parent)
+    , _timer(new QTimer(nullptr))
+    , _heigth(1000)
+    , _width(1000)
+    , _getImg(getImg)
+#ifdef DEBUGINFO
+    , _status(waitingFor::begin)
+#endif
 {
     qmlRegisterType<WQMLCanvasComponent>("writernote.WQMLCanvasComponent",
                                          1, 0,
@@ -30,9 +33,12 @@ ControllerCanvas::ControllerCanvas(QObject *parent)
 
 void ControllerCanvas::endTimer()
 {
-    this->wSetHeigth(this->heigthObject() + 100);
-    _timer->start(1000);
+    //this->wSetHeigth(this->heigthObject() + 100);
+    //_timer->start(1);
     qDebug() << "ControllerCanvas::endTimer" << this->heigthObject();
+
+    if (drawer)
+        drawer->callUpdate();
 }
 
 bool ControllerCanvas::event(QEvent *event)
@@ -68,6 +74,8 @@ void ControllerCanvas::registerDrawer(WQMLCanvasComponent *object)
     W_ASSERT(drawer == nullptr);
     W_ASSERT(controllerCanvas != nullptr);
 
+    drawer = object;
+
     QObject::connect(drawer, &WQMLCanvasComponent::onXPositionChanged, []() {
         emit controllerCanvas->positionChanged(QPointF(drawer->xPosition(), 0.));
     });
@@ -75,32 +83,35 @@ void ControllerCanvas::registerDrawer(WQMLCanvasComponent *object)
     QObject::connect(drawer, &WQMLCanvasComponent::onYPositionChanged, []() {
         emit controllerCanvas->positionChanged(QPointF(0., drawer->yPosition()));
     });
+    drawer->setFunc(controllerCanvas->_getImg);
 }
 
 void ControllerCanvas::refresh()
 {
     emit this->widthObjectChanged();
     emit this->heigthObjectChanged();
+    drawer->callUpdate();
 }
 
 void ControllerCanvas::touchBegin(const QPointF &point, double pressure)
 {
-    Q_ASSERT(_status == waitingFor::end);
-    _status = waitingFor::begin;
+    W_ASSERT(_status == waitingFor::begin);
+    DO_IF_DEBUG(_status = waitingFor::update;);
+
     emit this->onTouchBegin(point, pressure);
 }
 
 void ControllerCanvas::touchUpdate(const QPointF &point, double pressure)
 {
-    Q_ASSERT(_status == waitingFor::begin || _status == waitingFor::update);
-    _status = waitingFor::update;
+    W_ASSERT(_status == waitingFor::update);
+    DO_IF_DEBUG(_status = waitingFor::update;);
     emit this->onTouchUpdate(point, pressure);
 }
 
 void ControllerCanvas::touchEnd(const QPointF &point, double pressure)
 {
-    Q_ASSERT(_status == waitingFor::begin || _status == waitingFor::update);
-    _status = waitingFor::end;
+    W_ASSERT(_status == waitingFor::update);
+    DO_IF_DEBUG(_status = waitingFor::begin;);
     emit this->onTouchEnd(point, pressure);
 }
 
@@ -113,3 +124,4 @@ void ControllerCanvas::registerHangler(WQMLCanvasHandler *object)
     QObject::connect(handler, &WQMLCanvasHandler::touchUpdate,  controllerCanvas, &ControllerCanvas::touchUpdate);
     QObject::connect(handler, &WQMLCanvasHandler::touchEnd,     controllerCanvas, &ControllerCanvas::touchEnd);
 }
+
