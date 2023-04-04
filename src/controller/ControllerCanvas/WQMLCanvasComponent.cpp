@@ -42,8 +42,8 @@ void WQMLCanvasComponent::paint(QPainter *painter)
         );
 
     const int diff = (ms - old).count();
-    WDebug(true, diff);
-    WDebug(true, "update call" << 1 / (diff / 1000) << rand() % 2000);
+    //WDebug(true, diff);
+    WDebug(true, "update call" << diff << "ms" << 1. / (double(diff) / 1000.) << "Hz");
 }
 
 void WQMLCanvasComponent::setXPosition(double x)

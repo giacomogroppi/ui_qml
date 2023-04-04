@@ -62,9 +62,6 @@ bool WQMLCanvasHandler::eventFilter(QObject * obj, QEvent *event)
         //this->touchEventPrivate(dynamic_cast<QTouchEvent *>(event));
         //return true;
     }
-    // other Touch events here...
-
-    //qDebug() << "WQMLCanvasHandler::eventFilter" << event->type();
 
     return false;
 }
