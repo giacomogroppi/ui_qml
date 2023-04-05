@@ -6,12 +6,20 @@
 #include <QTimer>
 
 extern QQmlContext *_content;
+extern StrokePre *__tmp;
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/src/main.qml"));
+
+    /**
+     * Dobbiamo instanzare lo strokePre in questo punto devo codice
+     * perchè vogliamo assicurare a tutto il codice che accede a tale
+     * oggetti che esso è valido. --> [non vogliamo controllare che sia nullo :)] 
+    */
+    __tmp = new StrokePre();
 
     _content = engine.rootContext();
     Controller controller(nullptr, engine.rootContext(), &engine);

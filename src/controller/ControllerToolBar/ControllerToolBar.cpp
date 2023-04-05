@@ -1,5 +1,8 @@
 #include "ControllerToolBar.h"
 #include <QDebug>
+#include "touch/dataTouch/stroke/StrokePre.h"
+
+extern StrokePre *__tmp;
 
 ControllerToolBar::ControllerToolBar(QObject *parent, TabletController *tabletController)
     : QObject(parent)
@@ -18,6 +21,7 @@ ControllerToolBar::ControllerToolBar(QObject *parent, TabletController *tabletCo
 
 ControllerToolBar::~ControllerToolBar()
 {
+    delete __tmp;
 }
 
 void ControllerToolBar::clickSelectPen()

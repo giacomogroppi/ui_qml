@@ -284,5 +284,6 @@ if (NOT IOS)
 SETUP_TESTS(
 		src/test/model/test_utils/test_WCommonScript
 		src/test/controller/ControllerTest
+                src/test/model/test_core/test_WPair
 )
 endif()
