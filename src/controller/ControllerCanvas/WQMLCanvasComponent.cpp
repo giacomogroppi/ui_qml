@@ -43,7 +43,7 @@ void WQMLCanvasComponent::paint(QPainter *painter)
             std::chrono::system_clock::now().time_since_epoch()
         );
 
-        painter->drawLine(10, 10, 600, 600);
+        //painter->drawLine(10, 10, 600, 600);
         painter->drawPixmap(target, img);
 
         const auto timeNew = std::chrono::duration_cast< std::chrono::milliseconds >(
