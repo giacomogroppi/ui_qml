@@ -4,6 +4,7 @@
 #include <QColor>
 #include <QQmlApplicationEngine>
 
+#include "QtCore/qrunnable.h"
 #include "touch/TabletController.h"
 
 class ControllerToolBar: public QObject {
@@ -34,7 +35,10 @@ class ControllerToolBar: public QObject {
         int type;
     };
 
-    //QList<EventStack> points;
+    QList<EventStack> _points;
+    WMutex _mutexListPoints;
+    WMutex _mutexInternalData;
+    WSemaphore _sem;
 
 #define brown QColor(165,42,42)
 
@@ -81,7 +85,7 @@ public:
     Q_PROPERTY(bool isYellow    READ isYellow   NOTIFY colorChanged);
     Q_PROPERTY(bool isRed       READ isRed      NOTIFY colorChanged);
 
-    const QPixmap &getImg();
+    void getImg(QPainter &painter, double width);
 
 signals:
     void toolHasChanged();

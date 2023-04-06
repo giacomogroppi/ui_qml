@@ -24,8 +24,8 @@ private:
     ControllerList              *_listPreview;
     ControllerAudioRecorder     *_audioRecorder;
     ControllerAudioPlayer       *_audioPlayer;
-    ControllerCanvas            *_canvas;
     ControllerToolBar           *_toolBar;
+    ControllerCanvas            *_canvas;
     ControllerPageCounter       *_pageCounter;
     ControllerListFilesFolder   *_listFiles;
     ControllerColor             *_color;

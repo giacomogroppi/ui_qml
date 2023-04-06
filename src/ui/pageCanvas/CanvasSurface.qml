@@ -42,11 +42,15 @@ Item {
                 console.log("width change", width, "diventa", _controllerCanvas.widthObject);
             }
         }
-    }
 
-    WCanvasHandler {
-        targetTouchArea: canvasSurface
-        heightObject: canvas_surface_private.height
-        widthObject: canvas_surface_private.width
+        WCanvasHandler {
+            targetTouchArea: canvasSurface
+            heightObject: canvas_surface_private.height
+            widthObject:  canvas_surface_private.width
+
+            xOriginPosition: canvas_surface_private.x - canvasSurface.x
+            yOriginPosition: canvas_surface_private.y - canvasSurface.y
+
+        }
     }
 }

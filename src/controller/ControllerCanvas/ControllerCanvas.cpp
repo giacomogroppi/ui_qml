@@ -10,7 +10,7 @@ WQMLCanvasHandler *handler = nullptr;
 ControllerCanvas *controllerCanvas = nullptr;
 WQMLCanvasComponent *drawer = nullptr;
 
-ControllerCanvas::ControllerCanvas(QObject *parent, std::function<const QPixmap &()> getImg)
+ControllerCanvas::ControllerCanvas(QObject *parent, std::function<void (QPainter &painter, double width)> getImg)
     : QObject(parent)
     , _timer(new QTimer(nullptr))
     , _heigth(1000)

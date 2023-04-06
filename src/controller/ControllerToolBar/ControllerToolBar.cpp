@@ -1,6 +1,9 @@
 #include "ControllerToolBar.h"
 #include <QDebug>
+#include "core/WMutexLocker.h"
 #include "touch/dataTouch/stroke/StrokePre.h"
+#include <QThreadPool>
+#include <QRunnable>
 
 extern StrokePre *__tmp;
 
@@ -9,14 +12,42 @@ ControllerToolBar::ControllerToolBar(QObject *parent, TabletController *tabletCo
     , _type(Pen)
     , _color(Qt::black)
     , _tabletController(tabletController)
+    , _sem(0)
 {
     QObject::connect(this, &ControllerToolBar::colorChanged, [this]() {
         _tabletController->selectColor(this->_color);
     });
 
     QObject::connect(this->_tabletController, &TabletController::onNeedRefresh, [this] () {
-        emit onNeedRefresh();
+        //emit onNeedRefresh();
     });
+
+    QThreadPool::globalInstance()->startOnReservedThread(
+        [this]() {
+            for (;;) {
+                this->_sem.acquire();
+
+                this->_mutexListPoints.lock();
+                const auto point = this->_points.takeFirst();
+                this->_mutexListPoints.unlock();
+
+                _mutexInternalData.lock();
+                switch (point.type) {
+                case 0: // begin
+                    this->_tabletController->touchBegin(point.point, point.pressure);
+                    break;
+                case 1:
+                    this->_tabletController->touchUpdate(point.point, point.pressure);
+                    break;
+                case 2:
+                    this->_tabletController->touchEnd(point.point, point.pressure);
+                    break;
+                }
+                this->_tabletController->triggerDraw();
+                this->_mutexInternalData.unlock();
+            }
+        }
+    );
 }
 
 ControllerToolBar::~ControllerToolBar()
@@ -115,50 +146,57 @@ bool ControllerToolBar::isCut() const
     return _type == Cut;
 }
 
-const QPixmap &ControllerToolBar::getImg()
+void ControllerToolBar::getImg(QPainter &painter, double width)
 {
-    return this->_tabletController->getImg();
+    //_mutexInternalData.lock();
+    const QImage img = this->_tabletController->getImg();
+    //_mutexInternalData.unlock();
+
+    W_ASSERT(!img.isNull());
+
+    const auto target = QRect (
+        0, 0,
+        width,
+        img.height() * width / img.width()
+    );
+
+    painter.drawImage(target, img);
+    //img.save("/Users/giacomo/Desktop/tmp_foto/prova.png", "PNG");
+
+    //return img;
 }
 
 void ControllerToolBar::touchBegin(const QPointF &point, double pressure)
 {
-    //this->points.append(EventStack(point, pressure, 0));
-    this->_tabletController->touchBegin(point, pressure);
+    WMutexLocker _(this->_mutexListPoints);
+    this->_sem.release();
+    this->_points.append(EventStack(point, pressure, 0));
+    WDebug(false, "call");
+    emit this->onNeedRefresh();
+    //this->_tabletController->touchBegin(point, pressure);
 }
 
 void ControllerToolBar::touchUpdate(const QPointF &point, double pressure)
 {
-    //this->points.append(EventStack(point, pressure, 1));
-    this->_tabletController->touchUpdate(point, pressure);
+    WMutexLocker _(this->_mutexListPoints);
+    this->_sem.release();
+    this->_points.append(EventStack(point, pressure, 1));
+    emit this->onNeedRefresh();
+    WDebug(false, "call");
+    //this->_tabletController->touchUpdate(point, pressure);
 }
 
 void ControllerToolBar::touchEnd(const QPointF &point, double pressure)
 {
-    //this->points.append(EventStack(point, pressure, 2));
-    this->_tabletController->touchEnd(point, pressure);
+    WMutexLocker _(this->_mutexListPoints);
+    this->_sem.release();
+    this->_points.append(EventStack(point, pressure, 2));
+    WDebug(false, "call");
+    emit this->onNeedRefresh();
+    //this->_tabletController->touchEnd(point, pressure);
 }
 
 void ControllerToolBar::positionChanged(const QPointF &newPosition)
 {
     this->_tabletController->positionDocChanged(newPosition);
 }
-
-/*
-void ControllerToolBar::endDraw()
-{
-    if (points.isEmpty())
-        return;
-    const auto &first = this->points.at(0);
-    points.removeFirst();
-    switch (first.type) {
-    case 0:
-        //_tabletController->touchBegin(first.point, first.pressure);
-        break;
-    case 1:
-        _tabletController->touchUpdate(first.point, first.pressure);
-        break;
-    case 2:
-        _tabletController->touchEnd(first.point, first.pressure);
-    };
-}
-*/

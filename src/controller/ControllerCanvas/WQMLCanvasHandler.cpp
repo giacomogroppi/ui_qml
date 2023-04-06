@@ -53,13 +53,15 @@ bool WQMLCanvasHandler::eventFilter(QObject * obj, QEvent *event)
             return false;
 
         const double pressure = 0.3; e->points().at(0).pressure() * 5.;
-        const double dw = 1.675;
-        const double dh = 1.6655;
-        const QPointF point = QPointF (
-                                    (e->position().x() - 34.8548) * dw,
-                                    (e->position().y() - 34.6371) * dh
-                                  ) + QPointF(34.8548, 34.6371);
-        qDebug() << point;
+
+        const double dw1 = Page::getWidth()   /  this->_w ;
+        const double dh1 = Page::getHeight()  /  this->_h ;
+
+        const auto point = QPointF (
+            (e->position().x() - this->_xOrigin)   *  dw1,
+            (e->position().y() - this->_yOrigin )  *  dh1
+        );
+
         if (e->isBeginEvent()) {
             emit touchBegin(point, pressure);
         } else if (e->isUpdateEvent()) {
@@ -68,6 +70,8 @@ bool WQMLCanvasHandler::eventFilter(QObject * obj, QEvent *event)
             W_ASSERT(e->isEndEvent());
             emit touchEnd(point, pressure);
         }
+        //qDebug() << (e->position() - QPointF(_xOrigin, _yOrigin));
+        //qDebug() << this->_w << this->_h;
         return true;
     }
 
