@@ -106,6 +106,14 @@ file(GLOB_RECURSE PROJECT_SOURCES_WRITERNOTE
     $ENV{HOME}/writernote-qt/src/*.h
 )
 
+if (IOS)
+    set(PROJECT_SOURCES_WRITERNOTE
+        ${PROJECT_SOURCES_WRITERNOTE}
+        $ENV{HOME}/writernote-qt/src/core/WPainter/WPainter_ios.mm
+        $ENV{HOME}/writernote-qt/src/core/WImage.mm
+    )
+endif()
+
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUGINFO -O0")
 
 set(A_SOURCES_CPP

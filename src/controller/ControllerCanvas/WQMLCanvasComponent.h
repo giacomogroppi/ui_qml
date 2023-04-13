@@ -4,13 +4,21 @@
 #include <QQuickPaintedItem>
 #include <QTimer>
 
+// opengl
+#include <QQuickPaintedItem>
+#include <QOpenGLFunctions>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLBuffer>
+#include <QOpenGLVertexArrayObject>
+#include <QOpenGLContext>
+#include <QQuickWindow>
+
 class WQMLCanvasComponent: public QQuickPaintedItem
 {
     Q_OBJECT
 
 public:
     explicit WQMLCanvasComponent(QQuickItem *parent = nullptr);
-    void paint(QPainter *painter) override;
 
     Q_PROPERTY(double xPosition READ xPosition  WRITE setXPosition  NOTIFY onXPositionChanged);
     void setXPosition(double x);
@@ -26,6 +34,8 @@ public:
 
 public slots:
     void callUpdate();
+
+    void paint(QPainter *painter) override;
 
 private:
     int _x, _y;

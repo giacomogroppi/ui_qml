@@ -18,11 +18,9 @@ ControllerToolBar::ControllerToolBar(QObject *parent, TabletController *tabletCo
         _tabletController->selectColor(this->_color);
     });
 
-    QObject::connect(this->_tabletController, &TabletController::onNeedRefresh, [this] () {
-        //emit onNeedRefresh();
-    });
+    QObject::connect(this->_tabletController, &TabletController::onNeedRefresh, this, &ControllerToolBar::needRefresh, Qt::QueuedConnection);
 
-    QThreadPool::globalInstance()->startOnReservedThread(
+    /*QThreadPool::globalInstance()->startOnReservedThread(
         [this]() {
             for (;;) {
                 this->_sem.acquire();
@@ -43,16 +41,20 @@ ControllerToolBar::ControllerToolBar(QObject *parent, TabletController *tabletCo
                     this->_tabletController->touchEnd(point.point, point.pressure);
                     break;
                 }
-                this->_tabletController->triggerDraw();
                 this->_mutexInternalData.unlock();
             }
         }
-    );
+    );*/
 }
 
 ControllerToolBar::~ControllerToolBar()
 {
     delete __tmp;
+}
+
+void ControllerToolBar::needRefresh ()
+{
+    emit this->onNeedRefresh();
 }
 
 void ControllerToolBar::clickSelectPen()
@@ -148,52 +150,48 @@ bool ControllerToolBar::isCut() const
 
 void ControllerToolBar::getImg(QPainter &painter, double width)
 {
-    //_mutexInternalData.lock();
-    const QImage img = this->_tabletController->getImg();
-    //_mutexInternalData.unlock();
-
-    W_ASSERT(!img.isNull());
-
+    /*
     const auto target = QRect (
         0, 0,
         width,
         img.height() * width / img.width()
     );
-
-    painter.drawImage(target, img);
+    */
+    this->_tabletController->getImg(painter, width);
     //img.save("/Users/giacomo/Desktop/tmp_foto/prova.png", "PNG");
-
-    //return img;
 }
 
 void ControllerToolBar::touchBegin(const QPointF &point, double pressure)
 {
-    WMutexLocker _(this->_mutexListPoints);
-    this->_sem.release();
-    this->_points.append(EventStack(point, pressure, 0));
+    //WMutexLocker _(this->_mutexListPoints);
+    //this->_sem.release();
+    //this->_points.append(EventStack(point, pressure, 0));
     WDebug(false, "call");
     emit this->onNeedRefresh();
-    //this->_tabletController->touchBegin(point, pressure);
+    this->_tabletController->touchBegin(point, pressure);
 }
 
 void ControllerToolBar::touchUpdate(const QPointF &point, double pressure)
 {
-    WMutexLocker _(this->_mutexListPoints);
-    this->_sem.release();
-    this->_points.append(EventStack(point, pressure, 1));
+    //WMutexLocker _(this->_mutexListPoints);
+    //this->_sem.release();
+    //this->_points.append(EventStack(point, pressure, 1));
+
     emit this->onNeedRefresh();
     WDebug(false, "call");
-    //this->_tabletController->touchUpdate(point, pressure);
+    this->_tabletController->touchUpdate(point, pressure);
 }
 
 void ControllerToolBar::touchEnd(const QPointF &point, double pressure)
 {
-    WMutexLocker _(this->_mutexListPoints);
-    this->_sem.release();
-    this->_points.append(EventStack(point, pressure, 2));
+    //WMutexLocker _(this->_mutexListPoints);
+    //this->_sem.release();
+    //this->_points.append(EventStack(point, pressure, 2));
+
     WDebug(false, "call");
     emit this->onNeedRefresh();
-    //this->_tabletController->touchEnd(point, pressure);
+
+    this->_tabletController->touchEnd(point, pressure);
 }
 
 void ControllerToolBar::positionChanged(const QPointF &newPosition)

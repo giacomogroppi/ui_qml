@@ -22,10 +22,10 @@ ControllerCanvas::ControllerCanvas(QObject *parent, std::function<void (QPainter
 {
     qmlRegisterType<WQMLCanvasComponent>("writernote.WQMLCanvasComponent",
                                          1, 0,
-                                         "WCanvasComponent");
+                                        "WCanvasComponent");
     qmlRegisterType<WQMLCanvasHandler>("writernote.WQMLCanvasHandler",
                                        1, 0,
-                                       "WCanvasHandler");
+                                        "WCanvasHandler");
     QObject::connect(_timer, &QTimer::timeout, this, &ControllerCanvas::endTimer);
     controllerCanvas = this;
     //_timer->start(500);

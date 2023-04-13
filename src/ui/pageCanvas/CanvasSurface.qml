@@ -25,6 +25,11 @@ Item {
             policy: ScrollBar.AlwaysOn
         }
 
+        /*Rectangle {
+            anchors.fill: canvas_surface_private
+            color: "Brown"
+        }*/
+
         WCanvasComponent {
             id: canvas_surface_private
             anchors.margins: 10

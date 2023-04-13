@@ -97,5 +97,7 @@ public slots:
     void touchEnd(const QPointF &point, double pressure);
 
     void positionChanged(const QPointF &newPosition);
-    //void endDraw();
+
+private slots:
+    void needRefresh();
 };

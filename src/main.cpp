@@ -11,6 +11,7 @@ extern StrokePre *__tmp;
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
+    QQuickWindow::setGraphicsApi(QSGRendererInterface::Metal);
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/src/main.qml"));
 

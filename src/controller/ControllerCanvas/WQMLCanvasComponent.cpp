@@ -4,7 +4,13 @@
 #include "ControllerCanvas.h"
 #include "core/WPixmap.h"
 #include "core/core.h"
+#include <QRunnable>
 #include <functional>
+#include <QQuickWindow>
+
+#include <QOpenGLTexture>
+#include <QOpenGLFramebufferObject>
+#include <QOpenGLBuffer>
 
 WQMLCanvasComponent::WQMLCanvasComponent(QQuickItem *parent)
     : QQuickPaintedItem(parent)
@@ -15,27 +21,19 @@ WQMLCanvasComponent::WQMLCanvasComponent(QQuickItem *parent)
     qDebug() << "WQMLCanvasComponent constructor call";
     ControllerCanvas::registerDrawer(this);
     this->setAntialiasing(true);
-    this->setRenderTarget(QQuickPaintedItem::Image);
 }
 
 void WQMLCanvasComponent::paint(QPainter *painter)
 {
     const auto width = this->width();
-    const auto height = this->height();
-
-    core::painter_set_antialiasing(*painter);
-    painter->setRenderHint(QPainter::LosslessImageRendering);
 
     TIME_START(paint_var);
 
     if (this->_functionSet) {
-        //const QImage img = this->_getImg();
-
         this->_getImg(*painter, width);
     }
 
-    TIME_STOP(paint_var, "Paint: ");
-    //qDebug() << "Paint T=" << diff << "ms" << "Time for getImg(): " << (timeNew - timeOld).count() << "["<< 1./(double(diff) / 1000.) << "Hz]";
+    //TIME_STOP(paint_var, "Paint: ");
 }
 
 void WQMLCanvasComponent::setXPosition(double x)
