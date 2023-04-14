@@ -36,5 +36,7 @@ int main(int argc, char *argv[])
 
     engine.load(url);
 
+    //qGuiApp->processEvents(QEventLoop::ExcludeUserInputEvents);
+
     return app.exec();
 }

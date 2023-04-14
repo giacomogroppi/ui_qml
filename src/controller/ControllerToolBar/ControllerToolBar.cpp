@@ -3,48 +3,56 @@
 #include "core/WMutexLocker.h"
 #include "touch/dataTouch/stroke/StrokePre.h"
 #include <QThreadPool>
+#include "Tool/WQMLControllerHighlighter.h"
+#include "Tool/WQMLControllerPen.h"
 #include <QRunnable>
 
 extern StrokePre *__tmp;
 
+static ControllerToolBar *controllerToolBar = nullptr;
+static QList<ToolController *> tools;
+
 ControllerToolBar::ControllerToolBar(QObject *parent, TabletController *tabletController)
     : QObject(parent)
-    , _type(Pen)
     , _color(Qt::black)
     , _tabletController(tabletController)
-    , _sem(0)
 {
+    controllerToolBar = this;
+
     QObject::connect(this, &ControllerToolBar::colorChanged, [this]() {
         _tabletController->selectColor(this->_color);
     });
 
     QObject::connect(this->_tabletController, &TabletController::onNeedRefresh, this, &ControllerToolBar::needRefresh, Qt::QueuedConnection);
 
-    /*QThreadPool::globalInstance()->startOnReservedThread(
-        [this]() {
-            for (;;) {
-                this->_sem.acquire();
+    qmlRegisterType<WQMLControllerHighlighter>( "writernote.WQMLControllerHighlighter", 1, 0, "WHighlighterButton");
+    qmlRegisterType<WQMLControllerPen>(         "writernote.WQMLControllerPen",         1, 0, "WPenButton");
 
-                this->_mutexListPoints.lock();
-                const auto point = this->_points.takeFirst();
-                this->_mutexListPoints.unlock();
+    this->_tabletController->selectType(Pen::type());
 
-                _mutexInternalData.lock();
-                switch (point.type) {
-                case 0: // begin
-                    this->_tabletController->touchBegin(point.point, point.pressure);
-                    break;
-                case 1:
-                    this->_tabletController->touchUpdate(point.point, point.pressure);
-                    break;
-                case 2:
-                    this->_tabletController->touchEnd(point.point, point.pressure);
-                    break;
-                }
-                this->_mutexInternalData.unlock();
+    QTimer::singleShot(50, []() {
+        for (auto *t : tools) {
+            continue;
+            t->callUpdate();
+
+            if (t->getType() == controllerToolBar->_tabletController->getCurrentTool()->getType()) {
+                t->select();
+            } else {
+                t->deselect();
             }
         }
-    );*/
+    });
+}
+
+void ControllerToolBar::selectTool(int tool)
+{
+    if (tool != this->_tabletController->getCurrentTool()->getType()) {
+        this->_tabletController->selectType(tool);
+
+        this->updateGui();
+
+        emit toolHasChanged();
+    }
 }
 
 ControllerToolBar::~ControllerToolBar()
@@ -59,37 +67,28 @@ void ControllerToolBar::needRefresh ()
 
 void ControllerToolBar::clickSelectPen()
 {
-    _type = Pen;
-    this->_tabletController->selectPen();
-    emit toolHasChanged();
+    this->selectTool(Pen::type());
 }
 
 void ControllerToolBar::clickRubber()
 {
-    _type = Rubber;
-    this->_tabletController->selectRubber();
-    emit toolHasChanged();
+    this->selectTool(Rubber::type());
 }
 
 void ControllerToolBar::clickHand()
 {
-    _type = Hand;
+    //this->selectTool(Hand::type());
     W_ASSERT_TEXT(false, "to_do");
-    emit toolHasChanged();
 }
 
 void ControllerToolBar::clickHighlighter()
 {
-    _type = Highlighter;
-    this->_tabletController->selectHighligter();
-    emit toolHasChanged();
+    this->selectTool(Highligter::type());
 }
 
 void ControllerToolBar::clickCut()
 {
-    _type = Cut;
-    this->_tabletController->selectSquare();
-    emit toolHasChanged();
+    this->selectTool(Square::type());
 }
 
 void ControllerToolBar::clickBlack()
@@ -125,47 +124,60 @@ void ControllerToolBar::clickRed()
 
 bool ControllerToolBar::isPen() const
 {
-    return _type == Pen;
+    return this->_tabletController->getCurrentTool()->getType() == Pen::type();
 }
 
 bool ControllerToolBar::isRubber() const
 {
-    return _type == Rubber;
+    return this->_tabletController->getCurrentTool()->getType() == Rubber::type();
 }
 
 bool ControllerToolBar::isHand() const
 {
-    return _type == Hand;
+    return this->_tabletController->getCurrentTool()->getType() == Square::type();
 }
 
 bool ControllerToolBar::isHighlighter() const
 {
-    return _type == Highlighter;
+    return this->_tabletController->getCurrentTool()->getType() == Highligter::type();
 }
 
 bool ControllerToolBar::isCut() const
 {
-    return _type == Cut;
+    return this->_tabletController->getCurrentTool()->getType() == Square::type();
 }
 
 void ControllerToolBar::getImg(QPainter &painter, double width)
 {
-    /*
-    const auto target = QRect (
-        0, 0,
-        width,
-        img.height() * width / img.width()
-    );
-    */
     this->_tabletController->getImg(painter, width);
-    //img.save("/Users/giacomo/Desktop/tmp_foto/prova.png", "PNG");
+}
+
+void ControllerToolBar::registerTool(ToolController *tool)
+{
+    tools.append(tool);
+    QTimer::singleShot(0, controllerToolBar, &ControllerToolBar::updateGui);
+}
+
+void ControllerToolBar::updateGui()
+{
+    const auto current = this->_tabletController->getCurrentTool()->getType();
+    for (auto *t: tools) {
+        if (t->getType() == current) {
+            t->select();
+        } else {
+            t->deselect();
+        }
+        t->callUpdate();
+    }
+}
+
+QColor ControllerToolBar::getColor()
+{
+    return controllerToolBar->_color;
 }
 
 void ControllerToolBar::touchBegin(const QPointF &point, double pressure)
 {
-    //WMutexLocker _(this->_mutexListPoints);
-    //this->_sem.release();
-    //this->_points.append(EventStack(point, pressure, 0));
     WDebug(false, "call");
     emit this->onNeedRefresh();
     this->_tabletController->touchBegin(point, pressure);
@@ -173,10 +185,6 @@ void ControllerToolBar::touchBegin(const QPointF &point, double pressure)
 
 void ControllerToolBar::touchUpdate(const QPointF &point, double pressure)
 {
-    //WMutexLocker _(this->_mutexListPoints);
-    //this->_sem.release();
-    //this->_points.append(EventStack(point, pressure, 1));
-
     emit this->onNeedRefresh();
     WDebug(false, "call");
     this->_tabletController->touchUpdate(point, pressure);
@@ -184,13 +192,8 @@ void ControllerToolBar::touchUpdate(const QPointF &point, double pressure)
 
 void ControllerToolBar::touchEnd(const QPointF &point, double pressure)
 {
-    //WMutexLocker _(this->_mutexListPoints);
-    //this->_sem.release();
-    //this->_points.append(EventStack(point, pressure, 2));
-
     WDebug(false, "call");
     emit this->onNeedRefresh();
-
     this->_tabletController->touchEnd(point, pressure);
 }
 
@@ -198,3 +201,4 @@ void ControllerToolBar::positionChanged(const QPointF &newPosition)
 {
     this->_tabletController->positionDocChanged(newPosition);
 }
+

@@ -3,42 +3,22 @@
 #include <QObject>
 #include <QColor>
 #include <QQmlApplicationEngine>
-
-#include "QtCore/qrunnable.h"
+#include "Tool/ToolController.h"
 #include "touch/TabletController.h"
+#include "touch/pen/Pen.h"
+#include "touch/rubber/Rubber.h"
+#include "touch/square/Square.h"
+#include "touch/laser/Laser.h"
+#include "touch/highlighter/Highligter.h"
 
 class ControllerToolBar: public QObject {
     Q_OBJECT
-
-    enum ToolType {
-        Pen,
-        Rubber,
-        Highlighter,
-        Hand,
-        Cut
-    } _type;
 
     QColor _color;
 
     TabletController *_tabletController;
 
-    struct EventStack {
-        EventStack(const QPointF &point, double pressure, int type) : point(point), pressure(pressure), type(type) {};
-        QPointF point;
-        double pressure;
-
-        /**
-         * 0 --> begin
-         * 1 --> update
-         * 2 --> end
-        */
-        int type;
-    };
-
-    QList<EventStack> _points;
-    WMutex _mutexListPoints;
-    WMutex _mutexInternalData;
-    WSemaphore _sem;
+    void selectTool(int type);
 
 #define brown QColor(165,42,42)
 
@@ -87,6 +67,8 @@ public:
 
     void getImg(QPainter &painter, double width);
 
+    static void registerTool(ToolController *tool);
+    static QColor getColor();
 signals:
     void toolHasChanged();
     void colorChanged();
@@ -97,7 +79,7 @@ public slots:
     void touchEnd(const QPointF &point, double pressure);
 
     void positionChanged(const QPointF &newPosition);
-
+    void updateGui();
 private slots:
     void needRefresh();
 };
