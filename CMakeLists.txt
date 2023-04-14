@@ -13,6 +13,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "$ENV{HOME}/Qt/6.4.2/macos/lib/cmake")
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "$ENV{HOME}/Qt/6.5.0/gcc_64/lib/cmake")
 
+option(RUN_TEST_COVERAGE "Enable this if you want to run tests with coverage" OFF)
+
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -71,11 +73,11 @@ add_definitions(-DVERSION_STRING="TESTING")
 set(A_QT_MODULES
 	${A_QT_MODULES}
 	Core
-        Gui
+    Gui
 	Quick
-        Multimedia
-        Test
-        #PrintSupport
+    Multimedia
+    Test
+    #PrintSupport
 )
 
 set(A_TARGET_MODULES_PUBLIC
@@ -396,7 +398,6 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUGINFO -O0")
 
 set(A_SOURCES_CPP
     ${A_SOURCES_CPP}
-    ${A_DIR_ROOT}/src/main.cpp
     ${A_DIR_ROOT}/src/controller/Controller.cpp
     ${A_DIR_ROOT}/src/controller/ControllerAudio/ControllerAudioRecorder.cpp
     ${A_DIR_ROOT}/src/controller/ControllerAudio/ControllerAudioPlayer.cpp
@@ -422,6 +423,10 @@ set(A_SOURCES_CPP
 
     ${PROJECT_SOURCES_WRITERNOTE}
 )
+
+set(MAIN
+		${A_DIR_ROOT}/src/main.cpp
+		)
 
 if (IOS)
     set(A_SOURCES_CPP
@@ -454,6 +459,7 @@ set(A_SOURCES
 	${A_SOURCES_RESOURCES}
 	${A_SOURCES_CPP_HEADERS}
 	${A_SOURCES_CPP}
+	${MAIN}
 	${A_SOURCES_C_HEADERS}
 	${A_SOURCES_C}
 	${A_SOURCES_PRECOMPILED_HEADERS_PUBLIC}
@@ -503,6 +509,8 @@ SET(QT_USE_QTMULTIMEDIA TRUE)
 if(UNIX AND NOT APPLE AND NOT MINGW)
     set(LINUX TRUE)
 endif()
+
+set(LIBZIP_LIBRARY /opt/homebrew/Cellar/libzip/1.9.2/lib/libzip.dylib)
 
 if(IOS)
     message("-- Configure libzip for ios")
@@ -558,18 +566,36 @@ endif()
 
 enable_testing()
 
+add_library(writernote_lib ${A_SOURCES_CPP})
+
+target_link_libraries(writernote_lib Qt${QT_MAJOR_VERISION}::Test)
+target_link_libraries(writernote_lib Qt${QT_MAJOR_VERISION}::Core)
+target_link_libraries(writernote_lib Qt${QT_MAJOR_VERISION}::Gui)
+target_link_libraries(writernote_lib Qt${QT_MAJOR_VERISION}::Quick)
+target_link_libraries(writernote_lib Qt${QT_MAJOR_VERISION}::Multimedia)
+target_link_libraries(writernote_lib ${LIBZIP_LIBRARY})
+
 function(SETUP_TESTS)
 	foreach(_testname ${ARGN})
 		string(REPLACE "/" ";" List_file ${_testname})
 		list(LENGTH List_file len)
 		list(GET List_file -1 last_item)
 
-		add_executable(${last_item} ${_testname}.cpp )
-		add_test(NAME ${last_item} COMMAND ${last_item})
+
+		if (RUN_TEST_COVERAGE)
+			add_executable(${last_item} ${_testname}.cpp ${A_SOURCES_CPP} )
+		else()
+			add_executable(${last_item} ${_testname}.cpp)
+			target_link_libraries(${last_item} writernote_lib)
+		endif ()
 		target_link_libraries(${last_item} Qt${QT_MAJOR_VERISION}::Test)
 		target_link_libraries(${last_item} Qt${QT_MAJOR_VERISION}::Core)
 		target_link_libraries(${last_item} Qt${QT_MAJOR_VERISION}::Gui)
 		target_link_libraries(${last_item} Qt${QT_MAJOR_VERISION}::Quick)
+		target_link_libraries(${last_item} Qt${QT_MAJOR_VERISION}::Multimedia)
+		target_link_libraries(${last_item} ${LIBZIP_LIBRARY})
+
+                add_test(NAME ${last_item} COMMAND ${last_item})
 	endforeach()
 endfunction()
 
@@ -577,6 +603,7 @@ if (NOT IOS)
 SETUP_TESTS(
 		src/test/model/test_utils/test_WCommonScript
 		src/test/controller/ControllerTest
-                src/test/model/test_core/test_WPair
+		src/test/model/test_core/test_WPair
+		src/test/model/test_core/test_WList
 )
 endif()
