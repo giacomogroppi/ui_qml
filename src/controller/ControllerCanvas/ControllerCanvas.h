@@ -9,6 +9,8 @@
 
 class ControllerCanvas: public QObject {
     Q_OBJECT
+    Q_PROPERTY(double positionX READ positionX WRITE setPositionX NOTIFY positionXChanged);
+    Q_PROPERTY(double positionY READ positionY WRITE setPositionY NOTIFY positionYChanged);
 private:
     QTimer *_timer;
 
@@ -43,9 +45,17 @@ public:
     int widthObject() const;
     Q_SIGNAL void widthObjectChanged();
 
+    double positionX() const;
+    double positionY() const;
+
+    void setPositionX(double newPosition);
+    void setPositionY(double newPosition);
+
     static void registerDrawer(WQMLCanvasComponent *object);
     static void registerHangler(WQMLCanvasHandler *object);
 private:
+    double _positionX;
+    double _positionY;
     std::function<void (QPainter &painter, double width)> _getImg;
 public slots:
     void refresh();
@@ -63,7 +73,8 @@ signals:
     void onTouchBegin(const QPointF &point, double pressure);
     void onTouchUpdate(const QPointF &point, double pressure);
     void onTouchEnd(const QPointF &point, double pressure);
-
+    void positionXChanged();
+    void positionYChanged();
     /**
      * Il parametro newPosition indica la nuova posizione in pixel
     */

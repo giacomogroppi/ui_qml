@@ -69,6 +69,38 @@ int ControllerCanvas::widthObject() const
     return this->_width;
 }
 
+double ControllerCanvas::positionX() const
+{
+    return this->_positionX;
+}
+
+double ControllerCanvas::positionY() const
+{
+    return this->_positionY;
+}
+
+void ControllerCanvas::setPositionX(double newPosition)
+{
+    W_ASSERT(newPosition >= 0.);
+    //qDebug() << "New position X " << newPosition;
+    if (newPosition != this->_positionX) {
+        _positionX = newPosition;
+        emit this->positionXChanged();
+        emit this->positionChanged({this->_positionX, this->_positionY});
+    }
+}
+
+void ControllerCanvas::setPositionY(double newPosition)
+{
+    W_ASSERT(newPosition >= 0.);
+    //qDebug() << "New position Y " << newPosition;
+    if (newPosition != this->_positionY) {
+        _positionY = newPosition;
+        emit this->positionYChanged();
+        emit this->positionChanged({this->_positionX, this->_positionY});
+    }
+}
+
 void ControllerCanvas::registerDrawer(WQMLCanvasComponent *object)
 {
     W_ASSERT(drawer == nullptr);

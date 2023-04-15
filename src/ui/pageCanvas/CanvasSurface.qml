@@ -9,9 +9,25 @@ Item {
     Flickable {
         id: canvasSurface
         anchors.fill: parent
-        //clip: true
+        clip: true
         contentHeight: canvas_surface_private.height
         contentWidth: canvas_surface_private.width
+
+        /**
+          * Y  position
+        */
+        onContentYChanged: {
+            if (contentY >= 0.)
+                _controllerCanvas.positionY = contentY;
+        }
+
+        /**
+          * X  position
+        */
+        onContentXChanged: {
+            if (contentX >= 0.)
+                _controllerCanvas.positionX = contentX;
+        }
 
         ScrollBar.vertical: ScrollBar {
             width: 40
@@ -25,37 +41,89 @@ Item {
             policy: ScrollBar.AlwaysOn
         }
 
-        /*Rectangle {
-            anchors.fill: canvas_surface_private
-            color: "Brown"
-        }*/
 
-        WCanvasComponent {
-            id: canvas_surface_private
-            anchors.margins: 10
+            PinchArea{
+                id: pinchArea
 
-            anchors.left: parent.left
-            anchors.top: parent.top
+                anchors.fill: canvas_surface_private
 
-            width: _controllerCanvas.widthObject
-            height: _controllerCanvas.heigthObject
+                pinch.maximumScale: 2.
+                pinch.minimumScale: 1.
 
-            xPosition: canvasSurface.originX
-            yPosition: canvasSurface.originY
+                property real original_pinch;
 
-            onWidthChanged: {
-                console.log("width change", width, "diventa", _controllerCanvas.widthObject);
+                onPinchStarted: {
+                    original_pinch = canvasSurface.scale
+
+                    console.log("Original scale: " + original_pinch)
+                }
+
+                onPinchUpdated: {
+                    var center_x = pinch.center.x - canvasSurface.contentX
+                    var center_y = pinch.center.y - canvasSurface.contentY
+                    var content_width = canvasSurface.contentWidth * pinch.scale
+                    var content_height = canvasSurface.contentHeight * pinch.scale
+
+                    //console.log(center_x + " " + center_y + " pinch scale: " + pinch.scale);
+
+                    var original_center = pinch.startCenter
+                    var new_center = pinch.center
+
+                    var new_position_center_x = original_center.x - new_center.x
+                    var new_position_center_y = original_center.y - new_center.y
+
+                    new_position_center_x *= (pinch.scale - original_pinch)
+                    new_position_center_y *= (pinch.scale - original_pinch)
+
+                    console.log(pinch.scale)
+                    if (pinch.scale >= 2. || pinch.scale <= 0.5)
+                        return;
+
+                    canvasSurface.scale = pinch.scale
+                    canvasSurface.contentX = Math.max(0, new_position_center_x)
+                    canvasSurface.contentY = Math.max(0, new_position_center_y)
+                }
+
+                onPinchFinished: {
+                    if (canvasSurface.contentX <= 0.) {
+                        canvasSurface.contentX = 0.;
+                    }
+
+                    if (canvasSurface.contentY <= 0.) {
+                        canvasSurface.contentY = 0.;
+                    }
+                }
+            }
+
+            WCanvasComponent {
+                id: canvas_surface_private
+                anchors.margins: 10
+
+                anchors.left: parent.left
+                anchors.top: parent.top
+
+                width: _controllerCanvas.widthObject
+                height: _controllerCanvas.heigthObject
+
+                xPosition: canvasSurface.originX
+                yPosition: canvasSurface.originY
+
+                onWidthChanged: {
+                    console.log("width change", width, "diventa", _controllerCanvas.widthObject);
+                }
+            }
+
+            WCanvasHandler {
+                targetTouchArea: canvasSurface
+                heightObject: canvas_surface_private.height
+                widthObject:  canvas_surface_private.width
+
+                xOriginPosition: canvas_surface_private.x - canvasSurface.x
+                yOriginPosition: canvas_surface_private.y - canvasSurface.y
+
             }
         }
 
-        WCanvasHandler {
-            targetTouchArea: canvasSurface
-            heightObject: canvas_surface_private.height
-            widthObject:  canvas_surface_private.width
 
-            xOriginPosition: canvas_surface_private.x - canvasSurface.x
-            yOriginPosition: canvas_surface_private.y - canvasSurface.y
 
-        }
-    }
 }

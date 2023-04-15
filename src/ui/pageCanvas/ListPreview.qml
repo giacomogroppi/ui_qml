@@ -12,6 +12,7 @@ Rectangle {
     ListView {
         anchors.fill: parent
         model: _controllerListPreview
+        clip: true
 
         delegate: Rectangle {
             property int heigthItem: 260
