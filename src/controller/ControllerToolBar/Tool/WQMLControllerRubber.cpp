@@ -1,16 +1,22 @@
-#include "WQMLControllerPen.h"
-#include <QPixmap>
-#include "touch/dataTouch/page/Page.h"
-#include <QGuiApplication>
+#include "WQMLControllerRubber.h"
+#include <QPainter>
+#include <QBrush>
+#include "core/WPixmap.h"
+#include "core/core.h"
+#include <QRunnable>
+#include <functional>
+#include <QQuickWindow>
 #include "controller/ControllerToolBar/ControllerToolBar.h"
+#include "touch/rubber/Rubber.h"
 
-WQMLControllerPen::WQMLControllerPen(QQuickItem *parent)
-    : QQuickPaintedItem(parent)
-    , ToolController(false)
+WQMLControllerRubber::WQMLControllerRubber(QQuickItem *parent)
+        : QQuickPaintedItem(parent)
+        , ToolController(false)
 {
+    this->setAntialiasing(true);
 }
 
-void WQMLControllerPen::paint(QPainter *painter)
+void WQMLControllerRubber::paint(QPainter *painter)
 {
     Define_PEN(pen);
     pen.setColor(Qt::black);
@@ -20,25 +26,26 @@ void WQMLControllerPen::paint(QPainter *painter)
     painter->setRenderHint(QPainter::Antialiasing);
 
     QPointF bl = {
-        14., 22.
+            14., 22.
     };
 
     QPointF br = {
-        22., 31.
-    };
-
-    QPointF tip = {
-        11., 34.
+            22., 31.
     };
 
     QPolygonF pol1(QList<QPointF>{bl, {30., 5.}, {38., 14.}, br});
-    QPolygonF pol2(QList<QPointF>{bl, tip, br});
 
     ToolController::scale(pol1, .8);
-    ToolController::scale(pol2, .8);
     ToolController::scale(bl, .8);
     ToolController::scale(br, .8);
-    ToolController::scale(tip, .8);
+
+    QRectF rect {
+        bl - QPointF(1.5, 1.5),
+        br + QPointF(1.5, 1.5)
+    };
+
+    int startAngle = -40 * 16;
+    int spanAngle = -180 * 16;
 
     if (this->isSelected()) {
         painter->setBrush(Qt::black);
@@ -48,7 +55,6 @@ void WQMLControllerPen::paint(QPainter *painter)
         const auto color = ControllerToolBar::getColor();
 
         painter->setBrush(color);
-        painter->drawPolygon(pol2);
 
         pen.setBrush(Qt::NoBrush);
         pen.setWidthF(1.2);
@@ -56,22 +62,23 @@ void WQMLControllerPen::paint(QPainter *painter)
         painter->setPen(pen);
 
         painter->drawPolygon(pol1);
-        painter->drawPolygon(pol2);
         painter->drawLine(bl, br);
 
-        painter->drawLine(tip, QPointF {tip.x() + 15, tip.y()});
+        painter->setBrush(Qt::white);
+        painter->drawArc(rect, startAngle, spanAngle);
     } else {
         painter->drawPolygon(pol1);
-        painter->drawPolygon(pol2);
+
+        painter->drawArc(rect, startAngle, spanAngle);
     }
 }
 
-void WQMLControllerPen::callUpdate()
+void WQMLControllerRubber::callUpdate()
 {
     this->update();
 }
 
-int WQMLControllerPen::getType() const
+int WQMLControllerRubber::getType() const
 {
-    return Pen::type();
+    return Rubber::type();
 }

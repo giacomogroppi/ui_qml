@@ -242,7 +242,7 @@ set(PROJECT_SOURCES_WRITERNOTE
     ${A_DIR_ROOT}/src/model/windows/mostra_finestra_i.cpp
     ${A_DIR_ROOT}/src/model/windows/updatecheck.cpp
     ${A_DIR_ROOT}/src/model/sheet/style_struct.cpp
-	${A_DIR_ROOT}/src/model/core/WRect.cpp
+    ${A_DIR_ROOT}/src/model/core/WRect.cpp
 
 
     ${A_DIR_ROOT}/src/model/core/AtomicSafe.h
@@ -259,7 +259,7 @@ set(PROJECT_SOURCES_WRITERNOTE
     ${A_DIR_ROOT}/src/model/core/WZipReaderSingle.h
     ${A_DIR_ROOT}/src/model/core/WList.h
     ${A_DIR_ROOT}/src/model/core/WZip.h
-	${A_DIR_ROOT}/src/model/core/WRect.h
+    ${A_DIR_ROOT}/src/model/core/WRect.h
     ${A_DIR_ROOT}/src/model/core/WPair.h
     ${A_DIR_ROOT}/src/model/core/WReadZip.h
     ${A_DIR_ROOT}/src/model/core/WMultipleMutex.h
@@ -414,12 +414,14 @@ set(A_SOURCES_CPP
     ${A_DIR_ROOT}/src/controller/ControllerColor/ControllerColor.cpp
     ${A_DIR_ROOT}/src/controller/ControllerCanvas/WQMLCanvasHandler.h
     ${A_DIR_ROOT}/src/controller/ControllerCanvas/WQMLCanvasHandler.cpp
-	${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/WQMLControllerHighlighter.cpp
-	${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/WQMLControllerHighlighter.h
-	${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/WQMLControllerPen.cpp
-	${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/WQMLControllerPen.h
-	${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/ToolController.cpp
-	${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/ToolController.h
+    ${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/WQMLControllerHighlighter.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/WQMLControllerHighlighter.h
+    ${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/WQMLControllerPen.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/WQMLControllerPen.h
+    ${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/WQMLControllerRubber.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/WQMLControllerRubber.h
+    ${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/ToolController.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/ToolController.h
 
     ${PROJECT_SOURCES_WRITERNOTE}
 )

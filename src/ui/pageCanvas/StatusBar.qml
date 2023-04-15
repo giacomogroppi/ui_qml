@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 2.12
 import writernote.WQMLControllerHighlighter 1.0
 import writernote.WQMLControllerPen 1.0
+import writernote.WQMLControllerRubber 1.0
 
 Rectangle {
     id: root
@@ -65,32 +66,39 @@ Rectangle {
                 left: parent.left
             }
         }
-        ButtonToolInstruments {
-            id: rubberButton
-            buttonImageSource: ":/prefix_1/images/rubber_option.png"
 
-            onClicked: _controllerToolBar.clickRubber()
+        WRubberButton {
+            id: rubberButton
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: _controllerToolBar.clickRubber()
+            }
+
+            width: 50
+            height: 50
 
             anchors {
                 left: penButton.right
             }
-            Text {
-                text: qsTr("2")
-            }
         }
-        ButtonToolInstruments {
+
+        WHighlighterButton {
             id: highlighterButton
-            buttonImageSource: ":/prefix_1/images/highlighter_option.png"
+            height: 50
+            width: 50
 
-            onClicked: _controllerToolBar.clickHighlighter()
+            MouseArea {
+                anchors.fill: parent
 
+                onClicked: _controllerToolBar.clickHighlighter()
+            }
             anchors {
                 left: rubberButton.right
             }
-            Text {
-                text: qsTr("3")
-            }
         }
+
+
         ButtonToolInstruments {
             id: cutButton
             buttonImageSource: ":/prefix_1/images/cut_option.png"

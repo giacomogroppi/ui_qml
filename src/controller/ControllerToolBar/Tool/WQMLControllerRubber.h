@@ -4,17 +4,17 @@
 #include <QQuickPaintedItem>
 #include <QTimer>
 #include "ToolController.h"
-#include <QPixmap>
 
-class WQMLControllerPen: public QQuickPaintedItem, public ToolController
+class WQMLControllerRubber: public QQuickPaintedItem, public ToolController
 {
 Q_OBJECT
 
 public:
-    explicit WQMLControllerPen(QQuickItem *parent = nullptr);
+    explicit WQMLControllerRubber(QQuickItem *parent = nullptr);
 
 public slots:
     void callUpdate() final;
-    virtual int getType() const final;
+
     void paint(QPainter *painter) override;
+    int getType() const final;
 };

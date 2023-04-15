@@ -6,6 +6,7 @@
 #include "Tool/WQMLControllerHighlighter.h"
 #include "Tool/WQMLControllerPen.h"
 #include <QRunnable>
+#include "Tool/WQMLControllerRubber.h"
 
 extern StrokePre *__tmp;
 
@@ -27,6 +28,7 @@ ControllerToolBar::ControllerToolBar(QObject *parent, TabletController *tabletCo
 
     qmlRegisterType<WQMLControllerHighlighter>( "writernote.WQMLControllerHighlighter", 1, 0, "WHighlighterButton");
     qmlRegisterType<WQMLControllerPen>(         "writernote.WQMLControllerPen",         1, 0, "WPenButton");
+    qmlRegisterType<WQMLControllerRubber>(      "writernote.WQMLControllerRubber",      1, 0, "WRubberButton");
 
     this->_tabletController->selectType(Pen::type());
 
