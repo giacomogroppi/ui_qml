@@ -7,10 +7,11 @@
 #include <QRunnable>
 #include <functional>
 #include <QQuickWindow>
-
+#include <QThread>
 #include <QOpenGLTexture>
 #include <QOpenGLFramebufferObject>
 #include <QOpenGLBuffer>
+bool hasDraw;
 
 WQMLCanvasComponent::WQMLCanvasComponent(QQuickItem *parent)
     : QQuickPaintedItem(parent)
@@ -18,6 +19,7 @@ WQMLCanvasComponent::WQMLCanvasComponent(QQuickItem *parent)
     })
     , _functionSet(false)
 {
+    hasDraw = true;
     qDebug() << "WQMLCanvasComponent constructor call";
     ControllerCanvas::registerDrawer(this);
     this->setAntialiasing(true);
@@ -27,13 +29,25 @@ void WQMLCanvasComponent::paint(QPainter *painter)
 {
     const auto width = this->width();
 
+    TIME_START_STATIC(paint_hz);
     TIME_START(paint_var);
 
     if (this->_functionSet) {
         this->_getImg(*painter, width);
     }
 
-    //TIME_STOP(paint_var, "Paint: ");
+    hasDraw = true;
+
+    TIME_STOP_STATIC(paint_hz, "Paint call: ");
+
+    TIME_STOP(paint_var, "Paint: ");
+}
+
+bool WQMLCanvasComponent::event(QEvent *event)
+{
+    qDebug() << event->type();
+
+    return QQuickPaintedItem::event(event);
 }
 
 void WQMLCanvasComponent::setXPosition(double x)
@@ -61,6 +75,7 @@ void WQMLCanvasComponent::setFunc(std::function<void (QPainter &painter, double 
 void WQMLCanvasComponent::callUpdate()
 {
     this->update();
+    //qGuiApp->processEvents();
 }
 
 void WQMLCanvasComponent::setYPosition(double y)

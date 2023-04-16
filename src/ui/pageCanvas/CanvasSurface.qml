@@ -9,7 +9,7 @@ Item {
     Flickable {
         id: canvasSurface
         anchors.fill: parent
-        clip: true
+        clip: false
         contentHeight: canvas_surface_private.height
         contentWidth: canvas_surface_private.width
 
@@ -42,7 +42,7 @@ Item {
         }
 
 
-            PinchArea{
+            /*PinchArea{
                 id: pinchArea
 
                 anchors.fill: canvas_surface_private
@@ -93,7 +93,7 @@ Item {
                         canvasSurface.contentY = 0.;
                     }
                 }
-            }
+            }*/
 
             WCanvasComponent {
                 id: canvas_surface_private
@@ -102,8 +102,8 @@ Item {
                 anchors.left: parent.left
                 anchors.top: parent.top
 
-                width: _controllerCanvas.widthObject
-                height: _controllerCanvas.heigthObject
+                width: _controllerCanvas.widthObject * canvasSurface.scale
+                height: _controllerCanvas.heigthObject * canvasSurface.scale
 
                 xPosition: canvasSurface.originX
                 yPosition: canvasSurface.originY
@@ -123,7 +123,4 @@ Item {
 
             }
         }
-
-
-
 }

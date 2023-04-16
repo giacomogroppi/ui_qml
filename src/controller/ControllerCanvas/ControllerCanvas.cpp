@@ -5,6 +5,7 @@
 #include <QDebug>
 #include "WQMLCanvasHandler.h"
 #include "utils/WCommonScript.h"
+#include "touch/dataTouch/page/Page.h"
 
 WQMLCanvasHandler *handler = nullptr;
 ControllerCanvas *controllerCanvas = nullptr;
@@ -13,9 +14,11 @@ WQMLCanvasComponent *drawer = nullptr;
 ControllerCanvas::ControllerCanvas(QObject *parent, std::function<void (QPainter &painter, double width)> getImg)
     : QObject(parent)
     , _timer(new QTimer(nullptr))
-    , _heigth(1000)
-    , _width(1000)
+    , _heigth(Page::getHeight())
+    , _width(Page::getWidth())
     , _getImg(std::move(getImg))
+    , _positionX(0.)
+    , _positionY(0.)
 #ifdef DEBUGINFO
     , _status(waitingFor::begin)
 #endif
@@ -120,6 +123,17 @@ void ControllerCanvas::registerDrawer(WQMLCanvasComponent *object)
 
 void ControllerCanvas::refresh()
 {
+    emit this->widthObjectChanged();
+    emit this->heigthObjectChanged();
+    drawer->callUpdate();
+}
+
+void ControllerCanvas::sizeHasChanged(const QSizeF &size)
+{
+    qDebug() << size;
+    this->_width = size.width();
+    this->_heigth = size.height();
+
     emit this->widthObjectChanged();
     emit this->heigthObjectChanged();
     drawer->callUpdate();

@@ -25,6 +25,8 @@ ControllerToolBar::ControllerToolBar(QObject *parent, TabletController *tabletCo
     });
 
     QObject::connect(this->_tabletController, &TabletController::onNeedRefresh, this, &ControllerToolBar::needRefresh, Qt::QueuedConnection);
+    QObject::connect(this->_tabletController, &TabletController::onNumberOfPageChanged, this, &ControllerToolBar::numberOfPageChanged);
+    //QObject::connect(this->_tabletController, &tabletController::)
 
     qmlRegisterType<WQMLControllerHighlighter>( "writernote.WQMLControllerHighlighter", 1, 0, "WHighlighterButton");
     qmlRegisterType<WQMLControllerPen>(         "writernote.WQMLControllerPen",         1, 0, "WPenButton");
@@ -65,6 +67,13 @@ ControllerToolBar::~ControllerToolBar()
 void ControllerToolBar::needRefresh ()
 {
     emit this->onNeedRefresh();
+}
+
+void ControllerToolBar::numberOfPageChanged(int n)
+{
+    const auto w = Page::getWidth();
+    const auto h = Page::getHeight() * n;
+    emit onDocSizeChanged(QSizeF(w, h));
 }
 
 void ControllerToolBar::clickSelectPen()
@@ -189,6 +198,7 @@ void ControllerToolBar::touchUpdate(const QPointF &point, double pressure)
 {
     emit this->onNeedRefresh();
     WDebug(false, "call");
+
     this->_tabletController->touchUpdate(point, pressure);
 }
 

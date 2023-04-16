@@ -57,8 +57,10 @@ private:
     double _positionX;
     double _positionY;
     std::function<void (QPainter &painter, double width)> _getImg;
+
 public slots:
     void refresh();
+    void sizeHasChanged(const QSizeF &size);
     void touchBegin(const QPointF &point, double pressure);
     void touchUpdate(const QPointF &point, double pressure);
     void touchEnd(const QPointF &point, double pressure);

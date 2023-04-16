@@ -32,12 +32,13 @@ Controller::Controller(QObject *parent,
     controller = this;
     this->registerPrivateType();
 
-    QObject::connect(_canvas, &ControllerCanvas::onTouchBegin,    _toolBar, &ControllerToolBar::touchBegin, Qt::ConnectionType::DirectConnection);
-    QObject::connect(_canvas, &ControllerCanvas::onTouchUpdate,   _toolBar, &ControllerToolBar::touchUpdate, Qt::ConnectionType::DirectConnection);
-    QObject::connect(_canvas, &ControllerCanvas::onTouchEnd,      _toolBar, &ControllerToolBar::touchEnd, Qt::ConnectionType::DirectConnection);
+    QObject::connect(_canvas, &ControllerCanvas::onTouchBegin,    _toolBar, &ControllerToolBar::touchBegin, Qt::DirectConnection);
+    QObject::connect(_canvas, &ControllerCanvas::onTouchUpdate,   _toolBar, &ControllerToolBar::touchUpdate, Qt::DirectConnection);
+    QObject::connect(_canvas, &ControllerCanvas::onTouchEnd,      _toolBar, &ControllerToolBar::touchEnd, Qt::DirectConnection);
+    QObject::connect(_toolBar, &ControllerToolBar::onDocSizeChanged, _canvas, &ControllerCanvas::sizeHasChanged, Qt::DirectConnection);
 
-    QObject::connect(_canvas,   &ControllerCanvas::positionChanged, _toolBar, &ControllerToolBar::positionChanged, Qt::ConnectionType::DirectConnection);
-    QObject::connect(_toolBar,  &ControllerToolBar::onNeedRefresh, _canvas, &ControllerCanvas::refresh, Qt::ConnectionType::DirectConnection);
+    QObject::connect(_canvas,   &ControllerCanvas::positionChanged, _toolBar, &ControllerToolBar::positionChanged, Qt::DirectConnection);
+    QObject::connect(_toolBar,  &ControllerToolBar::onNeedRefresh, _canvas, &ControllerCanvas::refresh, Qt::DirectConnection);
 }
 
 QString Controller::getUiSelected() const

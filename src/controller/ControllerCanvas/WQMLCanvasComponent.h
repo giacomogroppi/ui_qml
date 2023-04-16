@@ -38,6 +38,7 @@ public slots:
     void paint(QPainter *painter) override;
 
 private:
+    bool event(QEvent *event) override;
     int _x, _y;
     std::function<void(QPainter &painter, double width)> _getImg;
     bool _functionSet;

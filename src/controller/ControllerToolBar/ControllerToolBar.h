@@ -73,6 +73,8 @@ signals:
     void toolHasChanged();
     void colorChanged();
     void onNeedRefresh();
+    void onDocSizeChanged(const QSizeF &size);
+
 public slots:
     void touchBegin(const QPointF &point, double pressure);
     void touchUpdate(const QPointF &point, double pressure);
@@ -82,4 +84,5 @@ public slots:
     void updateGui();
 private slots:
     void needRefresh();
+    void numberOfPageChanged(int);
 };

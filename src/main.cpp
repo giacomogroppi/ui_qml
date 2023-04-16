@@ -10,6 +10,7 @@ extern StrokePre *__tmp;
 
 int main(int argc, char *argv[])
 {
+    qputenv("QSG_RENDER_LOOP", "basic");
     QGuiApplication app(argc, argv);
     QQuickWindow::setGraphicsApi(QSGRendererInterface::Metal);
     QQmlApplicationEngine engine;

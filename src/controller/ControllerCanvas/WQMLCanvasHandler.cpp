@@ -54,12 +54,12 @@ bool WQMLCanvasHandler::eventFilter(QObject * obj, QEvent *event)
 
         const double pressure = 0.3; e->points().at(0).pressure() * 5.;
 
-        const double dw1 = Page::getWidth()   /  this->_w;
+        const double dw1 = 1.;
         const double dh1 = 1.; //Page::getHeight()  /  this->_h;
 
         auto point = QPointF (
             (e->position().x() - this->_xOrigin)   *  dw1,
-            (e->position().y() - this->_yOrigin ) *dh1// * (Page::getProportion()) * 1.17
+            (e->position().y() - this->_yOrigin )  *  dh1// * (Page::getProportion()) * 1.17
         );
 
         if (e->isBeginEvent()) {
