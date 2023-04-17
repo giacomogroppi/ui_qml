@@ -11,7 +11,8 @@
 #include "touch/laser/Laser.h"
 #include "touch/highlighter/Highligter.h"
 
-class ControllerToolBar: public QObject {
+class ControllerToolBar: public QObject
+{
     Q_OBJECT
 
     QColor _color;
@@ -25,6 +26,8 @@ class ControllerToolBar: public QObject {
 public:
     explicit ControllerToolBar(QObject *parent, TabletController *tabletController);
     ~ControllerToolBar();
+
+    Q_INVOKABLE QImage getPixmap() const;
 
     Q_INVOKABLE void clickSelectPen();
     Q_INVOKABLE void clickRubber();
@@ -72,7 +75,7 @@ public:
 signals:
     void toolHasChanged();
     void colorChanged();
-    void onNeedRefresh();
+    void onNeedRefresh(int pageMin, int pageMax);
     void onDocSizeChanged(const QSizeF &size);
 
 public slots:
@@ -83,6 +86,5 @@ public slots:
     void positionChanged(const QPointF &newPosition);
     void updateGui();
 private slots:
-    void needRefresh();
     void numberOfPageChanged(int);
 };

@@ -24,7 +24,7 @@ ControllerToolBar::ControllerToolBar(QObject *parent, TabletController *tabletCo
         _tabletController->selectColor(this->_color);
     });
 
-    QObject::connect(this->_tabletController, &TabletController::onNeedRefresh, this, &ControllerToolBar::needRefresh, Qt::QueuedConnection);
+    QObject::connect(this->_tabletController, &TabletController::onNeedRefresh, this, [this](int pageMin, int pageMax) { emit this->onNeedRefresh(pageMin, pageMax); });
     QObject::connect(this->_tabletController, &TabletController::onNumberOfPageChanged, this, &ControllerToolBar::numberOfPageChanged);
     //QObject::connect(this->_tabletController, &tabletController::)
 
@@ -64,9 +64,13 @@ ControllerToolBar::~ControllerToolBar()
     delete __tmp;
 }
 
-void ControllerToolBar::needRefresh ()
+QImage ControllerToolBar::getPixmap() const
 {
-    emit this->onNeedRefresh();
+    WPixmap pix(1, false);
+    Define_PAINTER_p(painter, pix);
+    _tabletController->getImg(painter, Page::getWidth());
+    painter.end();
+    return pix.toImage();
 }
 
 void ControllerToolBar::numberOfPageChanged(int n)
@@ -190,13 +194,13 @@ QColor ControllerToolBar::getColor()
 void ControllerToolBar::touchBegin(const QPointF &point, double pressure)
 {
     WDebug(false, "call");
-    emit this->onNeedRefresh();
+    //emit this->onNeedRefresh();
     this->_tabletController->touchBegin(point, pressure);
 }
 
 void ControllerToolBar::touchUpdate(const QPointF &point, double pressure)
 {
-    emit this->onNeedRefresh();
+    //emit this->onNeedRefresh();
     WDebug(false, "call");
 
     this->_tabletController->touchUpdate(point, pressure);
@@ -205,7 +209,7 @@ void ControllerToolBar::touchUpdate(const QPointF &point, double pressure)
 void ControllerToolBar::touchEnd(const QPointF &point, double pressure)
 {
     WDebug(false, "call");
-    emit this->onNeedRefresh();
+    //emit this->onNeedRefresh();
     this->_tabletController->touchEnd(point, pressure);
 }
 

@@ -9,7 +9,6 @@ Item {
     Flickable {
         id: canvasSurface
         anchors.fill: parent
-        clip: false
         contentHeight: canvas_surface_private.height
         contentWidth: canvas_surface_private.width
 
@@ -102,8 +101,10 @@ Item {
                 anchors.left: parent.left
                 anchors.top: parent.top
 
-                width: _controllerCanvas.widthObject * canvasSurface.scale
-                height: _controllerCanvas.heigthObject * canvasSurface.scale
+                width: 1000
+                height: 1000
+                //width: _controllerCanvas.widthObject * canvasSurface.scale
+                //height: _controllerCanvas.heigthObject * canvasSurface.scale
 
                 xPosition: canvasSurface.originX
                 yPosition: canvasSurface.originY
@@ -112,6 +113,52 @@ Item {
                     console.log("width change", width, "diventa", _controllerCanvas.widthObject);
                 }
             }
+
+            /*Timer {
+                interval: 15
+                running: true
+                repeat: true
+                onTriggered: {
+                    console.log("Timer end");
+                    canvas_surface_private.requestPaint()
+                }
+            }
+
+            Canvas {
+                id: canvas_surface_private
+                anchors.left: parent.left
+                anchors.top: parent.top
+
+                height: 500
+                width: 500
+
+                property int variable: 0
+
+                onPaint: {
+                    var ctx = getContext("2d");
+                    ctx.fillStyle = Qt.rgba(1, 1, 1, 1);
+                    ctx.fillRect(0, 0, width, height);
+                    //ctx.fillStyle = Qt.rgba(1, 0, 0, 1);
+                    //ctx.fillRect(0, 0, variable, variable);
+
+                    //console.log(variable)
+                    if (variable > width)
+                        variable = 0;
+                    variable ++;
+
+                    //var img = new Image();
+                    var image = _controllerToolBar.getPixmap(); // ottieni il QPixmap dal tuo oggetto C++
+                    //image.src = pixmap.toImage(); // converte il QPixmap in un QImage
+
+                    console.log("Image" + image);
+                    for(var m in image) {
+                        console.log("Has property" + m);
+                    }
+
+
+                    ctx.drawImage(image, 0, 0); // disegna l'immagine sul canvas
+                }
+            }*/
 
             WCanvasHandler {
                 targetTouchArea: canvasSurface
