@@ -59,6 +59,7 @@ public:
     Q_SIGNAL void onUiSelectedChanged();
 
     static Controller *instance();
+    static void registerControllerCanvas(ControllerCanvas *controllerCanvas);
 
 public slots:
     void newFile();

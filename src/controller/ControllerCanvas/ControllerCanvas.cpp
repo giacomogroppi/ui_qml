@@ -6,39 +6,40 @@
 #include "WQMLCanvasHandler.h"
 #include "utils/WCommonScript.h"
 #include "touch/dataTouch/page/Page.h"
+#include "controller/Controller.h"
 
-WQMLCanvasHandler *handler = nullptr;
-ControllerCanvas *controllerCanvas = nullptr;
+static WQMLCanvasHandler *handler = nullptr;
+static ControllerCanvas *controllerCanvas = nullptr;
 static QList<WQMLCanvasComponent *> drawer;
 
-ControllerCanvas::ControllerCanvas(QObject *parent, std::function<void (QPainter &painter, double width)> getImg)
-    : QObject(parent)
+bool init = false;
+
+ControllerCanvas::ControllerCanvas(QObject *parent)
+    : QAbstractListModel(parent)
     , _timer(new QTimer(nullptr))
     , _heigth(Page::getHeight())
     , _width(Page::getWidth())
-    , _getImg(std::move(getImg))
     , _positionX(0.)
     , _positionY(0.)
 #ifdef DEBUGINFO
     , _status(waitingFor::begin)
 #endif
 {
-    qmlRegisterType<WQMLCanvasComponent>("writernote.WQMLCanvasComponent",
-                                         1, 0,
-                                        "WCanvasComponent");
-    qmlRegisterType<WQMLCanvasHandler>("writernote.WQMLCanvasHandler",
-                                       1, 0,
-                                        "WCanvasHandler");
+    Q_ASSERT(init == false);
+    init = true;
+
     QObject::connect(_timer, &QTimer::timeout, this, &ControllerCanvas::endTimer);
     controllerCanvas = this;
-    //_timer->start(500);
+    //Controller::registerControllerCanvas(this);
+
+    qDebug() << "ControllerCanvas::ControllerCanvas call";
 }
 
 void ControllerCanvas::endTimer()
 {
     //this->wSetHeigth(this->heigthObject() + 100);
     //_timer->start(1);
-    qDebug() << "ControllerCanvas::endTimer" << this->heigthObject();
+    qDebug() << "ControllerCanvas::endTimer" << this->getHeigthObject();
 
     for (int i = 0; i < drawer.size(); i++) {
         drawer[i]->callUpdate(i);
@@ -54,21 +55,21 @@ bool ControllerCanvas::event(QEvent *event)
 void ControllerCanvas::wSetWidth(int newWidth)
 {
     this->_width = newWidth;
-    emit widthObjectChanged();
+    emit onWidthObjectChanged();
 }
 
 void ControllerCanvas::wSetHeigth(int newHeigth)
 {
     this->_heigth = newHeigth;
-    emit heigthObjectChanged();
+    emit onHeigthObjectChanged();
 }
 
-int ControllerCanvas::heigthObject() const
+int ControllerCanvas::getHeigthObject() const
 {
     return this->_heigth;
 }
 
-int ControllerCanvas::widthObject() const
+int ControllerCanvas::getWidthObject() const
 {
     return this->_width;
 }
@@ -107,6 +108,63 @@ void ControllerCanvas::setPositionY(double newPosition)
     }
 }
 
+void ControllerCanvas::setFunc(std::function<void (QPainter &, double)> getImg)
+{
+    this->_getImg = getImg;
+}
+
+int ControllerCanvas::rowCount(const QModelIndex &parent) const
+{
+    qDebug() << "ControllerCanvas::rowCount";
+    if (parent.isValid())
+        return 0;
+
+    return 2;
+}
+
+// this function should not be call from qml
+QVariant ControllerCanvas::data(const QModelIndex &index, int role) const
+{
+    Q_UNUSED(index);
+    Q_UNUSED(role);
+    // this function should not be call
+    return QVariant();
+}
+
+// this function should not be call from qml
+QHash<int, QByteArray> ControllerCanvas::roleNames() const
+{
+    static QHash<int, QByteArray> mapping {
+    };
+
+    return mapping;
+}
+
+// this function should not be call from qml
+void ControllerCanvas::duplicateData(int row)
+{
+    /*
+    if (row < 0 || row >= drawer.size())
+        return;
+
+    beginInsertRows(QModelIndex(), row + 1, row + 1);
+    endInsertRows();
+    */
+}
+
+// this function should not be call from qml
+void ControllerCanvas::removeData(int row)
+{
+    /*
+    if (row < 0 || row >= drawer.count())
+        return;
+
+    beginRemoveRows(QModelIndex(), row, row);
+    m_data.removeAt(row);
+    endRemoveRows();
+    */
+}
+
 void ControllerCanvas::registerDrawer(WQMLCanvasComponent *object)
 {
     W_ASSERT(object != nullptr);
@@ -126,8 +184,15 @@ void ControllerCanvas::registerDrawer(WQMLCanvasComponent *object)
 
 void ControllerCanvas::callUpdate(int page)
 {
+    // da mettere a posto
     W_ASSERT(page == -1 || (page >= 0 && page < drawer.size()));
-    drawer[page]->callUpdate(page);
+    if (page == -1) {
+        for (auto &d : drawer) {
+            d->callUpdate(page);
+        }
+    } else {
+        drawer[page]->callUpdate(page);
+    }
 }
 
 void ControllerCanvas::callUpdate(int pageMin, int pageMax, bool all)
@@ -165,8 +230,8 @@ void ControllerCanvas::sizeHasChanged(const QSizeF &size)
 
     WDebug(true, "Call");
 
-    emit this->widthObjectChanged();
-    emit this->heigthObjectChanged();
+    emit this->onWidthObjectChanged();
+    emit this->onHeigthObjectChanged();
 
     ControllerCanvas::callUpdate(0, 0, true);
 }
@@ -195,9 +260,12 @@ void ControllerCanvas::touchEnd(const QPointF &point, double pressure)
 
 void ControllerCanvas::registerHangler(WQMLCanvasHandler *object)
 {
-    W_ASSERT(controllerCanvas != nullptr);
-    W_ASSERT(handler == nullptr);
+    Q_ASSERT(object != nullptr);
+    Q_ASSERT(handler == nullptr);
+    Q_ASSERT(controllerCanvas != nullptr);
+
     handler = object;
+
     QObject::connect(handler, &WQMLCanvasHandler::touchBegin,   controllerCanvas, &ControllerCanvas::touchBegin);
     QObject::connect(handler, &WQMLCanvasHandler::touchUpdate,  controllerCanvas, &ControllerCanvas::touchUpdate);
     QObject::connect(handler, &WQMLCanvasHandler::touchEnd,     controllerCanvas, &ControllerCanvas::touchEnd);

@@ -24,7 +24,9 @@ ControllerToolBar::ControllerToolBar(QObject *parent, TabletController *tabletCo
         _tabletController->selectColor(this->_color);
     });
 
-    QObject::connect(this->_tabletController, &TabletController::onNeedRefresh, this, [this](int pageMin, int pageMax) { emit this->onNeedRefresh(pageMin, pageMax); });
+    QObject::connect(this->_tabletController, &TabletController::onNeedRefresh, this, [this](int pageMin, int pageMax) {
+        emit this->onNeedRefresh(pageMin, pageMax);
+    });
     QObject::connect(this->_tabletController, &TabletController::onNumberOfPageChanged, this, &ControllerToolBar::numberOfPageChanged);
     //QObject::connect(this->_tabletController, &tabletController::)
 
@@ -193,23 +195,23 @@ QColor ControllerToolBar::getColor()
 
 void ControllerToolBar::touchBegin(const QPointF &point, double pressure)
 {
-    WDebug(false, "call");
-    //emit this->onNeedRefresh();
+    WDebug(true, "call");
+    emit this->onNeedRefresh(0, 1);
     this->_tabletController->touchBegin(point, pressure);
 }
 
 void ControllerToolBar::touchUpdate(const QPointF &point, double pressure)
 {
-    //emit this->onNeedRefresh();
-    WDebug(false, "call");
+    emit this->onNeedRefresh(0, 1);
+    WDebug(true, "call");
 
     this->_tabletController->touchUpdate(point, pressure);
 }
 
 void ControllerToolBar::touchEnd(const QPointF &point, double pressure)
 {
-    WDebug(false, "call");
-    //emit this->onNeedRefresh();
+    WDebug(true, "call");
+    emit this->onNeedRefresh(0, 1);
     this->_tabletController->touchEnd(point, pressure);
 }
 

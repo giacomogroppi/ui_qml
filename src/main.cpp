@@ -23,6 +23,13 @@ int main(int argc, char *argv[])
     */
     __tmp = new StrokePre();
 
+    qmlRegisterType<WQMLCanvasComponent>("writernote.WQMLCanvasComponent",
+                                         1, 0,
+                                         "WCanvasComponent");
+    qmlRegisterType<WQMLCanvasHandler>("writernote.WQMLCanvasHandler",
+                                       1, 0,
+                                       "WCanvasHandler");
+
     _content = engine.rootContext();
     Controller controller(nullptr, engine.rootContext(), &engine);
     QQmlContext *context = engine.rootContext();

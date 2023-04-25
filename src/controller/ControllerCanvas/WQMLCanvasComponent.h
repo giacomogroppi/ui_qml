@@ -16,9 +16,9 @@
 class WQMLCanvasComponent: public QQuickPaintedItem
 {
     Q_OBJECT
-    Q_PROPERTY(double xPosition READ xPosition WRITE setXPosition NOTIFY onXPositionChanged);
-    Q_PROPERTY(double yPosition READ yPosition WRITE setYPosition NOTIFY onYPositionChanged);
-    Q_PROPERTY(int index READ getIndex WRITE setIndex NOTIFY onIndexChanged);
+    Q_PROPERTY(double xPosition READ xPosition  WRITE setXPosition  NOTIFY onXPositionChanged);
+    Q_PROPERTY(double yPosition READ yPosition  WRITE setYPosition  NOTIFY onYPositionChanged);
+    Q_PROPERTY(int index        READ getIndex   WRITE setIndex      NOTIFY onIndexChanged);
 public:
     explicit WQMLCanvasComponent(QQuickItem *parent = nullptr);
 

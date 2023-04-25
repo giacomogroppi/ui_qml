@@ -23,7 +23,7 @@ Controller::Controller(QObject *parent,
     , _audioPlayer(new ControllerAudioPlayer(this))
     , _listPreview(new ControllerList(this))
     , _toolBar(new ControllerToolBar(this, _tabletController))
-    , _canvas(new ControllerCanvas(this, [this](QPainter &painter, double width) { return this->_toolBar->getImg(painter, width); }))
+    , _canvas(new ControllerCanvas(nullptr))
     , _pageCounter(new ControllerPageCounter(this))
     , _listFiles(new ControllerListFilesFolder(this))
     , _color(new ControllerColor(this))
@@ -32,13 +32,7 @@ Controller::Controller(QObject *parent,
     controller = this;
     this->registerPrivateType();
 
-    QObject::connect(_canvas, &ControllerCanvas::onTouchBegin,    _toolBar, &ControllerToolBar::touchBegin, Qt::DirectConnection);
-    QObject::connect(_canvas, &ControllerCanvas::onTouchUpdate,   _toolBar, &ControllerToolBar::touchUpdate, Qt::DirectConnection);
-    QObject::connect(_canvas, &ControllerCanvas::onTouchEnd,      _toolBar, &ControllerToolBar::touchEnd, Qt::DirectConnection);
-    QObject::connect(_toolBar, &ControllerToolBar::onDocSizeChanged, _canvas, &ControllerCanvas::sizeHasChanged, Qt::DirectConnection);
-
-    QObject::connect(_canvas,   &ControllerCanvas::positionChanged, _toolBar, &ControllerToolBar::positionChanged, Qt::DirectConnection);
-    QObject::connect(_toolBar,  &ControllerToolBar::onNeedRefresh, _canvas, &ControllerCanvas::refresh, Qt::DirectConnection);
+    registerControllerCanvas(_canvas);
 }
 
 QString Controller::getUiSelected() const
@@ -62,6 +56,25 @@ Controller *Controller::instance()
 {
     Q_ASSERT(controller != nullptr);
     return controller;
+}
+
+void Controller::registerControllerCanvas(ControllerCanvas *controllerCanvas)
+{
+    const auto getImg = [](QPainter &painter, double width) {
+        return Controller::instance()->_toolBar->getImg(painter, width);
+    };
+    W_ASSERT(controllerCanvas);
+    Controller::instance()->_canvas = controllerCanvas;
+
+    Controller::instance()->_canvas->setFunc(getImg);
+
+    QObject::connect(Controller::instance()->_canvas, &ControllerCanvas::onTouchBegin,    Controller::instance()->_toolBar, &ControllerToolBar::touchBegin, Qt::DirectConnection);
+    QObject::connect(Controller::instance()->_canvas, &ControllerCanvas::onTouchUpdate,   Controller::instance()->_toolBar, &ControllerToolBar::touchUpdate, Qt::DirectConnection);
+    QObject::connect(Controller::instance()->_canvas, &ControllerCanvas::onTouchEnd,      Controller::instance()->_toolBar, &ControllerToolBar::touchEnd, Qt::DirectConnection);
+    QObject::connect(Controller::instance()->_toolBar, &ControllerToolBar::onDocSizeChanged, Controller::instance()->_canvas, &ControllerCanvas::sizeHasChanged, Qt::DirectConnection);
+
+    QObject::connect(Controller::instance()->_canvas,   &ControllerCanvas::positionChanged, Controller::instance()->_toolBar, &ControllerToolBar::positionChanged, Qt::DirectConnection);
+    QObject::connect(Controller::instance()->_toolBar,  &ControllerToolBar::onNeedRefresh, Controller::instance()->_canvas, &ControllerCanvas::refresh, Qt::DirectConnection);
 }
 
 void Controller::newFile()

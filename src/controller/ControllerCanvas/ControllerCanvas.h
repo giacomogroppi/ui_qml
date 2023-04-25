@@ -3,14 +3,18 @@
 #include <QObject>
 #include <QQuickImageProvider>
 #include <QTimer>
+#include <QAbstractListModel>
 
 #include "WQMLCanvasHandler.h"
 #include "WQMLCanvasComponent.h"
 
-class ControllerCanvas: public QObject {
+class ControllerCanvas: public QAbstractListModel
+{
     Q_OBJECT
     Q_PROPERTY(double positionX READ positionX WRITE setPositionX NOTIFY positionXChanged);
     Q_PROPERTY(double positionY READ positionY WRITE setPositionY NOTIFY positionYChanged);
+    Q_PROPERTY(int heigthObject READ getHeigthObject NOTIFY onHeigthObjectChanged);
+    Q_PROPERTY(int widthObject READ getWidthObject NOTIFY onWidthObjectChanged);
 private:
     QTimer *_timer;
 
@@ -34,22 +38,23 @@ private:
 #endif // DEBUGINFO
 
 public:
-    explicit ControllerCanvas(QObject *parent, std::function<void (QPainter &painter, double width)> getImg);
+    explicit ControllerCanvas(QObject *parent = nullptr);
     ~ControllerCanvas() = default;
 
-    Q_PROPERTY(int heigthObject READ heigthObject NOTIFY heigthObjectChanged);
-    int heigthObject() const;
-    Q_SIGNAL void heigthObjectChanged();
-
-    Q_PROPERTY(int widthObject READ widthObject NOTIFY widthObjectChanged);
-    int widthObject() const;
-    Q_SIGNAL void widthObjectChanged();
+    int getHeigthObject() const;
+    int getWidthObject() const;
 
     double positionX() const;
     double positionY() const;
 
     void setPositionX(double newPosition);
     void setPositionY(double newPosition);
+
+    void setFunc(std::function<void (QPainter &painter, double width)> getImg);
+
+    int rowCount(const QModelIndex& parent) const override;
+    QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const override;
+    QHash<int, QByteArray> roleNames() const override;
 
     static void registerDrawer(WQMLCanvasComponent *object);
     static void registerHangler(WQMLCanvasHandler *object);
@@ -68,6 +73,9 @@ public slots:
     void touchUpdate(const QPointF &point, double pressure);
     void touchEnd(const QPointF &point, double pressure);
 
+    void duplicateData(int row);
+    void removeData(int row);
+
 private slots:
     void endTimer();
 
@@ -84,4 +92,7 @@ signals:
      * Il parametro newPosition indica la nuova posizione in pixel
     */
     void positionChanged(const QPointF &newPosition);
+
+    void onWidthObjectChanged();
+    void onHeigthObjectChanged();
 };
