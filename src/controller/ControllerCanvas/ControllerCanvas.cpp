@@ -7,6 +7,8 @@
 #include "utils/WCommonScript.h"
 #include "touch/dataTouch/page/Page.h"
 #include "controller/Controller.h"
+#include <QVector>
+
 
 static WQMLCanvasHandler *handler = nullptr;
 static ControllerCanvas *controllerCanvas = nullptr;
@@ -223,12 +225,12 @@ void ControllerCanvas::refresh(int page)
 
 void ControllerCanvas::sizeHasChanged(const QSizeF &size)
 {
-    qDebug() << size;
+    qDebug() << "asked for new size: " << size;
 
     this->_width = size.width();
     this->_heigth = size.height();
 
-    WDebug(true, "Call");
+    WDebug(false, "Call");
 
     emit this->onWidthObjectChanged();
     emit this->onHeigthObjectChanged();

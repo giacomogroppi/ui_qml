@@ -99,7 +99,7 @@ Item {
 
         delegate: Rectangle {
             width: 1000
-            height: 1414
+            height: 1000
 
             //visible: true
             visible: index === 0
@@ -110,7 +110,7 @@ Item {
                 anchors.left: parent.left
                 anchors.top: parent.top
 
-                index: index
+                indexDrawer: index
 
                 height: parent.height
                 width: parent.width

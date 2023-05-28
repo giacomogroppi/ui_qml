@@ -55,6 +55,8 @@ if(IOS)
     set(A_SOURCES_SWIFT)
 endif()
 
+add_definitions(-DUSE_QT)
+
 # QtCreator supports the following variables for Android, which are identical to qmake Android variables.
 # Check https://doc.qt.io/qt/deployment-android.html for more information.
 # They need to be set before the find_package(...) calls below.
@@ -132,7 +134,6 @@ set(PROJECT_SOURCES_WRITERNOTE
     ${A_DIR_ROOT}/src/model/core/AtomicSafe.cpp
     ${A_DIR_ROOT}/src/model/core/WZipReaderSingle.cpp
     ${A_DIR_ROOT}/src/model/core/WMultipleMutex.cpp
-    ${A_DIR_ROOT}/src/model/core/WPainter/WPainter.cpp
     ${A_DIR_ROOT}/src/model/core/WReadZip.cpp
     ${A_DIR_ROOT}/src/model/file/FileManager.cpp
     ${A_DIR_ROOT}/src/model/file/Directory.cpp
@@ -242,8 +243,8 @@ set(PROJECT_SOURCES_WRITERNOTE
     ${A_DIR_ROOT}/src/model/windows/mostra_finestra_i.cpp
     ${A_DIR_ROOT}/src/model/windows/updatecheck.cpp
     ${A_DIR_ROOT}/src/model/sheet/style_struct.cpp
-    ${A_DIR_ROOT}/src/model/core/WRect.cpp
-
+    ${A_DIR_ROOT}/src/model/core/WPainter/WPainter.cpp
+    ${A_DIR_ROOT}/src/model/core/WString.cpp
 
     ${A_DIR_ROOT}/src/model/core/AtomicSafe.h
     ${A_DIR_ROOT}/src/model/core/WListThreadSafe.h
@@ -259,7 +260,7 @@ set(PROJECT_SOURCES_WRITERNOTE
     ${A_DIR_ROOT}/src/model/core/WZipReaderSingle.h
     ${A_DIR_ROOT}/src/model/core/WList.h
     ${A_DIR_ROOT}/src/model/core/WZip.h
-    ${A_DIR_ROOT}/src/model/core/WRect.h
+    ${A_DIR_ROOT}/src/model/core/Rect.h
     ${A_DIR_ROOT}/src/model/core/WPair.h
     ${A_DIR_ROOT}/src/model/core/WReadZip.h
     ${A_DIR_ROOT}/src/model/core/WMultipleMutex.h

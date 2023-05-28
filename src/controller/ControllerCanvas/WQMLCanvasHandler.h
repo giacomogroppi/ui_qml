@@ -2,7 +2,7 @@
 
 #include <QObject>
 #include <QQuickItem>
-
+#include <QString>
 
 class WQMLCanvasHandler: public QQuickItem
 {

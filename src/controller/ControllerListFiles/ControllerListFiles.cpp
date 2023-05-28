@@ -86,10 +86,10 @@ QVariant ControllerListFiles::data(const QModelIndex& index, int role) const
 
     switch (role) {
         case Roles::Path: return {
-            data.getName()
+                QString(data.getName().constData())
         };
         case Roles::LastModification: return {
-            data.getLastMod().toString()
+            data.getLastMod().toString().toUtf8().constData()
         };
         default: break;
     }

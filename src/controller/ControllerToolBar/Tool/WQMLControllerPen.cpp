@@ -12,7 +12,7 @@ WQMLControllerPen::WQMLControllerPen(QQuickItem *parent)
 
 void WQMLControllerPen::paint(QPainter *painter)
 {
-    Define_PEN(pen);
+    QPen pen;
     pen.setColor(Qt::black);
     painter->setPen(pen);
 

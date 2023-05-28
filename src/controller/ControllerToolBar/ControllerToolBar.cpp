@@ -21,14 +21,14 @@ ControllerToolBar::ControllerToolBar(QObject *parent, TabletController *tabletCo
     controllerToolBar = this;
 
     QObject::connect(this, &ControllerToolBar::colorChanged, [this]() {
-        _tabletController->selectColor(this->_color);
+        _tabletController->selectColor(WColor(this->_color));
     });
 
-    QObject::connect(this->_tabletController, &TabletController::onNeedRefresh, this, [this](int pageMin, int pageMax) {
+    w_connect_lister(_tabletController, onNeedRefresh, [this](int pageMin, int pageMax) {
         emit this->onNeedRefresh(pageMin, pageMax);
     });
-    QObject::connect(this->_tabletController, &TabletController::onNumberOfPageChanged, this, &ControllerToolBar::numberOfPageChanged);
-    //QObject::connect(this->_tabletController, &tabletController::)
+
+    w_connect_lister(_tabletController, onNumberOfPageChanged, [this] (int index) { numberOfPageChanged(index); });
 
     qmlRegisterType<WQMLControllerHighlighter>( "writernote.WQMLControllerHighlighter", 1, 0, "WHighlighterButton");
     qmlRegisterType<WQMLControllerPen>(         "writernote.WQMLControllerPen",         1, 0, "WPenButton");
@@ -69,7 +69,12 @@ ControllerToolBar::~ControllerToolBar()
 QImage ControllerToolBar::getPixmap() const
 {
     WPixmap pix(1, false);
-    Define_PAINTER_p(painter, pix);
+    WPainter painter;
+
+    if (!painter.begin(&pix))
+        std::abort();
+
+
     _tabletController->getImg(painter, Page::getWidth());
     painter.end();
     return pix.toImage();
@@ -166,7 +171,8 @@ bool ControllerToolBar::isCut() const
 
 void ControllerToolBar::getImg(QPainter &painter, double width)
 {
-    this->_tabletController->getImg(painter, width);
+    WPainter adapterPainter (&painter);
+    this->_tabletController->getImg(adapterPainter, width);
 }
 
 void ControllerToolBar::registerTool(ToolController *tool)
@@ -195,28 +201,28 @@ QColor ControllerToolBar::getColor()
 
 void ControllerToolBar::touchBegin(const QPointF &point, double pressure)
 {
-    WDebug(true, "call");
+    WDebug(false, "call");
     emit this->onNeedRefresh(0, 1);
-    this->_tabletController->touchBegin(point, pressure);
+    this->_tabletController->touchBegin({point.x(), point.y()}, pressure);
 }
 
 void ControllerToolBar::touchUpdate(const QPointF &point, double pressure)
 {
     emit this->onNeedRefresh(0, 1);
-    WDebug(true, "call");
+    WDebug(false, "call");
 
-    this->_tabletController->touchUpdate(point, pressure);
+    this->_tabletController->touchUpdate({point.x(), point.y()}, pressure);
 }
 
 void ControllerToolBar::touchEnd(const QPointF &point, double pressure)
 {
-    WDebug(true, "call");
+    WDebug(false, "call");
     emit this->onNeedRefresh(0, 1);
-    this->_tabletController->touchEnd(point, pressure);
+    this->_tabletController->touchEnd({point.x(), point.y()}, pressure);
 }
 
 void ControllerToolBar::positionChanged(const QPointF &newPosition)
 {
-    this->_tabletController->positionDocChanged(newPosition);
+    this->_tabletController->positionDocChanged({newPosition.x(), newPosition.y()});
 }
 

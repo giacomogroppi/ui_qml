@@ -14,7 +14,7 @@ Controller::Controller(QObject *parent,
                        QQmlContext *content,
                        QQmlApplicationEngine *engine)
     : QObject(parent)
-    , _tabletController(new TabletController(this,
+    , _tabletController(new TabletController(nullptr,
             [this]() { return _audioRecorder->getSecondRecording(); },
             [this] () { return this->_audioPlayer->isPlaying(); },
             [this] () { return this->_audioPlayer->getPositionInSeconds(); }))
@@ -101,7 +101,10 @@ void Controller::showMain()
     emit onUiSelectedChanged();
 }
 
-Controller::~Controller() = default;
+Controller::~Controller()
+{
+    delete this->_tabletController;
+}
 
 void Controller::registerPrivateType()
 {

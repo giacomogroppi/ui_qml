@@ -37,11 +37,8 @@ void WQMLCanvasComponent::paint(QPainter *painter)
     TIME_START(paint_var);
 
     if (this->_functionSet) {
-        WDebug(true, "call");
-        //this->_getImg(*painter, width);
+        this->_getImg(*painter, width);
     }
-
-    painter->drawLine(0 + i, 0 + i, 300 + i, 300 + i);
 
     /*
     if (i > 200)
@@ -52,14 +49,15 @@ void WQMLCanvasComponent::paint(QPainter *painter)
     const auto hz =  1./((e - paint_hz).count() * 1e-9);
     paint_hz = e;
 
-    if (hz < 50) {
-        qDebug() << "problemi signori: " << hz;
+    if (hz < 50 or 1) {
+        qDebug() << "problemi signori: " << hz << "\t" << (void *)this << this->getIndex();
     }
 
     //TIME_STOP_STATIC(paint_hz, "Paint call: ");
     //TIME_STOP(paint_var, "Paint: ");
-    if (_index == 0)
-        update();
+    if (getIndex() == 0){
+        //update();
+    }
 }
 
 bool WQMLCanvasComponent::event(QEvent *event)
@@ -86,6 +84,7 @@ double WQMLCanvasComponent::yPosition() const
 
 int WQMLCanvasComponent::getIndex() const
 {
+    //qDebug() << "getIndex" << (void*)this << _index;
     return this->_index;
 }
 
@@ -108,8 +107,8 @@ void WQMLCanvasComponent::setFunc(std::function<void (QPainter &painter, double 
 void WQMLCanvasComponent::callUpdate(int page)
 {
     if (page == this->_index) {
-        //this->update();
-        WDebug(true, "call");
+        this->update();
+        WDebug(false, "call");
     }
 }
 

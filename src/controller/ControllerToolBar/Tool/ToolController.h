@@ -2,6 +2,7 @@
 
 #include <QPainter>
 #include <QPixmap>
+#include <QDebug>
 #include "utils/WCommonScript.h"
 #include "touch/pen/Pen.h"
 

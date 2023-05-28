@@ -48,7 +48,6 @@ void WQMLCanvasHandler::setTargetTouchArea(QQuickItem *targetTouchArea)
 
 bool WQMLCanvasHandler::eventFilter(QObject * obj, QEvent *event)
 {
-    //qDebug() << "event" << event->type();
     if (auto *e = dynamic_cast<QMouseEvent*>(event)) {
         if (!_h or !_w)
             return false;
