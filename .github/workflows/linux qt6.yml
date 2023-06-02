@@ -71,7 +71,7 @@ jobs:
         run: |
           git clone -b v6.5.0 https://code.qt.io/qt/qt5.git qt_6_5_0
           cd qt_6_5_0
-          perl init-repository --module-subset=qtbase,qtsvg,qtmultimedia,qtshadertools
+          perl init-repository --module-subset=qtbase,qtsvg,qtmultimedia,qtshadertools,qtdeclarative
           
           mkdir -p $QT_PREFIX
 
