@@ -21,10 +21,10 @@ void test_WList::append_2Argument()
     QCOMPARE_EQ(4, c.first());
     QCOMPARE_EQ(4, c.last());
 
-    QCOMPARE_EQ(1, c.length());
+    QCOMPARE_EQ(1, c.size());
     QCOMPARE_EQ(4, *c.get_first());
 
-    QCOMPARE_EQ(0, c.length());
+    QCOMPARE_EQ(0, c.size());
 }
 
 void test_WList::test_copy()

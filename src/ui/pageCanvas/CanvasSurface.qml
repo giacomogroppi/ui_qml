@@ -99,7 +99,7 @@ Item {
 
         delegate: Rectangle {
             width: 1000
-            height: 1000
+            height: 1414
 
             //visible: true
             visible: index === 0

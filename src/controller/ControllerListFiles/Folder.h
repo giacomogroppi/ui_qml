@@ -8,7 +8,7 @@
 class Folder
 {
 private:
-    QList<File> _files;
+    QList<WFile> _files;
 
     QByteArray _path;
     QByteArray _nameFolder;
@@ -19,13 +19,13 @@ public:
     const QByteArray &getFolderPath() const;
     const QByteArray &getFolderName() const;
 
-    const QList<File> &getFiles() const;
-    QList<File> &getFiles();
+    const QList<WFile> &getFiles() const;
+    QList<WFile> &getFiles();
 
-    void addFile(const File &file);
-    void removeFile(const File &file);
+    void addFile(const WFile &file);
+    void removeFile(const WFile &file);
 
-    bool contains(const File &file) const;
+    bool contains(const WFile &file) const;
 
     //Q_DISABLE_COPY(Folder);
 };

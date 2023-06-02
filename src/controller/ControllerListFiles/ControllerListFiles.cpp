@@ -1,4 +1,6 @@
 #include "ControllerListFiles.h"
+
+#include <utility>
 #include "controller/Controller.h"
 
 ControllerListFiles::ControllerListFiles(QObject *parent)
@@ -7,9 +9,9 @@ ControllerListFiles::ControllerListFiles(QObject *parent)
 }
 
 ControllerListFiles::ControllerListFiles(QObject *parent,
-                                         std::function<QList<File> *()> getFiles)
+                                         std::function<QList<WFile> *()> getFiles)
     :   QAbstractListModel(parent)
-    ,   _getFile(getFiles)
+    ,   _getFile(std::move(getFiles))
 {
 }
 
@@ -34,13 +36,13 @@ QHash<int, QByteArray> ControllerListFiles::roleNames() const
 
 void ControllerListFiles::duplicateData(int row)
 {
-    QList<File> &files = *this->_getFile();
+    QList<WFile> &files = *this->_getFile();
     if (row < 0 or row >= files.size()) {
         qWarning() << "ControllerListFilesFolder::duplicateData index out of bound";
         return;
     }
 
-    const File &data = files[row];
+    const WFile &data = files[row];
     const int rowOfInsert = row + 1;
 
     beginInsertRows(QModelIndex(), rowOfInsert, rowOfInsert);
@@ -50,7 +52,7 @@ void ControllerListFiles::duplicateData(int row)
 
 void ControllerListFiles::removeData(int row)
 {
-    QList<File> &files = *this->_getFile();
+    QList<WFile> &files = *this->_getFile();
     if (row < 0 or row >= files.size()) {
         qWarning() << "ControllerListFilesFolder::duplicateData index out of bound";
         return;
@@ -71,7 +73,7 @@ void ControllerListFiles::updateList()
 
 QVariant ControllerListFiles::data(const QModelIndex& index, int role) const
 {
-    QList<File> &files = *this->_getFile();
+    QList<WFile> &files = *this->_getFile();
     if (not index.isValid()) {
         qWarning() << "Index is not valid";
         return {};

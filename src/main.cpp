@@ -4,12 +4,14 @@
 #include "controller/Controller.h"
 #include <QQmlContext>
 #include <QTimer>
+#include "Scheduler/Scheduler.h"
 
 extern QQmlContext *_content;
 extern StrokePre *__tmp;
 
 int main(int argc, char *argv[])
 {
+    Scheduler *scheduler = new Scheduler();
     qputenv("QSG_RENDER_LOOP", "basic");
     QGuiApplication app(argc, argv);
     QQuickWindow::setGraphicsApi(QSGRendererInterface::Metal);
@@ -46,5 +48,9 @@ int main(int argc, char *argv[])
 
     //qGuiApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 
-    return app.exec();
+    const auto res = app.exec();
+
+    delete scheduler;
+
+    return res;
 }

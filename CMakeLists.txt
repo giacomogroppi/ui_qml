@@ -10,8 +10,7 @@ option(A_OPTION_USING_PCH "${A_NAME_TARGET} using PCH support" ON)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "$ENV{HOME}/Qt/6.4.2/macos/lib/cmake")
-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "$ENV{HOME}/Qt/6.5.0/gcc_64/lib/cmake")
+set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "$ENV{HOME}/Qt/6.5.0/macos/lib/cmake")
 
 option(RUN_TEST_COVERAGE "Enable this if you want to run tests with coverage" OFF)
 
@@ -39,21 +38,6 @@ set(A_SOURCES_C_HEADERS)
 set(A_SOURCES_C)
 set(A_SOURCES_PRECOMPILED_HEADERS_PUBLIC)
 set(A_SOURCES_PRECOMPILED_HEADERS_PRIVATE)
-
-if(IOS)
-    message("Enable build for ios")
-    enable_language(OBJCXX OBJC)
-
-    set(A_SOURCES_SWIFT_OBJC_INTERFACE_HEADER_NAME "aswiftobjcinterface.h")
-    set(A_SOURCES_SWIFT_OBJC_INTERFACE_HEADER_NAME)
-    
-    #set(A_SOURCES_SWIFT_OBJC_BRIDGING_HEADER "${A_DIR_ROOT}/aswiftobjcbridging.h")
-    set(A_SOURCES_SWIFT_OBJC_BRIDGING_HEADER)
-
-    set(A_SOURCES_OBJECTIVE_HEADERS src/ios/common.h)
-    set(A_SOURCES_OBJECTIVE_CPP src/ios/common.mm)
-    set(A_SOURCES_SWIFT)
-endif()
 
 add_definitions(-DUSE_QT)
 
@@ -116,24 +100,40 @@ set(PROJECT_SOURCES_WRITERNOTE
     ${PROJECT_SOURCES_WRITERNOTE}
     ${A_DIR_ROOT}/src/model/core/WZip.cpp
     ${A_DIR_ROOT}/src/model/core/WList.cpp
+    ${A_DIR_ROOT}/src/model/core/WRect.cpp
+    ${A_DIR_ROOT}/src/model/core/WPen.cpp
     ${A_DIR_ROOT}/src/model/core/multiarray.cpp
     ${A_DIR_ROOT}/src/model/core/WFile.cpp
+    ${A_DIR_ROOT}/src/model/core/WListFast.cpp
     ${A_DIR_ROOT}/src/model/core/core.cpp
+    ${A_DIR_ROOT}/src/model/core/WRgb.cpp
     ${A_DIR_ROOT}/src/model/core/WImage.cpp
     ${A_DIR_ROOT}/src/model/core/WListThreadSafe.cpp
     ${A_DIR_ROOT}/src/model/core/WPixmap.cpp
+    ${A_DIR_ROOT}/src/model/core/WSize.cpp
+    ${A_DIR_ROOT}/src/model/core/WString.cpp
     ${A_DIR_ROOT}/src/model/core/WDir.cpp
+    ${A_DIR_ROOT}/src/model/core/WMap.cpp
+    ${A_DIR_ROOT}/src/model/core/PointF.cpp
     ${A_DIR_ROOT}/src/model/core/WZipWriter.cpp
     ${A_DIR_ROOT}/src/model/core/WPair.cpp
     ${A_DIR_ROOT}/src/model/core/WSemaphore.cpp
     ${A_DIR_ROOT}/src/model/core/WZipCommon.cpp
+    ${A_DIR_ROOT}/src/model/core/RectF.cpp
+    ${A_DIR_ROOT}/src/model/core/Point.cpp
+    ${A_DIR_ROOT}/src/model/core/WOptionSettings.cpp
     ${A_DIR_ROOT}/src/model/core/WZipWriterMulti.cpp
+    ${A_DIR_ROOT}/src/model/core/WVector.cpp
     ${A_DIR_ROOT}/src/model/core/WLine.cpp
     ${A_DIR_ROOT}/src/model/core/WMutexLocker.cpp
+	${A_DIR_ROOT}/src/model/core/WRecursiveLock.cpp
     ${A_DIR_ROOT}/src/model/core/WZipWriterSingle.cpp
     ${A_DIR_ROOT}/src/model/core/AtomicSafe.cpp
     ${A_DIR_ROOT}/src/model/core/WZipReaderSingle.cpp
     ${A_DIR_ROOT}/src/model/core/WMultipleMutex.cpp
+    ${A_DIR_ROOT}/src/model/core/WVariant.cpp
+    ${A_DIR_ROOT}/src/model/core/WByteArray.cpp
+    ${A_DIR_ROOT}/src/model/core/WPainter/WPainter.cpp
     ${A_DIR_ROOT}/src/model/core/WReadZip.cpp
     ${A_DIR_ROOT}/src/model/file/FileManager.cpp
     ${A_DIR_ROOT}/src/model/file/Directory.cpp
@@ -186,6 +186,8 @@ set(PROJECT_SOURCES_WRITERNOTE
     ${A_DIR_ROOT}/src/model/pdf/translate.cpp
     ${A_DIR_ROOT}/src/model/Scheduler/WPool.cpp
     ${A_DIR_ROOT}/src/model/Scheduler/WTask.cpp
+    ${A_DIR_ROOT}/src/model/Scheduler/WTimer.cpp
+    ${A_DIR_ROOT}/src/model/Scheduler/WObject.cpp
     ${A_DIR_ROOT}/src/model/Scheduler/Scheduler.cpp
     ${A_DIR_ROOT}/src/model/lastedit/redoundo.cpp
     ${A_DIR_ROOT}/src/model/utils/get_file_dir/get_file_dir.cpp
@@ -243,159 +245,9 @@ set(PROJECT_SOURCES_WRITERNOTE
     ${A_DIR_ROOT}/src/model/windows/mostra_finestra_i.cpp
     ${A_DIR_ROOT}/src/model/windows/updatecheck.cpp
     ${A_DIR_ROOT}/src/model/sheet/style_struct.cpp
-    ${A_DIR_ROOT}/src/model/core/WPainter/WPainter.cpp
-    ${A_DIR_ROOT}/src/model/core/WString.cpp
-
-    ${A_DIR_ROOT}/src/model/core/AtomicSafe.h
-    ${A_DIR_ROOT}/src/model/core/WListThreadSafe.h
-    ${A_DIR_ROOT}/src/model/core/WZipWriterSingle.h
-    ${A_DIR_ROOT}/src/model/core/core.h
-    ${A_DIR_ROOT}/src/model/core/WImage.h
-    ${A_DIR_ROOT}/src/model/core/WMutexLocker.h
-    ${A_DIR_ROOT}/src/model/core/WPixmap.h
-    ${A_DIR_ROOT}/src/model/core/WMutex.h
-    ${A_DIR_ROOT}/src/model/core/WFile.h
-    ${A_DIR_ROOT}/src/model/core/WSemaphore.h
-    ${A_DIR_ROOT}/src/model/core/multiarray.h
-    ${A_DIR_ROOT}/src/model/core/WZipReaderSingle.h
-    ${A_DIR_ROOT}/src/model/core/WList.h
-    ${A_DIR_ROOT}/src/model/core/WZip.h
-    ${A_DIR_ROOT}/src/model/core/Rect.h
-    ${A_DIR_ROOT}/src/model/core/WPair.h
-    ${A_DIR_ROOT}/src/model/core/WReadZip.h
-    ${A_DIR_ROOT}/src/model/core/WMultipleMutex.h
-    ${A_DIR_ROOT}/src/model/core/WLine.h
-    ${A_DIR_ROOT}/src/model/core/WZipWriter.h
-    ${A_DIR_ROOT}/src/model/core/WDir.h
-    ${A_DIR_ROOT}/src/model/core/WZipWriterMulti.h
-    ${A_DIR_ROOT}/src/model/core/WPainter/WPainter.h
-    ${A_DIR_ROOT}/src/model/core/WZipCommon.h
-    ${A_DIR_ROOT}/src/model/file/FileManager.h
-    ${A_DIR_ROOT}/src/model/file/File.h
-    ${A_DIR_ROOT}/src/model/file/Directory.h
-    ${A_DIR_ROOT}/src/model/audioplay/audioplay.h
-    ${A_DIR_ROOT}/src/model/touch/object_finder/ObjectFinder.h
-    ${A_DIR_ROOT}/src/model/touch/object_finder/model_finder/model_finder.h
-    ${A_DIR_ROOT}/src/model/touch/tools/InsertTools.h
-    ${A_DIR_ROOT}/src/model/touch/tools/Tools.h
-    ${A_DIR_ROOT}/src/model/touch/tools/Scrollable.h
-    ${A_DIR_ROOT}/src/model/touch/paintevent/paint.h
-    ${A_DIR_ROOT}/src/model/touch/dataTouch/page/Page.h
-    ${A_DIR_ROOT}/src/model/touch/dataTouch/page/PageFile.h
-    ${A_DIR_ROOT}/src/model/touch/dataTouch/Point.h
-    ${A_DIR_ROOT}/src/model/touch/dataTouch/stroke/StrokeRect.h
-    ${A_DIR_ROOT}/src/model/touch/dataTouch/stroke/StrokeForPage.h
-    ${A_DIR_ROOT}/src/model/touch/dataTouch/stroke/StrokeRectGenerator.h
-    ${A_DIR_ROOT}/src/model/touch/dataTouch/stroke/StrokeLineGenerator.h
-    ${A_DIR_ROOT}/src/model/touch/dataTouch/stroke/stroke_complex_data.h
-    ${A_DIR_ROOT}/src/model/touch/dataTouch/stroke/StrokeLine.h
-    ${A_DIR_ROOT}/src/model/touch/dataTouch/stroke/StrokeProp.h
-    ${A_DIR_ROOT}/src/model/touch/dataTouch/stroke/StrokeCircle.h
-    ${A_DIR_ROOT}/src/model/touch/dataTouch/stroke/StrokePre.h
-    ${A_DIR_ROOT}/src/model/touch/dataTouch/stroke/Stroke.h
-    ${A_DIR_ROOT}/src/model/touch/dataTouch/stroke/stroke_drawer.h
-    ${A_DIR_ROOT}/src/model/touch/dataTouch/stroke/stroke_file.h
-    ${A_DIR_ROOT}/src/model/touch/dataTouch/stroke/StrokeNormalFile.h
-    ${A_DIR_ROOT}/src/model/touch/dataTouch/stroke/StrokeCircleGenerator.h
-    ${A_DIR_ROOT}/src/model/touch/dataTouch/stroke/StrokeNormal.h
-    ${A_DIR_ROOT}/src/model/touch/dataTouch/stroke/StrokeComplexCommon.h
-    ${A_DIR_ROOT}/src/model/touch/dataTouch/datastruct/DataStruct.h
-    ${A_DIR_ROOT}/src/model/touch/dataTouch/datastruct/utils_datastruct.h
-    ${A_DIR_ROOT}/src/model/touch/square/Square.h
-    ${A_DIR_ROOT}/src/model/touch/square/SquareMethod.h
-    ${A_DIR_ROOT}/src/model/touch/rubber/Rubber.h
-    ${A_DIR_ROOT}/src/model/touch/rubber/RubberMethod.h
-    ${A_DIR_ROOT}/src/model/touch/multi_thread_data.h
-    ${A_DIR_ROOT}/src/model/touch/TabletController.h
-    ${A_DIR_ROOT}/src/model/touch/pen/PenMethod.h
-    ${A_DIR_ROOT}/src/model/touch/pen/Pen.h
-    ${A_DIR_ROOT}/src/model/touch/laser/LaserMethod.h
-    ${A_DIR_ROOT}/src/model/touch/laser/Laser.h
-    ${A_DIR_ROOT}/src/model/touch/highlighter/HighligterMethod.h
-    ${A_DIR_ROOT}/src/model/touch/highlighter/Highligter.h
-    ${A_DIR_ROOT}/src/model/touch/copy_cut/copy_cut_selection.h
-    ${A_DIR_ROOT}/src/model/touch/TabletPenMethod.h
-    ${A_DIR_ROOT}/src/model/touch/paint.h
-    ${A_DIR_ROOT}/src/model/touch/TabletUtils.h
-    ${A_DIR_ROOT}/src/model/images/fromimage.h
-    ${A_DIR_ROOT}/src/model/pdf/topdf.h
-    ${A_DIR_ROOT}/src/model/Scheduler/WTask.h
-    ${A_DIR_ROOT}/src/model/Scheduler/WPool.h
-    ${A_DIR_ROOT}/src/model/Scheduler/Scheduler.h
-    ${A_DIR_ROOT}/src/model/lastedit/redoundo.h
-    ${A_DIR_ROOT}/src/model/utils/color_define_rgb.h
-    ${A_DIR_ROOT}/src/model/utils/utils.h
-    ${A_DIR_ROOT}/src/model/utils/copy_text.h
-    ${A_DIR_ROOT}/src/model/utils/areyousure/areyousure.h
-    ${A_DIR_ROOT}/src/model/utils/get_file_dir/get_file_dir.h
-    ${A_DIR_ROOT}/src/model/utils/posizione_binario.h
-    ${A_DIR_ROOT}/src/model/utils/color/color_chooser.h
-    ${A_DIR_ROOT}/src/model/utils/path/get_path.h
-    ${A_DIR_ROOT}/src/model/utils/path/pathfile.h
-    ${A_DIR_ROOT}/src/model/utils/aboutQt/aboutqt.h
-    ${A_DIR_ROOT}/src/model/utils/remove_key/remove_key.h
-    ${A_DIR_ROOT}/src/model/utils/changeLanguage.h
-    ${A_DIR_ROOT}/src/model/utils/Optional.h
-    ${A_DIR_ROOT}/src/model/utils/time/waitTime.h
-    ${A_DIR_ROOT}/src/model/utils/time/current_time.h
-    ${A_DIR_ROOT}/src/model/utils/common_error_definition.h
-    ${A_DIR_ROOT}/src/model/utils/lastModification/lastmodification.h
-    ${A_DIR_ROOT}/src/model/utils/slash/slash.h
-    ${A_DIR_ROOT}/src/model/utils/mostra_explorer/mostra_explorer.h
-    ${A_DIR_ROOT}/src/model/utils/checkpassword/checkpassword.h
-    ${A_DIR_ROOT}/src/model/utils/WCommonScript.h
-    ${A_DIR_ROOT}/src/model/utils/common_def.h
-    ${A_DIR_ROOT}/src/model/utils/threadcount.h
-    ${A_DIR_ROOT}/src/model/utils/random/random.h
-    ${A_DIR_ROOT}/src/model/utils/get_path_application.h
-    ${A_DIR_ROOT}/src/model/utils/permission/permission.h
-    ${A_DIR_ROOT}/src/model/utils/platform.h
-    ${A_DIR_ROOT}/src/model/utils/setting_define.h
-    ${A_DIR_ROOT}/src/model/utils/removenotwriternote.h
-    ${A_DIR_ROOT}/src/model/utils/get_only_name/get_only_name.h
-    ${A_DIR_ROOT}/src/model/datawrite/source_read_ext.h
-    ${A_DIR_ROOT}/src/model/datawrite/renamefile_f_zip.h
-    ${A_DIR_ROOT}/src/model/datawrite/savefile.h
-    ${A_DIR_ROOT}/src/model/currenttitle/option/modality_data.h
-    ${A_DIR_ROOT}/src/model/currenttitle/document.h
-    ${A_DIR_ROOT}/src/model/currenttitle/checksimilecopybook.h
-    ${A_DIR_ROOT}/src/model/currenttitle/merge_currenttitle/merge_currenttitle.h
-    ${A_DIR_ROOT}/src/model/testing/testingzip.h
-    ${A_DIR_ROOT}/src/model/testing/memtest.h
-    ${A_DIR_ROOT}/src/model/testing/testingcore.h
-    ${A_DIR_ROOT}/src/model/audiorecord/audiorecord.h
-    ${A_DIR_ROOT}/src/model/dataread/xmlstruct.h
-    ${A_DIR_ROOT}/src/model/dataread/readlistarray.h
-    ${A_DIR_ROOT}/src/model/cloud/struct_file.h
-    ${A_DIR_ROOT}/src/model/cloud/error_type.h
-    ${A_DIR_ROOT}/src/model/cloud/utils/downloadfile.h
-    ${A_DIR_ROOT}/src/model/cloud/utils/toencrypt.h
-    ${A_DIR_ROOT}/src/model/cloud/utils/shared_definition.h
-    ${A_DIR_ROOT}/src/model/cloud/cloud_ui.h
-    ${A_DIR_ROOT}/src/model/cloud/struct_mail.h
-    ${A_DIR_ROOT}/src/model/cloud/url.h
-    ${A_DIR_ROOT}/src/model/cloud/struct_user.h
-    ${A_DIR_ROOT}/src/model/cloud/cloud_controll.h
-    ${A_DIR_ROOT}/src/model/cloud/request_type.h
-    ${A_DIR_ROOT}/src/model/log/log_ui/log_ui.h
-    ${A_DIR_ROOT}/src/model/preview/preview.h
-    ${A_DIR_ROOT}/src/model/restore_file/restore_file_critic.h
-    ${A_DIR_ROOT}/src/model/frompdf/frompdf.h
-    ${A_DIR_ROOT}/src/model/frompdf/convertImg.h
-    ${A_DIR_ROOT}/src/model/windows/mostra_finestra_i.h
-    ${A_DIR_ROOT}/src/model/windows/updatecheck.h
-    ${A_DIR_ROOT}/src/model/sheet/style_struct.h
 )
 
-if (IOS)
-    set(PROJECT_SOURCES_WRITERNOTE
-        ${PROJECT_SOURCES_WRITERNOTE}
-        $ENV{HOME}/writernote-qt/src/core/WPainter/WPainter_ios.mm
-        $ENV{HOME}/writernote-qt/src/core/WImage.mm
-    )
-endif()
-
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUGINFO -O0")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUGINFO -O0 -fprofile-arcs -ftest-coverage")
 
 set(A_SOURCES_CPP
     ${A_SOURCES_CPP}
@@ -431,14 +283,6 @@ set(MAIN
 		${A_DIR_ROOT}/src/main.cpp
 		)
 
-if (IOS)
-    set(A_SOURCES_CPP
-        ${A_SOURCES_CPP}
-        ${A_DIR_ROOT}/src/controller/ControllerListFiles/ControllerCommonFiles.mm
-    )
-
-endif()
-
 set(A_SOURCES_PRECOMPILED_HEADERS_PRIVATE
 	${A_SOURCES_PRECOMPILED_HEADERS_PRIVATE}
 	#${A_DIR_ROOT}/amainpch.h
@@ -454,6 +298,7 @@ endforeach()
 
 find_package(QT NAMES Qt6 COMPONENTS ${A_QT_MODULES} REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS ${A_QT_MODULES} REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Test)
 
 set(A_SOURCES
 	${A_SOURCES}
@@ -468,16 +313,6 @@ set(A_SOURCES
 	${A_SOURCES_PRECOMPILED_HEADERS_PUBLIC}
 	${A_SOURCES_PRECOMPILED_HEADERS_PRIVATE}
 )
-
-if(IOS)
-	set(A_SOURCES
-		${A_SOURCES}
-		${A_SOURCES_SWIFT_OBJC_BRIDGING_HEADER}
-		${A_SOURCES_OBJECTIVE_HEADERS}
-		${A_SOURCES_OBJECTIVE_CPP}
-		${A_SOURCES_SWIFT}
-	)
-endif()
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 	qt_add_executable(${A_NAME_TARGET}
@@ -515,11 +350,7 @@ endif()
 
 set(LIBZIP_LIBRARY /opt/homebrew/Cellar/libzip/1.9.2/lib/libzip.dylib)
 
-if(IOS)
-    message("-- Configure libzip for ios")
-    include_directories(/opt/homebrew/Cellar/libzip/1.9.2/include/)
-    target_link_libraries(${PROJECT_NAME} PRIVATE $ENV{HOME}/writernote-qt/3rdparty/libzip_ios.a)
-elseif(MACOS_BUILD OR APPLE)
+if(MACOS_BUILD OR APPLE)
     include_directories(/opt/homebrew/Cellar/libzip/1.9.2/include/)
     target_link_libraries(${PROJECT_NAME} PRIVATE /opt/homebrew/Cellar/libzip/1.9.2/lib/libzip.dylib)
 elseif(WIN)
@@ -554,18 +385,6 @@ target_link_libraries(${A_NAME_TARGET}
 	PUBLIC
 		${A_TARGET_MODULES_PUBLIC}
 )
-
-if(IOS)
-	set_target_properties(${A_NAME_TARGET}
-		PROPERTIES
-			XCODE_ATTRIBUTE_SWIFT_OBJC_INTERFACE_HEADER_NAME "${A_SOURCES_SWIFT_OBJC_INTERFACE_HEADER_NAME}"
-			XCODE_ATTRIBUTE_SWIFT_OBJC_BRIDGING_HEADER "${A_SOURCES_SWIFT_OBJC_BRIDGING_HEADER}"
-			XCODE_ATTRIBUTE_ENABLE_BITCODE "NO"
-			XCODE_ATTRIBUTE_ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES "YES"
-                        XCODE_ATTRIBUTE_SWIFT_VERSION "5.8"
-	)
-endif()
-
 
 enable_testing()
 
@@ -602,11 +421,12 @@ function(SETUP_TESTS)
 	endforeach()
 endfunction()
 
-if (NOT IOS)
 SETUP_TESTS(
 		src/test/model/test_utils/test_WCommonScript
 		src/test/controller/ControllerTest
 		src/test/model/test_core/test_WPair
 		src/test/model/test_core/test_WList
+		src/test/model/test_core/test_WListFast
+		src/test/model/test_Scheduler/test_WObject
+		src/test/model/test_core/test_RectF
 )
-endif()

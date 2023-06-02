@@ -11,23 +11,23 @@ const QByteArray &Folder::getFolderName() const
     return this->_nameFolder;
 }
 
-const QList<File> &Folder::getFiles() const
+const QList<WFile> &Folder::getFiles() const
 {
     return this->_files;
 }
 
-QList<File> &Folder::getFiles()
+QList<WFile> &Folder::getFiles()
 {
     return this->_files;
 }
 
-void Folder::addFile(const File &file)
+void Folder::addFile(const WFile &file)
 {
     Q_ASSERT(!this->contains(file));
     this->_files.append(file);
 }
 
-void Folder::removeFile(const File &file)
+void Folder::removeFile(const WFile &file)
 {
     Q_ASSERT(this->contains(file));
     int i;
@@ -40,7 +40,7 @@ void Folder::removeFile(const File &file)
     }
 }
 
-bool Folder::contains(const File &file) const
+bool Folder::contains(const WFile &file) const
 {
     for (const auto &f : this->_files) {
         if(file == f)

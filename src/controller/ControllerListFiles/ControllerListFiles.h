@@ -9,7 +9,7 @@ class ControllerListFiles: public QAbstractListModel
     Q_OBJECT
 public:
     ControllerListFiles(QObject *parent = nullptr);
-    ControllerListFiles(QObject *parent, std::function<QList<File> *()> getFiles);
+    ControllerListFiles(QObject *parent, std::function<QList<WFile> *()> getFiles);
     ~ControllerListFiles() = default;
 
     enum Roles {
@@ -27,7 +27,7 @@ public slots:
     void clickFile(int index);
 
 private:
-    std::function<QList<File> *()> _getFile;
+    std::function<QList<WFile> *()> _getFile;
 public:
     void updateList();
 };
