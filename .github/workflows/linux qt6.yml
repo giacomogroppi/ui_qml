@@ -92,24 +92,32 @@ jobs:
 
       - name: Writernote compile [test]
         run: |
-          
-          cmake . \
+          mkdir build
+          CD build
+          cmake .. \
             -DCMAKE_PREFIX_PATH=$QT_PREFIX/lib/cmake \
             -DCMAKE_BUILD_TYPE=Debug \
-            -DDEBUG_CORE=ON
+            -DDEBUG_CORE=ON \
+            -GNinja
+            
+          ninja
       - name: Run ctest
         run: |
+          cd build
           ctest
 
       - name: Run ctest with valgrind
         run: |
+          cd build
           export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PREFIX_LIB/poppler/install
           valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ctest
 
       - name: Writernote compile
         run: |
-          
-          cmake . \
+          rm -rm build
+          mkdir build
+          cd build
+          cmake .. \
             -DCMAKE_PREFIX_PATH=$QT_PREFIX/lib/cmake
           make clean
           make -j$(nproc) 
