@@ -84,21 +84,11 @@ jobs:
 
           cp -r $QT_PREFIX $PREFIX_LIB/qt-cache
 
-      - name: Build poppler
+      - name: Download writernote
         run: |
-          echo $(pwd)
-          cd 3rdparty/poppler
-
-          export INSTALL_POPPLER=$PREFIX_LIB/poppler/install
-          mkdir -p $INSTALL_POPPLER
-          
-          cmake . \
-            -DCMAKE_INSTALL_LIBDIR=$INSTALL_POPPLER \
-            -DCMAKE_INSTALL_INCLUDEDIR=$INSTALL_POPPLER \
-            -DCMAKE_PREFIX_PATH=$QT_PREFIX/lib/cmake
-            
-          make -j$(nproc)
-          sudo make install
+          mkdir src/model
+          git clone https://github.com/giacomogroppi/writernote-qt
+          mv writernote-qt/src/* src/model/
 
       - name: Writernote compile [test]
         run: |
