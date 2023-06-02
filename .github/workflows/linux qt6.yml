@@ -24,8 +24,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      QT_PREFIX: "/home/runner/work/writernote-qt/writernote-qt/qt_install/"
-      PREFIX_LIB: "/home/runner/work/writernote-qt/writernote-qt/3rdparty/"
+      QT_PREFIX: "/home/runner/work/ui_qml/ui_qml/qt_install/"
+      PREFIX_LIB: "/home/runner/work/ui_qml/ui_qml/3rdparty/"
 
     steps:
       - name: Clone
