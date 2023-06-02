@@ -25,7 +25,7 @@ jobs:
 
     env:
       QT_PREFIX: "/home/runner/work/ui_qml/ui_qml/qt_install/"
-      PREFIX_LIB: "/home/runner/work/ui_qml/ui_qml/3rdparty/"
+      PREFIX_LIB: "/home/runner/work/ui_qml/ui_qml/"
 
     steps:
       - name: Clone
