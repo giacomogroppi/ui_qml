@@ -359,7 +359,7 @@ endif()
 if (APPLE)
     set(LIBZIP_LIBRARY /opt/homebrew/Cellar/libzip/1.9.2/lib/libzip.dylib)
 elseif(LINUX)
-    set (LIBZIP_LIBRARY /usr/lib/libzip.so )
+    set (LIBZIP_LIBRARY /usr/lib/x86_64-linux-gnu/libzip.so )
 endif()
 
 if(MACOS_BUILD OR APPLE)
