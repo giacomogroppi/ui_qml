@@ -14,6 +14,14 @@ set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "$ENV{HOME}/Qt/6.5.0/macos/lib/cmake"
 
 option(RUN_TEST_COVERAGE "Enable this if you want to run tests with coverage" OFF)
 
+if(UNIX AND NOT APPLE AND NOT MINGW)
+    set(LINUX TRUE)
+endif()
+
+if(MSVC OR MSYS OR MINGW)
+    set(WIN TRUE)
+endif()
+
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -348,18 +356,22 @@ if(UNIX AND NOT APPLE AND NOT MINGW)
     set(LINUX TRUE)
 endif()
 
-set(LIBZIP_LIBRARY /opt/homebrew/Cellar/libzip/1.9.2/lib/libzip.dylib)
+if (APPLE)
+    set(LIBZIP_LIBRARY /opt/homebrew/Cellar/libzip/1.9.2/lib/libzip.dylib)
+elseif(LINUX)
+    set (LIBZIP_LIBRARY /usr/lib/libzip.so )
+endif()
 
 if(MACOS_BUILD OR APPLE)
     include_directories(/opt/homebrew/Cellar/libzip/1.9.2/include/)
-    target_link_libraries(${PROJECT_NAME} PRIVATE /opt/homebrew/Cellar/libzip/1.9.2/lib/libzip.dylib)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBZIP_LIBRARY})
 elseif(WIN)
     include_directories(${PROJECT_SOURCE_DIR}/3rdparty/libzip/install/include/)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/3rdparty/libzip/install/lib/libzip.a)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/3rdparty/zlib-ng/install/lib/libzlib.a)
 else(UNIX)
     message("Set target linux")
-    target_link_libraries(${PROJECT_NAME} PRIVATE /usr/lib/x86_64-linux-gnu/libzip.so)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBZIP_LIBRARY})
     #target_link_libraries(${PROJECT_NAME} PRIVATE /usr/lib/libzip.so)
 endif()
 
