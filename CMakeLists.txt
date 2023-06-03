@@ -10,17 +10,21 @@ option(A_OPTION_USING_PCH "${A_NAME_TARGET} using PCH support" ON)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "$ENV{HOME}/Qt/6.5.0/macos/lib/cmake")
-
-option(RUN_TEST_COVERAGE "Enable this if you want to run tests with coverage" OFF)
-
 if(UNIX AND NOT APPLE AND NOT MINGW)
-    set(LINUX TRUE)
+	set(LINUX TRUE)
 endif()
 
 if(MSVC OR MSYS OR MINGW)
-    set(WIN TRUE)
+	set(WIN TRUE)
 endif()
+
+if (APPLE)
+	set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "$ENV{HOME}/Qt/6.5.0/macos/lib/cmake")
+else()
+	set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "$ENV{HOME}/Qt/6.5.0/gcc_64/lib/cmake")
+endif()
+
+option(RUN_TEST_COVERAGE "Enable this if you want to run tests with coverage" OFF)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
