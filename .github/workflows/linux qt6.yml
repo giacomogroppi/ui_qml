@@ -93,7 +93,7 @@ jobs:
       - name: Writernote compile [test]
         run: |
           mkdir build
-          CD build
+          cd build
           cmake .. \
             -DCMAKE_PREFIX_PATH=$QT_PREFIX/lib/cmake \
             -DCMAKE_BUILD_TYPE=Debug \
