@@ -101,14 +101,10 @@ jobs:
           ninja
       - name: Run ctest
         run: |
-          ls
-          cd build
-          ls
           ctest
 
       - name: Run ctest with valgrind
         run: |
-          cd build
           export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PREFIX_LIB/poppler/install
           valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ctest
 
