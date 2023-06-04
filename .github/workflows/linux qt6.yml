@@ -15,8 +15,6 @@ on:
   pull_request:
     branches: [ main ]
 
-    paths-ignore:
-
   workflow_dispatch:
 
 jobs:
@@ -103,7 +101,9 @@ jobs:
           ninja
       - name: Run ctest
         run: |
+          ls
           cd build
+          ls
           ctest
 
       - name: Run ctest with valgrind
