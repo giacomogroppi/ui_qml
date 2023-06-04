@@ -10,7 +10,10 @@ class test_WListFast : public QObject
 Q_OBJECT
 
 private slots:
+    // operator copy
     void test_copy ();
+    void copy_not_empty();
+
     void append_2Argument();
     void operatorCopy();
     void appendObject();
@@ -129,6 +132,17 @@ void test_WListFast::iteratorOperator()
     for (int i = 0; i < 400; i++) {
         QCOMPARE(*(list.begin() + i), *(qtList.begin() + i));
     }
+}
+
+void test_WListFast::copy_not_empty()
+{
+    WListFast<StrokeNormal> stroke;
+    StrokeNormal strokeNormal;
+
+    stroke.append(std::move(strokeNormal));
+
+    QVERIFY(strokeNormal.isEmpty());
+    QCOMPARE(1, stroke.size());
 }
 
 QTEST_MAIN(test_WListFast)

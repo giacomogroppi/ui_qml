@@ -11,10 +11,10 @@ extern StrokePre *__tmp;
 
 int main(int argc, char *argv[])
 {
-    Scheduler *scheduler = new Scheduler();
+    auto *scheduler = new Scheduler();
     qputenv("QSG_RENDER_LOOP", "basic");
     QGuiApplication app(argc, argv);
-    QQuickWindow::setGraphicsApi(QSGRendererInterface::Metal);
+    //QQuickWindow::setGraphicsApi(QSGRendererInterface::Metal);
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/src/main.qml"));
 
