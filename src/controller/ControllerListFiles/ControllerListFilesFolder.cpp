@@ -23,8 +23,8 @@ ControllerListFilesFolder::ControllerListFilesFolder(QObject *parent)
     this->_folder.append(Folder("/home/giacomo/writernote", "Bioinformatica"));
 
 
-    this->_folder[0].addFile(WFile("Elettronica lez 1"));
-    this->_folder[1].addFile(WFile("Economica lez 2"));
+    this->_folder[0].addFile(WFile(qstr("Elettronica lez 1")));
+    this->_folder[1].addFile(WFile(qstr("Economica lez 2")));
 
     this->_controllerListFiles->updateList();
 }

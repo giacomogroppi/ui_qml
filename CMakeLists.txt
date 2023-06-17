@@ -110,7 +110,14 @@ file(GLOB_RECURSE
 
 set(PROJECT_SOURCES_WRITERNOTE
     ${PROJECT_SOURCES_WRITERNOTE}
-    ${A_DIR_ROOT}/src/model/core/WZip.cpp
+		${A_DIR_ROOT}/src/model/VersionFileController.cpp
+		${A_DIR_ROOT}/src/model/core/WList.cpp
+
+	# pointers
+	${A_DIR_ROOT}/src/model/core/pointer/SharedPtr.cpp
+	${A_DIR_ROOT}/src/model/core/pointer/UniquePtr.cpp
+
+    ${A_DIR_ROOT}/src/model/FileContainer/WZip.cpp
     ${A_DIR_ROOT}/src/model/core/WList.cpp
     ${A_DIR_ROOT}/src/model/core/WRect.cpp
     ${A_DIR_ROOT}/src/model/core/WPen.cpp
@@ -123,28 +130,28 @@ set(PROJECT_SOURCES_WRITERNOTE
     ${A_DIR_ROOT}/src/model/core/WListThreadSafe.cpp
     ${A_DIR_ROOT}/src/model/core/WPixmap.cpp
     ${A_DIR_ROOT}/src/model/core/WSize.cpp
-    ${A_DIR_ROOT}/src/model/core/WString.cpp
+    ${A_DIR_ROOT}/src/model/core/String/WString.cpp
     ${A_DIR_ROOT}/src/model/core/WDir.cpp
     ${A_DIR_ROOT}/src/model/core/WMap.cpp
     ${A_DIR_ROOT}/src/model/core/PointF.cpp
-    ${A_DIR_ROOT}/src/model/core/WZipWriter.cpp
+    ${A_DIR_ROOT}/src/model/FileContainer/WZipWriter.cpp
     ${A_DIR_ROOT}/src/model/core/WPair.cpp
     ${A_DIR_ROOT}/src/model/core/WSemaphore.cpp
-    ${A_DIR_ROOT}/src/model/core/WZipCommon.cpp
+    ${A_DIR_ROOT}/src/model/FileContainer/WZipCommon.cpp
     ${A_DIR_ROOT}/src/model/core/RectF.cpp
     ${A_DIR_ROOT}/src/model/core/Point.cpp
     ${A_DIR_ROOT}/src/model/core/WOptionSettings.cpp
-    ${A_DIR_ROOT}/src/model/core/WZipWriterMulti.cpp
+    ${A_DIR_ROOT}/src/model/FileContainer/WZipWriterMulti.cpp
     ${A_DIR_ROOT}/src/model/core/WVector.cpp
     ${A_DIR_ROOT}/src/model/core/WLine.cpp
     ${A_DIR_ROOT}/src/model/core/WMutexLocker.cpp
 	${A_DIR_ROOT}/src/model/core/WRecursiveLock.cpp
-    ${A_DIR_ROOT}/src/model/core/WZipWriterSingle.cpp
+    ${A_DIR_ROOT}/src/model/FileContainer/WZipWriterSingle.cpp
     ${A_DIR_ROOT}/src/model/core/AtomicSafe.cpp
-    ${A_DIR_ROOT}/src/model/core/WZipReaderSingle.cpp
+    ${A_DIR_ROOT}/src/model/FileContainer/WZipReaderSingle.cpp
     ${A_DIR_ROOT}/src/model/core/WMultipleMutex.cpp
     ${A_DIR_ROOT}/src/model/core/WVariant.cpp
-    ${A_DIR_ROOT}/src/model/core/WByteArray.cpp
+    ${A_DIR_ROOT}/src/model/core/ByteArray/WByteArray.cpp
     ${A_DIR_ROOT}/src/model/core/WPainter/WPainter.cpp
     ${A_DIR_ROOT}/src/model/core/WReadZip.cpp
     ${A_DIR_ROOT}/src/model/file/FileManager.cpp
@@ -257,6 +264,10 @@ set(PROJECT_SOURCES_WRITERNOTE
     ${A_DIR_ROOT}/src/model/windows/mostra_finestra_i.cpp
     ${A_DIR_ROOT}/src/model/windows/updatecheck.cpp
     ${A_DIR_ROOT}/src/model/sheet/style_struct.cpp
+	${A_DIR_ROOT}/src/model/FileContainer/FileReader.cpp
+	${A_DIR_ROOT}/src/model/FileContainer/FileContainer.cpp
+	${A_DIR_ROOT}/src/model/FileContainer/FileInstance.cpp
+	${A_DIR_ROOT}/src/model/FileContainer/FileWriter.cpp
 )
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUGINFO -O0 -fprofile-arcs -ftest-coverage")
@@ -367,7 +378,7 @@ elseif(LINUX)
 endif()
 
 if(MACOS_BUILD OR APPLE)
-    include_directories(/opt/homebrew/Cellar/libzip/1.9.2/include/)
+    #include_directories(/opt/homebrew/Cellar/libzip/1.9.2/include/)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBZIP_LIBRARY})
 elseif(WIN)
     include_directories(${PROJECT_SOURCE_DIR}/3rdparty/libzip/install/include/)
