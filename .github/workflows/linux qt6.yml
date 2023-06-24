@@ -26,6 +26,11 @@ jobs:
       PREFIX_LIB: "/home/runner/work/ui_qml/ui_qml/"
 
     steps:
+      - name: Checkout writernote-qt
+        uses: actions/checkout@v2
+        with:
+          repository: giacomogroppi/writernote-qt
+
       - name: Clone
         uses: actions/checkout@v2
         with:
