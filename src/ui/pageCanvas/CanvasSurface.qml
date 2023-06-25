@@ -6,7 +6,8 @@ import writernote.WQMLCanvasHandler 1.0
 Item {
     id: canvas_surface
 
-    /*Flickable {
+    /*
+    Flickable {
         id: canvasSurface
         anchors.fill: parent
         contentHeight: 1000
@@ -90,12 +91,14 @@ Item {
             yOriginPosition: canvas_surface_private.y - canvasSurface.y
         }
     }*/
+
+
     ListView {
         id: containerCanvas
         anchors.fill: parent
         model: _controllerCanvas
         clip: true
-        visible: true
+        //visible: true
 
         delegate: Rectangle {
             width: 1000

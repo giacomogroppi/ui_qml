@@ -270,7 +270,15 @@ set(PROJECT_SOURCES_WRITERNOTE
 	${A_DIR_ROOT}/src/model/FileContainer/FileWriter.cpp
 )
 
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUGINFO -O0 -fprofile-arcs -ftest-coverage")
+if(IOS)
+    set(PROJECT_SOURCES_WRITERNOTE
+        ${PROJECT_SOURCES_WRITERNOTE}
+        $ENV{HOME}/writernote-qt/src/core/WPainter/WPainter_ios.mm
+        $ENV{HOME}/writernote-qt/src/core/WImage.mm
+    )
+else()
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUGINFO -O0 -fprofile-arcs -ftest-coverage")
+endif()
 
 set(A_SOURCES_CPP
     ${A_SOURCES_CPP}
@@ -302,9 +310,18 @@ set(A_SOURCES_CPP
     ${PROJECT_SOURCES_WRITERNOTE}
 )
 
+
+
 set(MAIN
 		${A_DIR_ROOT}/src/main.cpp
 		)
+
+if (IOS)
+    set(A_SOURCES_CPP
+            ${A_SOURCES_CPP}
+            ${A_DIR_ROOT}/src/controller/ControllerListFiles/ControllerCommonFiles.mm
+        )
+endif()
 
 set(A_SOURCES_PRECOMPILED_HEADERS_PRIVATE
 	${A_SOURCES_PRECOMPILED_HEADERS_PRIVATE}
@@ -321,7 +338,10 @@ endforeach()
 
 find_package(QT NAMES Qt6 COMPONENTS ${A_QT_MODULES} REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS ${A_QT_MODULES} REQUIRED)
+
+if (NOT IOS)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Test)
+endif()
 
 set(A_SOURCES
 	${A_SOURCES}
@@ -336,6 +356,16 @@ set(A_SOURCES
 	${A_SOURCES_PRECOMPILED_HEADERS_PUBLIC}
 	${A_SOURCES_PRECOMPILED_HEADERS_PRIVATE}
 )
+
+if(IOS)
+        set(A_SOURCES
+                ${A_SOURCES}
+                ${A_SOURCES_SWIFT_OBJC_BRIDGING_HEADER}
+                ${A_SOURCES_OBJECTIVE_HEADERS}
+                ${A_SOURCES_OBJECTIVE_CPP}
+                ${A_SOURCES_SWIFT}
+        )
+endif()
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 	qt_add_executable(${A_NAME_TARGET}
@@ -377,7 +407,8 @@ elseif(LINUX)
     set (LIBZIP_LIBRARY /usr/lib/x86_64-linux-gnu/libzip.so )
 endif()
 
-if(MACOS_BUILD OR APPLE)
+if (IOS)
+elseif(MACOS_BUILD OR APPLE)
     #include_directories(/opt/homebrew/Cellar/libzip/1.9.2/include/)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBZIP_LIBRARY})
 elseif(WIN)
@@ -412,6 +443,17 @@ target_link_libraries(${A_NAME_TARGET}
 	PUBLIC
 		${A_TARGET_MODULES_PUBLIC}
 )
+
+if(IOS)
+        set_target_properties(${A_NAME_TARGET}
+                PROPERTIES
+                        XCODE_ATTRIBUTE_SWIFT_OBJC_INTERFACE_HEADER_NAME "${A_SOURCES_SWIFT_OBJC_INTERFACE_HEADER_NAME}"
+                        XCODE_ATTRIBUTE_SWIFT_OBJC_BRIDGING_HEADER "${A_SOURCES_SWIFT_OBJC_BRIDGING_HEADER}"
+                        XCODE_ATTRIBUTE_ENABLE_BITCODE "NO"
+                        XCODE_ATTRIBUTE_ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES "YES"
+                        XCODE_ATTRIBUTE_SWIFT_VERSION "5.8"
+        )
+endif()
 
 enable_testing()
 
@@ -448,12 +490,14 @@ function(SETUP_TESTS)
 	endforeach()
 endfunction()
 
+if (NOT IOS)
 SETUP_TESTS(
-		src/test/model/test_utils/test_WCommonScript
-		src/test/controller/ControllerTest
-		src/test/model/test_core/test_WPair
-		src/test/model/test_core/test_WList
-		src/test/model/test_core/test_WListFast
-		src/test/model/test_Scheduler/test_WObject
-		src/test/model/test_core/test_RectF
+                src/test/model/test_utils/test_WCommonScript
+                src/test/controller/ControllerTest
+                src/test/model/test_core/test_WPair
+                src/test/model/test_core/test_WList
+                src/test/model/test_core/test_WListFast
+                src/test/model/test_Scheduler/test_WObject
+                src/test/model/test_core/test_RectF
 )
+endif()

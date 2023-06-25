@@ -53,7 +53,7 @@ void WQMLCanvasComponent::paint(QPainter *painter)
         qDebug() << "problemi signori: " << hz << "\t" << (void *)this << this->getIndex();
     }
 
-    //TIME_STOP_STATIC(paint_hz, "Paint call: ");
+    TIME_STOP_STATIC(paint_hz, "Paint call: ");
     //TIME_STOP(paint_var, "Paint: ");
     if (getIndex() == 0){
         //update();
