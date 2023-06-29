@@ -116,8 +116,9 @@ set(PROJECT_SOURCES_WRITERNOTE
 	# pointers
 	${A_DIR_ROOT}/src/model/core/pointer/SharedPtr.cpp
 	${A_DIR_ROOT}/src/model/core/pointer/UniquePtr.cpp
-
+	${A_DIR_ROOT}/src/model/FileContainer/MemWritable.cpp
     ${A_DIR_ROOT}/src/model/FileContainer/WZip.cpp
+	${A_DIR_ROOT}/src/model/FileContainer/FileWriterMulti.h
     ${A_DIR_ROOT}/src/model/core/WList.cpp
     ${A_DIR_ROOT}/src/model/core/WRect.cpp
     ${A_DIR_ROOT}/src/model/core/WPen.cpp
@@ -201,6 +202,7 @@ set(PROJECT_SOURCES_WRITERNOTE
     ${A_DIR_ROOT}/src/model/touch/highlighter/Highligter.cpp
     ${A_DIR_ROOT}/src/model/touch/copy_cut/copy_cut_selection.cpp
     ${A_DIR_ROOT}/src/model/images/fromimage.cpp
+	${A_DIR_ROOT}/src/model/images/ImageDrawable.cpp
     ${A_DIR_ROOT}/src/model/pdf/topdf.cpp
     ${A_DIR_ROOT}/src/model/pdf/translate.cpp
     ${A_DIR_ROOT}/src/model/Scheduler/WPool.cpp
@@ -410,14 +412,14 @@ endif()
 if (IOS)
 elseif(MACOS_BUILD OR APPLE)
     #include_directories(/opt/homebrew/Cellar/libzip/1.9.2/include/)
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBZIP_LIBRARY})
+    #target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBZIP_LIBRARY})
 elseif(WIN)
     include_directories(${PROJECT_SOURCE_DIR}/3rdparty/libzip/install/include/)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/3rdparty/libzip/install/lib/libzip.a)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/3rdparty/zlib-ng/install/lib/libzlib.a)
 else(UNIX)
     message("Set target linux")
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBZIP_LIBRARY})
+    #target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBZIP_LIBRARY})
     #target_link_libraries(${PROJECT_NAME} PRIVATE /usr/lib/libzip.so)
 endif()
 
@@ -464,7 +466,7 @@ target_link_libraries(writernote_lib Qt${QT_MAJOR_VERISION}::Core)
 target_link_libraries(writernote_lib Qt${QT_MAJOR_VERISION}::Gui)
 target_link_libraries(writernote_lib Qt${QT_MAJOR_VERISION}::Quick)
 target_link_libraries(writernote_lib Qt${QT_MAJOR_VERISION}::Multimedia)
-target_link_libraries(writernote_lib ${LIBZIP_LIBRARY})
+#target_link_libraries(writernote_lib ${LIBZIP_LIBRARY})
 
 function(SETUP_TESTS)
 	foreach(_testname ${ARGN})
@@ -484,7 +486,7 @@ function(SETUP_TESTS)
 		target_link_libraries(${last_item} Qt${QT_MAJOR_VERISION}::Gui)
 		target_link_libraries(${last_item} Qt${QT_MAJOR_VERISION}::Quick)
 		target_link_libraries(${last_item} Qt${QT_MAJOR_VERISION}::Multimedia)
-		target_link_libraries(${last_item} ${LIBZIP_LIBRARY})
+                #target_link_libraries(${last_item} ${LIBZIP_LIBRARY})
 
                 add_test(NAME ${last_item} COMMAND ${last_item})
 	endforeach()

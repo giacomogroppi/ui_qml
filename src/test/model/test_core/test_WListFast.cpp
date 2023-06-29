@@ -4,6 +4,9 @@
 #include "utils/WCommonScript.h"
 #include "touch/dataTouch/stroke/Stroke.h"
 #include "touch/dataTouch/stroke/StrokeNormal.h"
+#include "FileContainer/MemWritable.h"
+#include "Scheduler/Scheduler.h"
+#include "Scheduler/WTask.h"
 
 class test_WListFast : public QObject
 {
@@ -22,7 +25,30 @@ private slots:
     // iterator
     void iteratorTest1();
     void iteratorOperator();
+
+    // test save
+    void testBuildSave();
 };
+
+void test_WListFast::testBuildSave()
+{
+    Scheduler sched;
+    WListFast<pressure_t> list;
+    MemWritable writable;
+
+    WListFast<pressure_t>::writeMultiThread(
+        writable,
+        list,
+        [&sched](std::function<void()> function) -> WTask * {
+            WTask *task = new WTaskFunction(nullptr, function);
+
+            task->setDestroyLater(true);
+
+            sched.addTaskGeneric(task);
+            return task;
+        }
+    );
+}
 
 void test_WListFast::append_2Argument()
 {

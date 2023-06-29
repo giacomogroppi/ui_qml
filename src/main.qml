@@ -23,7 +23,7 @@ Window {
         console.log("Call show main")
     }
 
-    function closeMain() {
+    function closeMain() {
         stackViewMain.pop()
         console.log("Call close main")
     }
