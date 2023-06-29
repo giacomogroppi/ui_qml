@@ -1,4 +1,5 @@
 #include <QtTest>
+#include <utility>
 
 #include "core/WListFast.h"
 #include "utils/WCommonScript.h"
@@ -36,18 +37,25 @@ void test_WListFast::testBuildSave()
     WListFast<pressure_t> list;
     MemWritable writable;
 
-    WListFast<pressure_t>::writeMultiThread(
+    list.append(pressure_t(32.));
+    list.append(pressure_t(57.));
+    list.append(pressure_t(45.));
+    list.append(pressure_t(9.));
+
+    const auto result = WListFast<pressure_t>::writeMultiThread(
         writable,
         list,
         [&sched](std::function<void()> function) -> WTask * {
-            WTask *task = new WTaskFunction(nullptr, function);
+            WTask *task = new WTaskFunction(nullptr, std::move(function));
 
-            task->setDestroyLater(true);
+            task->setDestroyLater(false);
 
             sched.addTaskGeneric(task);
             return task;
         }
     );
+
+    QCOMPARE(0, result);
 }
 
 void test_WListFast::append_2Argument()
