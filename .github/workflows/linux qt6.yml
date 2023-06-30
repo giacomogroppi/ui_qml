@@ -106,10 +106,20 @@ jobs:
           ninja
       - name: Run ctest
         run: |
+          cd build
           ctest
 
       - name: Run ctest with valgrind
         run: |
-          export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PREFIX_LIB/poppler/install
-          valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ctest
+          cd build
+          
+          paths=$(find "$(pwd)" -maxdepth 1  -type f -name "test_*")
+
+          for path in $paths
+          do
+            valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes "$path"
+            # Esegui le operazioni desiderate sui percorsi
+          done
+
+          
 
