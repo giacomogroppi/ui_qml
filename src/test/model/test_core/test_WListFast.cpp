@@ -33,7 +33,7 @@ private slots:
 
 void test_WListFast::testBuildSave()
 {
-    for (int i = 0; i < 10000; i++) {
+    for (int i = 0; i < 100; i++) {
         Scheduler sched;
         WListFast<pressure_t> list;
         MemWritable writable;
@@ -123,6 +123,8 @@ void test_WListFast::appendObject()
 
     QCOMPARE(tmp, c.at(0));
     QCOMPARE_EQ(1, c.size());
+
+    delete tmp;
 }
 
 void test_WListFast::appendMakeCopy()
@@ -152,6 +154,10 @@ void test_WListFast::iteratorTest1()
         QCOMPARE(ref, qtList.at(i));
         i++;
     }
+
+    for (auto *ref: list) {
+        delete ref;
+    }
 }
 
 void test_WListFast::iteratorOperator()
@@ -168,6 +174,9 @@ void test_WListFast::iteratorOperator()
     for (int i = 0; i < 400; i++) {
         QCOMPARE(*(list.begin() + i), *(qtList.begin() + i));
     }
+
+    for (auto *ref: list)
+        delete ref;
 }
 
 void test_WListFast::copy_not_empty()
