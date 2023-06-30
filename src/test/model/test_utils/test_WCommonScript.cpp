@@ -7,6 +7,6 @@ class test_WCommonScript : public QObject
 
 };
 
-QTEST_MAIN(test_WCommonScript)
+QTEST_GUILESS_MAIN(test_WCommonScript)
 
 #include "test_WCommonScript.moc"

@@ -23,6 +23,6 @@ void test_WPair::test_copy()
     QCOMPARE_EQ(t1, t2);
 }
 
-QTEST_MAIN(test_WPair)
+QTEST_GUILESS_MAIN(test_WPair)
 
 #include "test_WPair.moc"

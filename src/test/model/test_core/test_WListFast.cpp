@@ -33,29 +33,31 @@ private slots:
 
 void test_WListFast::testBuildSave()
 {
-    Scheduler sched;
-    WListFast<pressure_t> list;
-    MemWritable writable;
+    for (int i = 0; i < 10000; i++) {
+        Scheduler sched;
+        WListFast<pressure_t> list;
+        MemWritable writable;
 
-    list.append(pressure_t(32.));
-    list.append(pressure_t(57.));
-    list.append(pressure_t(45.));
-    list.append(pressure_t(9.));
+        list.append(pressure_t(32.));
+        list.append(pressure_t(57.));
+        list.append(pressure_t(45.));
+        list.append(pressure_t(9.));
 
-    const auto result = WListFast<pressure_t>::writeMultiThread(
-        writable,
-        list,
-        [&sched](std::function<void()> function) -> WTask * {
-            WTask *task = new WTaskFunction(nullptr, std::move(function));
+        const auto result = WListFast<pressure_t>::writeMultiThread(
+                writable,
+                list,
+                [&sched](std::function<void()> function) -> WTask * {
+                    WTask *task = new WTaskFunction(nullptr, std::move(function));
 
-            task->setDestroyLater(false);
+                    task->setDestroyLater(false);
 
-            sched.addTaskGeneric(task);
-            return task;
-        }
-    );
+                    sched.addTaskGeneric(task);
+                    return task;
+                }
+        );
 
-    QCOMPARE(0, result);
+        QCOMPARE(0, result);
+    }
 }
 
 void test_WListFast::append_2Argument()
@@ -179,6 +181,6 @@ void test_WListFast::copy_not_empty()
     QCOMPARE(1, stroke.size());
 }
 
-QTEST_MAIN(test_WListFast)
+QTEST_GUILESS_MAIN(test_WListFast)
 
 #include "test_WListFast.moc"

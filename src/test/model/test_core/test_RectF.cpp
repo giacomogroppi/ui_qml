@@ -203,6 +203,6 @@ void test_RectF::test_intersectedTopRight()
     );
 }
 
-QTEST_MAIN(test_RectF)
+QTEST_GUILESS_MAIN(test_RectF)
 
 #include "test_RectF.moc"

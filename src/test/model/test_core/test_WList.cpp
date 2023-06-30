@@ -67,6 +67,6 @@ void test_WList::operatorCopy()
     QCOMPARE_EQ(6, c2.last());
 }
 
-QTEST_MAIN(test_WList)
+QTEST_GUILESS_MAIN(test_WList)
 
 #include "test_WList.moc"

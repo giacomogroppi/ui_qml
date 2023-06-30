@@ -69,6 +69,6 @@ void test_WObject::test_launch_signal1()
 }
 
 
-QTEST_MAIN(test_WObject)
+QTEST_GUILESS_MAIN(test_WObject)
 
 #include "test_WObject.moc"
