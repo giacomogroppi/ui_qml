@@ -109,7 +109,7 @@ jobs:
           export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$QT_PREFIX
 
           cd build
-          ctest
+          ctest --output-on-failure
 
       - name: Run ctest with valgrind
         run: |
