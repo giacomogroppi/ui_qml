@@ -8,6 +8,6 @@ class ControllerTest: public QObject
 };
 
 
-QTEST_MAIN(ControllerTest)
+QTEST_GUILESS_MAIN(ControllerTest)
 
 #include "ControllerTest.moc"
