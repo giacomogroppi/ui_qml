@@ -114,6 +114,7 @@ set(PROJECT_SOURCES_WRITERNOTE
 		${A_DIR_ROOT}/src/model/core/WList.cpp
 
 	# pointers
+	${A_DIR_ROOT}/src/model/FileContainer/MemReadable.cpp
 	${A_DIR_ROOT}/src/model/core/pointer/SharedPtr.cpp
 	${A_DIR_ROOT}/src/model/core/pointer/UniquePtr.cpp
 	${A_DIR_ROOT}/src/model/FileContainer/MemWritable.cpp

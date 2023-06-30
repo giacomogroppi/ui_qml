@@ -46,14 +46,7 @@ void test_WListFast::testBuildSave()
         const auto result = WListFast<pressure_t>::writeMultiThread(
                 writable,
                 list,
-                [&sched](std::function<void()> function) -> WTask * {
-                    WTask *task = new WTaskFunction(nullptr, std::move(function));
-
-                    task->setDestroyLater(false);
-
-                    sched.addTaskGeneric(task);
-                    return task;
-                }
+                Scheduler::startNewTask
         );
 
         QCOMPARE(0, result);
