@@ -36,6 +36,12 @@ private slots:
 
     // save & load single thread with custom lambda
     void saveAndLoadSingleThreadCustomLambda();
+
+    // mid
+    void midWithListEmpty();
+    void midFrom0();
+    void midToSize();
+    void midCheckCreateNewObject();
 };
 
 class WritableTest final: public WritableAbstract {
@@ -56,6 +62,69 @@ public:
         free (result);
     }
 };
+
+void test_WListFast::midCheckCreateNewObject()
+{
+    WListFast<WByteArray> resultMid;
+
+    {
+        WListFast<WByteArray> list;
+        list.append(WByteArray("Tmp0"))
+            .append(WByteArray("Tmp1"))
+            .append(WByteArray("Tmp2"))
+            .append(WByteArray("Tmp3"))
+            .append(WByteArray("Tmp4"))
+            .append(WByteArray("Tmp5"));
+
+        resultMid = std::move(list.mid(1, 4));
+
+        QCOMPARE(WListFast<WByteArray>({
+            WByteArray("Tmp1"),
+            WByteArray("Tmp2"),
+            WByteArray("Tmp3")
+        }), resultMid);
+    }
+
+    QCOMPARE(WListFast<WByteArray>({
+        WByteArray("Tmp1"),
+        WByteArray("Tmp2"),
+        WByteArray("Tmp3")
+    }), resultMid);
+}
+
+void test_WListFast::midToSize()
+{
+    WListFast<int> list;
+
+    list.append(5)
+            .append(3)
+            .append(6)
+            .append(4)
+            .append(8)
+            .append(21);
+
+    QCOMPARE(WListFast<int>({4, 8, 21}), list.mid(3, 6));
+}
+
+void test_WListFast::midFrom0()
+{
+    WListFast<int> list;
+
+    list.append(5)
+        .append(3)
+        .append(6)
+        .append(4)
+        .append(8)
+        .append(21);
+
+    QCOMPARE(WListFast<int>({5, 3, 6}), list.mid(0, 3));
+}
+
+void test_WListFast::midWithListEmpty()
+{
+    WListFast<int> list;
+    QCOMPARE(WListFast<int>(), list.mid(0, 0));
+}
 
 void test_WListFast::saveAndLoadSingleThreadCustomLambda()
 {
