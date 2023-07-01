@@ -495,12 +495,14 @@ endfunction()
 
 if (NOT IOS)
 SETUP_TESTS(
-                src/test/model/test_utils/test_WCommonScript
-                src/test/controller/ControllerTest
-                src/test/model/test_core/test_WPair
-                src/test/model/test_core/test_WList
-                src/test/model/test_core/test_WListFast
-                src/test/model/test_Scheduler/test_WObject
-                src/test/model/test_core/test_RectF
+		src/test/model/test_utils/test_WCommonScript
+        src/test/controller/ControllerTest
+        src/test/model/test_core/test_WPair
+        src/test/model/test_core/test_WList
+        src/test/model/test_core/test_WListFast
+        src/test/model/test_Scheduler/test_WObject
+        src/test/model/test_core/test_RectF
+		src/test/model/test_FileContainer/test_MemWriter
+		src/test/model/test_FileContainer/test_MemReader
 )
 endif()
