@@ -27,9 +27,155 @@ private slots:
     void iteratorTest1();
     void iteratorOperator();
 
-    // test save
+    // save and load single thread
+    void testSaveSingleThread();
+
+    // test save multithread
     void testBuildSave();
+    void writeCallOnce();
+
+    // save & load single thread with custom lambda
+    void saveAndLoadSingleThreadCustomLambda();
 };
+
+class WritableTest final: public WritableAbstract {
+public:
+    char *result = nullptr;
+    size_t s = 0;
+
+    auto write (const void *data, size_t size) -> int final
+    {
+        W_ASSERT(result == nullptr);
+        result = (char *) malloc (size);
+        WCommonScript::WMemcpy(result, data, size);
+        s = size;
+        return 0;
+    }
+};
+
+void test_WListFast::saveAndLoadSingleThreadCustomLambda()
+{
+    WListFast<size_t> tmp;
+    MemWritable writable;
+    WritableTest writableTest;
+
+    tmp
+        .append(5)
+        .append(3)
+        .append(54)
+        .append(34);
+
+    const auto result = WListFast<size_t>::write(writable, tmp, [](WritableAbstract &writable, size_t d) -> int {
+        if (writable.write(&d, sizeof(size_t)) < 0)
+            return -1;
+        return 0;
+    });
+
+    QVERIFY(result == 0);
+
+    writable.merge(writableTest);
+    MemReadable readable;
+    readable.setData(writableTest.result, writableTest.s);
+
+    auto [resLoad, listLoad] = WListFast<size_t>::load(
+            VersionFileController(),
+            readable,
+            []( const VersionFileController &,
+                ReadableAbstract &readable
+               ) -> std::pair<int, size_t>
+                {
+                    size_t result;
+                    if (readable.read(&result, sizeof(result)) < 0)
+                        return {-1, 0};
+                    return {0, result};
+                }
+    );
+
+    QVERIFY(resLoad == 0);
+    QCOMPARE(tmp, listLoad);
+}
+
+void test_WListFast::testSaveSingleThread()
+{
+    for (int i = 0; i < 100; i++) {
+        WritableTest writableFinal;
+        MemWritable writable;
+
+        Scheduler sched;
+        WListFast<pressure_t> list;
+
+        list.append(pressure_t(32.));
+        list.append(pressure_t(57.));
+        list.append(pressure_t(45.));
+        list.append(pressure_t(9.));
+
+        const auto result = WListFast<pressure_t>::write(
+                writable,
+                list
+        );
+
+        writable.merge(writableFinal);
+
+        QCOMPARE(0, result);
+
+        {
+            VersionFileController versionController{};
+            MemReadable readable;
+
+            readable.setData(writableFinal.result, writableFinal.s);
+
+            auto [res, listRead] = WListFast<pressure_t>::load(
+                    versionController,
+                    readable
+            );
+
+            QCOMPARE(0, res);
+            QCOMPARE(list, listRead);
+        }
+    }
+}
+
+void test_WListFast::writeCallOnce()
+{
+    for (int i = 0; i < 100; i++) {
+        WritableTest writableFinal;
+        MemWritable writable;
+
+        Scheduler sched;
+        WListFast<pressure_t> list;
+
+        list.append(pressure_t(32.));
+        list.append(pressure_t(57.));
+        list.append(pressure_t(45.));
+        list.append(pressure_t(9.));
+
+        const auto result = WListFast<pressure_t>::writeMultiThread(
+                writable,
+                list,
+                Scheduler::startNewTask
+        );
+
+        writable.merge(writableFinal);
+
+        QCOMPARE(0, result);
+
+        {
+            VersionFileController versionController{};
+            MemReadable readable;
+
+            readable.setData(writableFinal.result, writableFinal.s);
+
+            auto [res, listRead] = WListFast<pressure_t>::loadMultiThread(
+                    versionController,
+                    readable,
+                    Scheduler::startNewTask
+            );
+
+            QCOMPARE(0, res);
+            QCOMPARE(list, listRead);
+        }
+    }
+}
 
 void test_WListFast::testBuildSave()
 {
