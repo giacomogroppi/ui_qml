@@ -49,11 +49,12 @@ void test_WObject::test_launch_signal0()
     tmp->launchSignals();
 
     QVERIFY(call);
+    delete tmp;
 }
 
 void test_WObject::test_launch_signal1()
 {
-    ObjectTesting *tmp = new ObjectTesting;
+    auto *tmp = new ObjectTesting;
     bool call = false;
     PointF p;
 
@@ -66,6 +67,8 @@ void test_WObject::test_launch_signal1()
 
     QVERIFY(call);
     QCOMPARE(p, PointF(500., 500.));
+
+    delete tmp;
 }
 
 

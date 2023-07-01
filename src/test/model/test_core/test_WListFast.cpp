@@ -51,6 +51,10 @@ public:
         s = size;
         return 0;
     }
+
+    ~WritableTest() {
+        free (result);
+    }
 };
 
 void test_WListFast::saveAndLoadSingleThreadCustomLambda()
