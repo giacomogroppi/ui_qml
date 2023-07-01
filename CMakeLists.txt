@@ -504,5 +504,6 @@ SETUP_TESTS(
         src/test/model/test_core/test_RectF
 		src/test/model/test_FileContainer/test_MemWriter
 		src/test/model/test_FileContainer/test_MemReader
+		src/test/model/test_core/test_WLine
 )
 endif()

@@ -42,6 +42,9 @@ private slots:
     void midFrom0();
     void midToSize();
     void midCheckCreateNewObject();
+
+    // operator move
+    void operatorMove();
 };
 
 class WritableTest final: public WritableAbstract {
@@ -62,6 +65,32 @@ public:
         free (result);
     }
 };
+
+void test_WListFast::operatorMove()
+{
+    WListFast<WByteArray> list ({
+        WByteArray("Tmp1"),
+        WByteArray("Tmp2"),
+        WByteArray("Tmp3"),
+        WByteArray("Tmp4"),
+        WByteArray("Tmp5"),
+        WByteArray("Tmp6")
+    });
+
+    WListFast<WByteArray> result = {"Tmp7", "Tmp8", "Tmp9"};
+
+    result = std::move(list);
+
+    QCOMPARE(WListFast<WByteArray>(), list);
+    QCOMPARE(WListFast<WByteArray> ({
+        WByteArray("Tmp1"),
+        WByteArray("Tmp2"),
+        WByteArray("Tmp3"),
+        WByteArray("Tmp4"),
+        WByteArray("Tmp5"),
+        WByteArray("Tmp6")
+    }), result);
+}
 
 void test_WListFast::midCheckCreateNewObject()
 {
