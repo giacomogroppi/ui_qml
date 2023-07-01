@@ -177,10 +177,10 @@ void test_WListFast::testSaveSingleThread()
         Scheduler sched;
         WListFast<pressure_t> list;
 
-        list.append(pressure_t(32.));
-        list.append(pressure_t(57.));
-        list.append(pressure_t(45.));
-        list.append(pressure_t(9.));
+        list.append(pressure_t(32.))
+            .append(pressure_t(57.))
+            .append(pressure_t(45.))
+            .append(pressure_t(9.));
 
         const auto result = WListFast<pressure_t>::write(
                 writable,
@@ -217,10 +217,10 @@ void test_WListFast::writeCallOnce()
         Scheduler sched;
         WListFast<pressure_t> list;
 
-        list.append(pressure_t(32.));
-        list.append(pressure_t(57.));
-        list.append(pressure_t(45.));
-        list.append(pressure_t(9.));
+        list.append(pressure_t(32.))
+            .append(pressure_t(57.))
+            .append(pressure_t(45.))
+            .append(pressure_t(9.));
 
         const auto result = WListFast<pressure_t>::writeMultiThread(
                 writable,
@@ -257,10 +257,10 @@ void test_WListFast::testBuildSave()
         WListFast<pressure_t> list;
         MemWritable writable;
 
-        list.append(pressure_t(32.));
-        list.append(pressure_t(57.));
-        list.append(pressure_t(45.));
-        list.append(pressure_t(9.));
+        list.append(pressure_t(32.))
+            .append(pressure_t(57.))
+            .append(pressure_t(45.))
+            .append(pressure_t(9.));
 
         const auto result = WListFast<pressure_t>::writeMultiThread(
                 writable,
