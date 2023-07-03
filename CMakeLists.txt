@@ -235,7 +235,6 @@ set(PROJECT_SOURCES_WRITERNOTE
     ${A_DIR_ROOT}/src/model/currenttitle/document.cpp
     ${A_DIR_ROOT}/src/model/currenttitle/merge_currenttitle/merge_currenttitle.cpp
     ${A_DIR_ROOT}/src/model/testing/testingcore.cpp
-    ${A_DIR_ROOT}/src/model/testing/TestingComponent.cpp
     ${A_DIR_ROOT}/src/model/testing/testingzip.cpp
     ${A_DIR_ROOT}/src/model/testing/memtest.cpp
     ${A_DIR_ROOT}/src/model/audiorecord/audiorecord.cpp
@@ -271,6 +270,7 @@ set(PROJECT_SOURCES_WRITERNOTE
 	${A_DIR_ROOT}/src/model/FileContainer/FileContainer.cpp
 	${A_DIR_ROOT}/src/model/FileContainer/FileInstance.cpp
 	${A_DIR_ROOT}/src/model/FileContainer/FileWriter.cpp
+	${A_DIR_ROOT}/src/model/core/ExactNumber/ExactNumber.cpp
 )
 
 if(IOS)
@@ -505,5 +505,6 @@ SETUP_TESTS(
 		src/test/model/test_FileContainer/test_MemWriter
 		src/test/model/test_FileContainer/test_MemReader
 		src/test/model/test_core/test_WLine
+		src/test/model/test_core/test_ExactNumber
 )
 endif()
