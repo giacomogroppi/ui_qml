@@ -271,6 +271,7 @@ set(PROJECT_SOURCES_WRITERNOTE
 	${A_DIR_ROOT}/src/model/FileContainer/FileInstance.cpp
 	${A_DIR_ROOT}/src/model/FileContainer/FileWriter.cpp
 	${A_DIR_ROOT}/src/model/core/ExactNumber/ExactNumber.cpp
+	${A_DIR_ROOT}/src/model/core/ExactNumber/ExactInteger.cpp
 )
 
 if(IOS)
@@ -506,5 +507,6 @@ SETUP_TESTS(
 		src/test/model/test_FileContainer/test_MemReader
 		src/test/model/test_core/test_WLine
 		src/test/model/test_core/test_ExactNumber
+		src/test/model/test_core/test_ExactInteger
 )
 endif()

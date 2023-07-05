@@ -3,6 +3,7 @@
 #include "utils/WCommonScript.h"
 #include "core/ExactNumber/ExactNumber.h"
 
+// TODO: move this class in the right path
 class test_ExactNumber : public QObject
 {
 Q_OBJECT
