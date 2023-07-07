@@ -1,4 +1,5 @@
 #include <QtTest>
+#include <utility>
 
 #include "utils/WCommonScript.h"
 #include "core/ExactNumber/ExactNumber.h"
@@ -18,19 +19,34 @@ private slots:
     void test_big_number();
 };
 
+class ValueTest {
+public:
+    WString num1, den1;
+    WString num2, den2;
+    WString numResult, denResult;
+    ValueTest(WString num1, WString den1, WString num2, WString den2, WString numResult,
+              WString denResult)
+              : num1(std::move(num1))
+              , den1(std::move(den1))
+              , num2(std::move(num2))
+              , den2(std::move(den2))
+              , numResult(std::move(numResult))
+              , denResult(std::move(denResult))
+              {};
+};
+
 void test_ExactNumber::test_big_number()
 {
-    constexpr auto num1 = 4824325;
-    constexpr auto num2 = 4832;
+    std::vector<ValueTest> tmp = {
+            {"4824325", "4832", "490432", "5893", "73937604950", "889843"}
+    };
 
-    constexpr auto num3 = 490432;
-    constexpr auto num4 = 5893;
-
-    ExactNumber exact1 (num1, num2);
-    ExactNumber exact2 (num3, num4);
-
-    const auto result = exact1 * exact2;
-    QCOMPARE(ExactNumber(268704259776, 28474976), result);
+    for (const auto &ref: std::as_const(tmp)) {
+        ExactNumber exact1(ref.num1, ref.den1);
+        ExactNumber exact2(ref.num2, ref.den2);
+        const auto result = exact1 * exact2;
+        QCOMPARE(ExactNumber(ref.numResult, ref.denResult), result);
+    }
 }
 
 void test_ExactNumber::test_with_cicle()
@@ -89,7 +105,7 @@ void test_ExactNumber::test_periodic()
     exact *= ExactNumber((long) 3);
     exact *= ExactNumber((long) 3);
 
-    QCOMPARE(4, exact);
+    QCOMPARE(ExactNumber(4, 1), exact);
 }
 
 void test_ExactNumber::test_sum_positive()
@@ -99,7 +115,7 @@ void test_ExactNumber::test_sum_positive()
     ExactNumber exact1(num1);
     ExactNumber exact2(num2);
 
-    QCOMPARE(num1 + num2, exact1 + exact2);
+    QCOMPARE(ExactNumber(num1 + num2), exact1 + exact2);
 }
 
 QTEST_GUILESS_MAIN(test_ExactNumber)
