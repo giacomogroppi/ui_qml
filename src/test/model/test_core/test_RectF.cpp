@@ -3,6 +3,7 @@
 #include "utils/WCommonScript.h"
 #include "core/RectF.h"
 #include <QRectF>
+#include "core/ExactNumber/ExactNumber.h"
 
 class test_RectF : public QObject
 {
@@ -36,11 +37,46 @@ private slots:
     void test_intersects2();
     void test_intersects3();
 
+    // contains
+    void test_contains();
+
     // intersected
     void test_intersected1();
     void test_intersectedEmpty();
     void test_intersectedTopRight();
 };
+
+void test_RectF::test_contains()
+{
+    class Values {
+    public:
+        PointTemplate<ExactNumber> topLeft;
+        PointTemplate<ExactNumber> bottomRight;
+        PointTemplate<ExactNumber> point;
+        ExactNumber precision;
+        bool shouldBeIn;
+        Values (
+                PointTemplate<ExactNumber> topLeft,
+                PointTemplate<ExactNumber> bottomRight,
+                PointTemplate<ExactNumber> point,
+                ExactNumber precision,
+                bool shouldBeIn)
+            : topLeft(std::move(topLeft))
+            , bottomRight(std::move(bottomRight))
+            , point(std::move(point))
+            , precision(std::move(precision))
+            , shouldBeIn(shouldBeIn) {};
+    };
+
+    std::vector<Values> tmp = {
+            {{ExactNumber(0), ExactNumber(0)}, {ExactNumber(100), ExactNumber(100)}, {ExactNumber(10), ExactNumber(0)}, ExactNumber(0), true}
+    };
+
+    for (const auto &ref: tmp) {
+        RectTemplate<ExactNumber> rect (ref.topLeft, ref.bottomRight);
+        QCOMPARE(ref.shouldBeIn, rect.contains(ref.point));
+    }
+}
 
 void test_RectF::test_intersects1()
 {

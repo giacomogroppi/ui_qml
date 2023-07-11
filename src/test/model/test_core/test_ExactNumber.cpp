@@ -17,6 +17,11 @@ private slots:
 
     void test_with_cicle();
     void test_big_number();
+
+    void test_sign_plus();
+
+    // constructor
+    void test_constructor_string();
 };
 
 class ValueTest {
@@ -34,6 +39,44 @@ public:
               , denResult(std::move(denResult))
               {};
 };
+
+void test_ExactNumber::test_constructor_string()
+{
+    class ValueTestStringConstructor {
+    public:
+        WString value, numResult, denResult;
+        ValueTestStringConstructor(WString value, WString numResult, WString denResult)
+            : value(std::move(value))
+            , numResult(std::move(numResult))
+            , denResult(std::move(denResult)) {}
+    };
+
+    std::vector<ValueTestStringConstructor> tmp = {
+            {".9", "9", "10"},
+            {"123.", "123", "1"},
+            {"2953.3413", "29533413", "10000"}
+    };
+
+    for (const auto &ref: std::as_const(tmp)) {
+        QCOMPARE(ExactNumber(ref.value), ExactNumber(ref.numResult, ref.denResult));
+    }
+}
+
+void test_ExactNumber::test_sign_plus()
+{
+    std::vector<ValueTest> tmp = {
+            {"43",  "4", "-87", "2", "-131", "4"},
+            {"-87", "2", "43",  "4", "-131", "4"},
+            {"52",  "6", "9457", "8", "28579", "24"}
+    };
+
+    for (const auto &ref: std::as_const(tmp)) {
+        ExactNumber exact1(ref.num1, ref.den1);
+        ExactNumber exact2(ref.num2, ref.den2);
+        const auto result = exact1 + exact2;
+        QCOMPARE(ExactNumber(ref.numResult, ref.denResult), result);
+    }
+}
 
 void test_ExactNumber::test_big_number()
 {
@@ -100,18 +143,18 @@ void test_ExactNumber::test_some_long_float()
 void test_ExactNumber::test_periodic()
 {
     ExactNumber exact(1, 3);
-    exact *= ExactNumber((long) 4);
-    exact /= ExactNumber((long) 3);
-    exact *= ExactNumber((long) 3);
-    exact *= ExactNumber((long) 3);
+    exact *= ExactNumber((int) 4);
+    exact /= ExactNumber((int) 3);
+    exact *= ExactNumber((int) 3);
+    exact *= ExactNumber((int) 3);
 
     QCOMPARE(ExactNumber(4, 1), exact);
 }
 
 void test_ExactNumber::test_sum_positive()
 {
-    constexpr long num1 = 3457983;
-    constexpr long num2 = 243890;
+    constexpr int num1 = 3457983;
+    constexpr int num2 = 243890;
     ExactNumber exact1(num1);
     ExactNumber exact2(num2);
 

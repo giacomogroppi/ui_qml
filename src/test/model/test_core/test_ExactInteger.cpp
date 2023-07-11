@@ -36,7 +36,8 @@ void test_ExactInteger::test_remainder()
 {
     std::vector<Prod> tmp = {
             {"890542", "784", "702"},
-            {"57", "57", "0"}
+            {"57", "57", "0"},
+            {"1", "1", "0"}
     };
 
     for (const auto &ref: tmp) {
