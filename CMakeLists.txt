@@ -284,6 +284,8 @@ else()
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUGINFO -O0 -fprofile-arcs -ftest-coverage")
 endif()
 
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions")
+
 set(A_SOURCES_CPP
     ${A_SOURCES_CPP}
     ${A_DIR_ROOT}/src/controller/Controller.cpp
@@ -508,5 +510,6 @@ SETUP_TESTS(
 		src/test/model/test_core/test_WLine
 		src/test/model/test_core/test_ExactNumber
 		src/test/model/test_core/test_ExactInteger
+		src/test/model/test_core/test_PointTemplate
 )
 endif()
