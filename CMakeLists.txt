@@ -511,5 +511,6 @@ SETUP_TESTS(
 		src/test/model/test_core/test_ExactNumber
 		src/test/model/test_core/test_ExactInteger
 		src/test/model/test_core/test_PointTemplate
+		src/test/model/test_core/test_WMap
 )
 endif()
