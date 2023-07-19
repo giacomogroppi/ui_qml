@@ -184,7 +184,7 @@ void test_WListFast::saveAndLoadSingleThreadCustomLambda()
             readable,
             []( const VersionFileController &,
                 ReadableAbstract &readable
-               ) -> std::pair<int, size_t>
+               ) -> WPair<int, size_t>
                 {
                     size_t result;
                     if (readable.read(&result, sizeof(result)) < 0)

@@ -26,6 +26,8 @@ endif()
 
 option(RUN_TEST_COVERAGE "Enable this if you want to run tests with coverage" OFF)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -272,6 +274,7 @@ set(PROJECT_SOURCES_WRITERNOTE
 	${A_DIR_ROOT}/src/model/FileContainer/FileWriter.cpp
 	${A_DIR_ROOT}/src/model/core/ExactNumber/ExactNumber.cpp
 	${A_DIR_ROOT}/src/model/core/ExactNumber/ExactInteger.cpp
+	${A_DIR_ROOT}/src/model/core/WHeap.cpp
 )
 
 if(IOS)
