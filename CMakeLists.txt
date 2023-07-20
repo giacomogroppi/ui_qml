@@ -515,5 +515,7 @@ SETUP_TESTS(
 		src/test/model/test_core/test_ExactInteger
 		src/test/model/test_core/test_PointTemplate
 		src/test/model/test_core/test_WMap
+		src/test/model/test_Scheduler/test_Scheduler
+		src/test/model/test_core/test_WVector
 )
 endif()
