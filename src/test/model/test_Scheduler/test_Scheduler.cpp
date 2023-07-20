@@ -26,6 +26,7 @@ void test_Scheduler::test_timers()
     std::this_thread::sleep_for(std::chrono::milliseconds(125));
 
     QCOMPARE(call, true);
+    QCOMPARE(timer->isActive(), false);
 
     delete timer;
 }
