@@ -12,19 +12,53 @@ private slots:
     void removeIfAscendingElementNotPresent();
     void removeIfDescendingElementNotPresent();
 
-    void removeIfAscendingElementPresent();
-    void removeIfDescendingElementPresent();
+    void removeIfAscendingElementPresentEnd();
+    void removeIfDescendingElementPresentEnd();
+
+    void removeIfAscendingElementPresentMiddle();
+    void removeIfDescendingElementPresentMiddle();
 };
 
-void test_WVector::removeIfAscendingElementPresent()
+template <class T>
+const auto cmp = [](const T& t1, const T& t2 ) -> bool {
+    return t1 >= t2;
+};
+
+void test_WVector::removeIfAscendingElementPresentMiddle()
 {
     WVector<int> tmp = {
             1, 2, 3, 4, 5, 6, 7, 8, 9
     };
-    return;
-    tmp.removeOrderAscending(7, [](const int& v1, const int& v2) -> bool {
-        return v1 >= v2;
-    });
+    tmp.removeOrderAscending(5, cmp<int>);
+
+    const WVector<int> result = {
+            1, 2, 3, 4, 6, 7, 8, 9
+    };
+
+    QCOMPARE(tmp, result);
+}
+
+void test_WVector::removeIfDescendingElementPresentMiddle()
+{
+    WVector<int> tmp = {
+            9, 8, 6, 5, 4, 3, 2, 1
+    };
+    tmp.removeOrderAscending(4, cmp<int>);
+
+    const WVector<int> result = {
+            9, 8, 6, 5, 3, 2, 1
+    };
+
+    QCOMPARE(tmp, result);
+}
+
+void test_WVector::removeIfAscendingElementPresentEnd()
+{
+    WVector<int> tmp = {
+            1, 2, 3, 4, 5, 6, 7, 8, 9
+    };
+
+    tmp.removeOrderAscending(7, cmp<int>);
 
     const auto result = WVector<int> {
             1, 2, 3, 4, 5, 6, 8, 9
@@ -32,7 +66,7 @@ void test_WVector::removeIfAscendingElementPresent()
     QCOMPARE (tmp, result);
 }
 
-void test_WVector::removeIfDescendingElementPresent()
+void test_WVector::removeIfDescendingElementPresentEnd()
 {
     WVector<int> tmp = {
             7, 4, 3, 2, 1, 1, 1, 1
@@ -42,9 +76,7 @@ void test_WVector::removeIfDescendingElementPresent()
             7, 4, 3, 2
     };
 
-    tmp.removeOrderDescending(1, [](const int& v1, const int& v2) -> bool {
-        return v1 >= v2;
-    });
+    tmp.removeOrderDescending(1, cmp<int>);
 
     QCOMPARE(tmp, result);
 }
@@ -55,9 +87,7 @@ void test_WVector::removeIfAscendingElementNotPresent()
             1, 2, 3, 4, 5, 6, 7, 8, 9
     };
 
-    tmp.removeOrderAscending(10, [](const int& v1, const int& v2) -> bool {
-         return v1 >= v2;
-    });
+    tmp.removeOrderAscending(10, cmp<int>);
 
     const auto result = WVector<int> {
             1, 2, 3, 4, 5, 6, 7, 8, 9
@@ -73,9 +103,7 @@ void test_WVector::removeIfDescendingElementNotPresent()
 
     const auto result(tmp);
 
-    tmp.removeOrderDescending(10, [](const int& v1, const int& v2) -> bool {
-        return v1 >= v2;
-    });
+    tmp.removeOrderDescending(10, cmp<int>);
 
     QCOMPARE(tmp, result);
 }
