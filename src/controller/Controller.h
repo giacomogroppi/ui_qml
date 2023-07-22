@@ -21,6 +21,8 @@ class Controller: public QObject {
 private:
     TabletController *_tabletController;
 
+    QQmlApplicationEngine *_engine;
+
     ControllerList              *_listPreview;
     ControllerAudioRecorder     *_audioRecorder;
     ControllerAudioPlayer       *_audioPlayer;
@@ -29,8 +31,6 @@ private:
     ControllerPageCounter       *_pageCounter;
     ControllerListFilesFolder   *_listFiles;
     ControllerColor             *_color;
-
-    QQmlApplicationEngine *_engine;
 
     void registerPrivateType();
 

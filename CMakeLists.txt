@@ -517,5 +517,6 @@ SETUP_TESTS(
 		src/test/model/test_core/test_WMap
 		src/test/model/test_Scheduler/test_Scheduler
 		src/test/model/test_core/test_WVector
+		src/test/model/test_core/test_WAbstractList
 )
 endif()
