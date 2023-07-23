@@ -3,6 +3,7 @@
 #include "core/WPair.h"
 #include "utils/WCommonScript.h"
 #include "core/WAbstractList.h"
+#include "core/WVector.h"
 
 class test_WAbstractList: public QObject
 {
@@ -13,7 +14,26 @@ private slots:
     void test_binary_search_right();
 
     void test_no_item();
+    void test_all_item();
 };
+
+void test_WAbstractList::test_all_item()
+{
+    WVector<int> tmp = {1, 1, 1, 1, 1, 1, 1};
+    const auto i = WAbstractList::binary_search<
+                std::vector<int>::iterator,
+                int,
+                false>
+            (
+                    tmp.begin(),
+                    tmp.end(),
+                    1
+            );
+    QCOMPARE(tmp.begin() - tmp.begin(), 0);
+    QCOMPARE(i - tmp.begin(), 0);
+    QCOMPARE(std::distance(i, tmp.begin()), 0);
+    QCOMPARE(i, tmp.begin());
+}
 
 void test_WAbstractList::test_no_item()
 {

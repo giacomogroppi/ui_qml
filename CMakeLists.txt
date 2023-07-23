@@ -274,6 +274,7 @@ set(PROJECT_SOURCES_WRITERNOTE
 	${A_DIR_ROOT}/src/model/FileContainer/FileWriter.cpp
 	${A_DIR_ROOT}/src/model/core/ExactNumber/ExactNumber.cpp
 	${A_DIR_ROOT}/src/model/core/ExactNumber/ExactInteger.cpp
+	${A_DIR_ROOT}/src/model/core/ExactNumber/ComplexNumber.cpp
 	${A_DIR_ROOT}/src/model/core/WHeap.cpp
 )
 

@@ -17,12 +17,40 @@ private slots:
 
     void removeIfAscendingElementPresentMiddle();
     void removeIfDescendingElementPresentMiddle();
+
+    void removeIf_removeAllAscending();
+    void removeIf_removeAllDescending();
 };
 
 template <class T>
 const auto cmp = [](const T& t1, const T& t2 ) -> bool {
     return t1 >= t2;
 };
+
+void test_WVector::removeIf_removeAllDescending()
+{
+    WVector<int> tmp = {
+            1, 1, 1, 1, 1, 1, 1
+    };
+
+    tmp.removeOrderDescending(1, cmp<int>);
+
+    const WVector<int> result = {};
+
+    QCOMPARE(tmp, result);
+}
+
+void test_WVector::removeIf_removeAllAscending()
+{
+    WVector<int> tmp = {
+        1, 1, 1, 1, 1, 1, 1
+    };
+    tmp.removeOrderAscending(1, cmp<int>);
+
+    const WVector<int> result = {};
+
+    QCOMPARE(tmp, result);
+}
 
 void test_WVector::removeIfAscendingElementPresentMiddle()
 {
@@ -43,7 +71,7 @@ void test_WVector::removeIfDescendingElementPresentMiddle()
     WVector<int> tmp = {
             9, 8, 6, 5, 4, 3, 2, 1
     };
-    tmp.removeOrderAscending(4, cmp<int>);
+    tmp.removeOrderDescending(4, cmp<int>);
 
     const WVector<int> result = {
             9, 8, 6, 5, 3, 2, 1
