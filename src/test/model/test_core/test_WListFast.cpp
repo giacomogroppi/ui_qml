@@ -105,7 +105,7 @@ void test_WListFast::midCheckCreateNewObject()
             .append(WByteArray("Tmp4"))
             .append(WByteArray("Tmp5"));
 
-        resultMid = std::move(list.mid(1, 4));
+        resultMid = list.mid(1, 4);
 
         QCOMPARE(WListFast<WByteArray>({
             WByteArray("Tmp1"),
