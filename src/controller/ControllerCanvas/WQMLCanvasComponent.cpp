@@ -2,7 +2,7 @@
 #include <QPainter>
 #include <QBrush>
 #include "ControllerCanvas.h"
-#include "core/WPixmap.h"
+#include "core/Pixmap/WPixmap.h"
 #include "core/core.h"
 #include <QRunnable>
 #include <functional>
@@ -14,10 +14,10 @@
 
 WQMLCanvasComponent::WQMLCanvasComponent(QQuickItem *parent)
     : QQuickPaintedItem(parent)
+    , _index(0)
     , _getImg([](QPainter &, double) {
     })
     , _functionSet(false)
-    , _index(0)
 {
     qDebug() << "WQMLCanvasComponent constructor call";
     ControllerCanvas::registerDrawer(this);

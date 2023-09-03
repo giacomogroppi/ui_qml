@@ -19,12 +19,12 @@ bool init = false;
 ControllerCanvas::ControllerCanvas(QObject *parent)
     : QAbstractListModel(parent)
     , _timer(new QTimer(nullptr))
-    , _heigth(Page::getHeight())
     , _width(Page::getWidth())
-    , _positionX(0.)
-    , _positionY(0.)
-#ifdef DEBUGINFO
+    , _heigth(Page::getHeight())
     , _status(waitingFor::begin)
+    , _positionX(0.)
+#ifdef DEBUGINFO
+    , _positionY(0.)
 #endif
 {
     Q_ASSERT(init == false);

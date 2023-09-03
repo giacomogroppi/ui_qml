@@ -1,7 +1,7 @@
 #include "WQMLControllerHighlighter.h"
 #include <QPainter>
 #include <QBrush>
-#include "core/WPixmap.h"
+#include "core/Pixmap/WPixmap.h"
 #include "core/core.h"
 #include <QRunnable>
 #include <functional>
