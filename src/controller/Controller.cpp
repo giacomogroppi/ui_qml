@@ -17,11 +17,12 @@ Controller::Controller(QObject *parent,
     , _tabletController(new TabletController(nullptr,
             [this]() { return _audioRecorder->getSecondRecording(); },
             [this] () { return this->_audioPlayer->isPlaying(); },
-            [this] () { return this->_audioPlayer->getPositionInSeconds(); }))
+            [this] () { return this->_audioPlayer->getPositionInSeconds();
+      }))
     , _engine(engine)
+    , _listPreview(new ControllerList(this))
     , _audioRecorder(new ControllerAudioRecorder(this))
     , _audioPlayer(new ControllerAudioPlayer(this))
-    , _listPreview(new ControllerList(this))
     , _toolBar(new ControllerToolBar(this, _tabletController))
     , _canvas(new ControllerCanvas(nullptr))
     , _pageCounter(new ControllerPageCounter(this))

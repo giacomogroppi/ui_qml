@@ -24,8 +24,8 @@ ControllerToolBar::ControllerToolBar(QObject *parent, TabletController *tabletCo
         _tabletController->selectColor(WColor(this->_color));
     });
 
-    w_connect_lister(_tabletController, onNeedRefresh, [this](int pageMin, int pageMax) {
-        emit this->onNeedRefresh(pageMin, pageMax);
+    w_connect_lister(_tabletController, onNeedRefresh, [this](const UpdateEvent& event) {
+        emit this->onNeedRefresh(event);
     });
 
     w_connect_lister(_tabletController, onNumberOfPageChanged, [this] (int index) { numberOfPageChanged(index); });
@@ -172,7 +172,8 @@ bool ControllerToolBar::isCut() const
 void ControllerToolBar::getImg(QPainter &painter, double width)
 {
     WPainter adapterPainter (&painter);
-    this->_tabletController->getImg(adapterPainter, width);
+    this->_tabletController->getImageStroke(adapterPainter, width);
+    //this->_tabletController->getImg(adapterPainter, width);
 }
 
 void ControllerToolBar::registerTool(ToolController *tool)
@@ -202,22 +203,22 @@ QColor ControllerToolBar::getColor()
 void ControllerToolBar::touchBegin(const QPointF &point, double pressure)
 {
     WDebug(false, "call");
-    emit this->onNeedRefresh(0, 1);
+    emit this->onNeedRefreshPage(0, 1);
     this->_tabletController->touchBegin({point.x(), point.y()}, pressure);
 }
 
 void ControllerToolBar::touchUpdate(const QPointF &point, double pressure)
 {
-    emit this->onNeedRefresh(0, 1);
     WDebug(false, "call");
 
     this->_tabletController->touchUpdate({point.x(), point.y()}, pressure);
+    emit this->onNeedRefreshPage(0, 1);
 }
 
 void ControllerToolBar::touchEnd(const QPointF &point, double pressure)
 {
     WDebug(false, "call");
-    emit this->onNeedRefresh(0, 1);
+    emit this->onNeedRefreshPage(0, 1);
     this->_tabletController->touchEnd({point.x(), point.y()}, pressure);
 }
 
@@ -225,4 +226,3 @@ void ControllerToolBar::positionChanged(const QPointF &newPosition)
 {
     this->_tabletController->positionDocChanged({newPosition.x(), newPosition.y()});
 }
-

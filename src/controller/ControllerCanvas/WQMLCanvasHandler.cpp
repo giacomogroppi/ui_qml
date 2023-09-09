@@ -16,12 +16,12 @@ WQMLCanvasHandler::WQMLCanvasHandler(QQuickItem *parent)
 
     ControllerCanvas::registerHangler(this);
 
-    qDebug() << "WQMLCanvasComponent constructor call";
+    qDebug() << "WQMLCanvasComponentStroke constructor call";
 }
 
 void WQMLCanvasHandler::touchEventPrivate(QTouchEvent *event)
 {
-    qDebug() << "WQMLCanvasComponent::touchEvent " << event->type();
+    qDebug() << "WQMLCanvasComponentStroke::touchEvent " << event->type();
     //return QQuickPaintedItem::touchEvent(event);
 }
 

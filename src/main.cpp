@@ -5,6 +5,7 @@
 #include <QQmlContext>
 #include <QTimer>
 #include "Scheduler/Scheduler.h"
+#include "controller/ControllerCanvas/WQMLCanvasComponentPage.h"
 
 extern QQmlContext *_content;
 extern StrokePre *__tmp;
@@ -25,9 +26,12 @@ int main(int argc, char *argv[])
     */
     __tmp = new StrokePre();
 
-    qmlRegisterType<WQMLCanvasComponent>("writernote.WQMLCanvasComponent",
-                                         1, 0,
-                                         "WCanvasComponent");
+    qmlRegisterType<WQMLCanvasComponentStroke>("writernote.WQMLCanvasComponentStroke",
+                                               1, 0,
+                                               "WCanvasComponent");
+    qmlRegisterType<WQMLCanvasComponentPage>("writernote.WQMLCanvasComponentPage",
+                                               1, 0,
+                                               "WCanvasComponentPage");
     qmlRegisterType<WQMLCanvasHandler>("writernote.WQMLCanvasHandler",
                                        1, 0,
                                        "WCanvasHandler");

@@ -282,13 +282,14 @@ set(PROJECT_SOURCES_WRITERNOTE
 		${A_DIR_ROOT}/src/model/windows/updatecheck.cpp
 		${A_DIR_ROOT}/src/model/sheet/style_struct.cpp
 		${A_DIR_ROOT}/src/model/Scheduler/SchedulerQt.cpp
+		${A_DIR_ROOT}/src/model/touch/UpdateEvent.cpp
 )
 
 if(IOS)
     set(PROJECT_SOURCES_WRITERNOTE
         ${PROJECT_SOURCES_WRITERNOTE}
-        $ENV{HOME}/writernote-qt/src/core/WPainter/WPainter_ios.mm
-        $ENV{HOME}/writernote-qt/src/core/WImage.mm
+        #$ENV{HOME}/writernote-qt/src/core/WPainter/WPainter_ios.mm
+        #$ENV{HOME}/writernote-qt/src/core/WImage.mm
     )
 else()
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUGINFO -O0 -fprofile-arcs -ftest-coverage")
@@ -303,6 +304,7 @@ set(A_SOURCES_CPP
     ${A_DIR_ROOT}/src/controller/ControllerAudio/ControllerAudioPlayer.cpp
     ${A_DIR_ROOT}/src/controller/ControllerCanvas/ControllerCanvas.cpp
     ${A_DIR_ROOT}/src/controller/ControllerCanvas/WQMLCanvasComponent.cpp
+	${A_DIR_ROOT}/src/controller/ControllerCanvas/WQMLCanvasComponentPage.cpp
     ${A_DIR_ROOT}/src/controller/ControllerList/ControllerList.cpp
     ${A_DIR_ROOT}/src/controller/ControllerList/WQMLItemListComponent.cpp
     ${A_DIR_ROOT}/src/controller/ControllerListFiles/ControllerListFiles.cpp

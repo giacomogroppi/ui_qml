@@ -31,7 +31,7 @@ void test_WFlags::testConstructor()
     WFlags<Flag> flag;
     flag = Flag::f1;
 
-    QCOMPARE(flag, {Flag::f1});
+    QCOMPARE(flag, Flag::f1);
 
     flag = Flag::f8;
     const WFlags<Flag> r = flag & Flag::f1;

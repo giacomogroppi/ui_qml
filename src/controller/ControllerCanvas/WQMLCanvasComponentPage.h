@@ -2,24 +2,15 @@
 
 #include <QObject>
 #include <QQuickPaintedItem>
-#include <QTimer>
 
-#include <QQuickPaintedItem>
-#include <QOpenGLFunctions>
-#include <QOpenGLShaderProgram>
-#include <QOpenGLBuffer>
-#include <QOpenGLVertexArrayObject>
-#include <QOpenGLContext>
-#include <QQuickWindow>
-
-class WQMLCanvasComponentStroke: public QQuickPaintedItem
+class WQMLCanvasComponentPage: public QQuickPaintedItem
 {
     Q_OBJECT
     Q_PROPERTY(double xPosition READ xPosition  WRITE setXPosition  NOTIFY onXPositionChanged);
     Q_PROPERTY(double yPosition READ yPosition  WRITE setYPosition  NOTIFY onYPositionChanged);
     Q_PROPERTY(int indexDrawer  READ getIndex   WRITE setIndex      NOTIFY onIndexChanged);
 public:
-    explicit WQMLCanvasComponentStroke(QQuickItem *parent = nullptr);
+    explicit WQMLCanvasComponentPage(QQuickItem *parent = nullptr);
 
     void setXPosition(double x);
     double xPosition() const;
@@ -49,3 +40,5 @@ private:
     std::function<void(QPainter &painter, double width)> _getImg;
     bool _functionSet;
 };
+
+

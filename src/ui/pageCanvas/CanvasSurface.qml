@@ -1,7 +1,8 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.12
-import writernote.WQMLCanvasComponent 1.0
+import writernote.WQMLCanvasComponentStroke 1.0
 import writernote.WQMLCanvasHandler 1.0
+import writernote.WQMLCanvasComponentPage 1.0
 
 Item {
     id: canvas_surface
@@ -106,6 +107,27 @@ Item {
 
             //visible: true
             visible: index === 0
+
+            WCanvasComponentPage {
+                anchors.margins: 10
+
+                anchors.left: parent.left
+                anchors.top: parent.top
+
+                indexDrawer: index
+
+                height: parent.height
+                width: parent.width
+                //width: _controllerCanvas.widthObject * canvasSurface.scale
+                //height: _controllerCanvas.heigthObject * canvasSurface.scale
+
+                xPosition: canvasSurface.originX
+                yPosition: canvasSurface.originY
+
+                onWidthChanged: {
+                    console.log("width change", width, "diventa", _controllerCanvas.widthObject);
+                }
+            }
 
             WCanvasComponent {
                 anchors.margins: 10

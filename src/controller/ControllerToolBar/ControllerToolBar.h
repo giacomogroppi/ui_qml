@@ -10,6 +10,7 @@
 #include "touch/square/Square.h"
 #include "touch/laser/Laser.h"
 #include "touch/highlighter/Highligter.h"
+#include "touch/UpdateEvent.h"
 
 class ControllerToolBar: public QObject
 {
@@ -75,7 +76,8 @@ public:
 signals:
     void toolHasChanged();
     void colorChanged();
-    void onNeedRefresh(int pageMin, int pageMax);
+
+    void onNeedRefresh(const UpdateEvent& event);
     void onDocSizeChanged(const QSizeF &size);
 
 public slots:

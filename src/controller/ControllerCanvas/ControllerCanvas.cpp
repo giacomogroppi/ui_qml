@@ -12,7 +12,7 @@
 
 static WQMLCanvasHandler *handler = nullptr;
 static ControllerCanvas *controllerCanvas = nullptr;
-static QList<WQMLCanvasComponent *> drawer;
+static QList<WQMLCanvasComponentStroke *> drawer;
 
 bool init = false;
 
@@ -167,24 +167,24 @@ void ControllerCanvas::removeData(int row)
     */
 }
 
-void ControllerCanvas::registerDrawer(WQMLCanvasComponent *object)
+void ControllerCanvas::registerDrawer(WQMLCanvasComponentStroke *object)
 {
     W_ASSERT(object != nullptr);
     W_ASSERT(controllerCanvas != nullptr);
 
     drawer.append(object);
 
-    QObject::connect(object, &WQMLCanvasComponent::onXPositionChanged, [object]() {
+    QObject::connect(object, &WQMLCanvasComponentStroke::onXPositionChanged, [object]() {
         emit controllerCanvas->positionChanged(QPointF(object->xPosition(), 0.));
     });
 
-    QObject::connect(object, &WQMLCanvasComponent::onYPositionChanged, [object]() {
+    QObject::connect(object, &WQMLCanvasComponentStroke::onYPositionChanged, [object]() {
         emit controllerCanvas->positionChanged(QPointF(0., object->yPosition()));
     });
     object->setFunc(controllerCanvas->_getImg);
 }
 
-void ControllerCanvas::callUpdate(int page)
+void ControllerCanvas::callUpdate(const UpdateEvent& event)
 {
     // da mettere a posto
     W_ASSERT(page == -1 || (page >= 0 && page < drawer.size()));
@@ -216,11 +216,11 @@ void ControllerCanvas::callUpdate(int pageMin, int pageMax, bool all)
     }
 }
 
-void ControllerCanvas::refresh(int page)
+void ControllerCanvas::refresh(const UpdateEvent& event)
 {
     //emit this->widthObjectChanged();
     //emit this->heigthObjectChanged();
-    ControllerCanvas::callUpdate(page);
+    ControllerCanvas::callUpdate(event);
 }
 
 void ControllerCanvas::sizeHasChanged(const QSizeF &size)

@@ -12,14 +12,13 @@
 #include <QOpenGLFramebufferObject>
 #include <QOpenGLBuffer>
 
-WQMLCanvasComponent::WQMLCanvasComponent(QQuickItem *parent)
+WQMLCanvasComponentStroke::WQMLCanvasComponentStroke(QQuickItem *parent)
     : QQuickPaintedItem(parent)
     , _index(0)
-    , _getImg([](QPainter &, double) {
-    })
+    , _getImg([](QPainter &, double) {})
     , _functionSet(false)
 {
-    qDebug() << "WQMLCanvasComponent constructor call";
+    qDebug() << "WQMLCanvasComponentStroke constructor call";
     ControllerCanvas::registerDrawer(this);
     this->setAntialiasing(true);
     this->setFlag(QQuickItem::Flag::ItemClipsChildrenToShape);
@@ -28,7 +27,7 @@ WQMLCanvasComponent::WQMLCanvasComponent(QQuickItem *parent)
     //Q_ASSERT(false);
 }
 
-void WQMLCanvasComponent::paint(QPainter *painter)
+void WQMLCanvasComponentStroke::paint(QPainter *painter)
 {
     const auto width = this->width();
     static int i = 0;
@@ -60,35 +59,35 @@ void WQMLCanvasComponent::paint(QPainter *painter)
     }
 }
 
-bool WQMLCanvasComponent::event(QEvent *event)
+bool WQMLCanvasComponentStroke::event(QEvent *event)
 {
     return QQuickPaintedItem::event(event);
 }
 
-void WQMLCanvasComponent::setXPosition(double x)
+void WQMLCanvasComponentStroke::setXPosition(double x)
 {
     this->_x = x;
     WDebug(true, "call");
     emit onXPositionChanged();
 }
 
-double WQMLCanvasComponent::xPosition() const
+double WQMLCanvasComponentStroke::xPosition() const
 {
     return this->_x;
 }
 
-double WQMLCanvasComponent::yPosition() const
+double WQMLCanvasComponentStroke::yPosition() const
 {
     return this->_y;
 }
 
-int WQMLCanvasComponent::getIndex() const
+int WQMLCanvasComponentStroke::getIndex() const
 {
     //qDebug() << "getIndex" << (void*)this << _index;
     return this->_index;
 }
 
-void WQMLCanvasComponent::setIndex(int index)
+void WQMLCanvasComponentStroke::setIndex(int index)
 {
     if (this->_index != index) {
         this->_index = index;
@@ -97,14 +96,14 @@ void WQMLCanvasComponent::setIndex(int index)
     }
 }
 
-void WQMLCanvasComponent::setFunc(std::function<void (QPainter &painter, double width)> getImg)
+void WQMLCanvasComponentStroke::setFunc(std::function<void (QPainter &painter, double width)> getImg)
 {
     assert(_functionSet == false);
     this->_functionSet = true;
     this->_getImg = std::move(getImg);
 }
 
-void WQMLCanvasComponent::callUpdate(int page)
+void WQMLCanvasComponentStroke::callUpdate(int page)
 {
     if (page == this->_index) {
         this->update();
@@ -112,7 +111,7 @@ void WQMLCanvasComponent::callUpdate(int page)
     }
 }
 
-void WQMLCanvasComponent::setYPosition(double y)
+void WQMLCanvasComponentStroke::setYPosition(double y)
 {
     this->_y = y;
     emit onYPositionChanged();

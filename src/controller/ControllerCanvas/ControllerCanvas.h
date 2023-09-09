@@ -7,6 +7,7 @@
 
 #include "WQMLCanvasHandler.h"
 #include "WQMLCanvasComponent.h"
+#include "touch/UpdateEvent.h"
 
 class ControllerCanvas: public QAbstractListModel
 {
@@ -56,18 +57,17 @@ public:
     QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const override;
     QHash<int, QByteArray> roleNames() const override;
 
-    static void registerDrawer(WQMLCanvasComponent *object);
+    static void registerDrawer(WQMLCanvasComponentStroke *object);
     static void registerHangler(WQMLCanvasHandler *object);
 private:
     double _positionX;
     double _positionY;
     std::function<void (QPainter &painter, double width)> _getImg;
 
-    static void callUpdate(int page);
-    static void callUpdate(int pageMin, int pageMax, bool all);
+    static void callUpdate(const UpdateEvent& event);
 
 public slots:
-    void refresh(int page);
+    void refresh(const UpdateEvent& event);
     void sizeHasChanged(const QSizeF &size);
     void touchBegin(const QPointF &point, double pressure);
     void touchUpdate(const QPointF &point, double pressure);

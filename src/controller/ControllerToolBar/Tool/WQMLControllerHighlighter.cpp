@@ -12,7 +12,7 @@ WQMLControllerHighlighter::WQMLControllerHighlighter(QQuickItem *parent)
         : QQuickPaintedItem(parent)
         , ToolController(false)
 {
-    qDebug() << "WQMLCanvasComponent constructor call";
+    qDebug() << "WQMLCanvasComponentStroke constructor call";
     //WQMLControllerHighlighter::registerDrawer(this);
     this->setAntialiasing(true);
 }
