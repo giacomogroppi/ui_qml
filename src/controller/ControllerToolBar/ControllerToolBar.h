@@ -11,6 +11,8 @@
 #include "touch/laser/Laser.h"
 #include "touch/highlighter/Highligter.h"
 #include "touch/UpdateEvent.h"
+#include "core/WFlags.h"
+#include "touch/UpdateEvent.h"
 
 class ControllerToolBar: public QObject
 {
@@ -69,7 +71,7 @@ public:
     Q_PROPERTY(bool isYellow    READ isYellow   NOTIFY colorChanged);
     Q_PROPERTY(bool isRed       READ isRed      NOTIFY colorChanged);
 
-    void getImg(QPainter &painter, double width);
+    void getImg(QPainter &painter, double width, WFlags<UpdateEvent::UpdateEventType> flags);
 
     static void registerTool(ToolController *tool);
     static QColor getColor();

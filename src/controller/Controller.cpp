@@ -61,9 +61,10 @@ Controller *Controller::instance()
 
 void Controller::registerControllerCanvas(ControllerCanvas *controllerCanvas)
 {
-    const auto getImg = [](QPainter &painter, double width) {
-        return Controller::instance()->_toolBar->getImg(painter, width);
+    const auto getImg = [](QPainter &painter, double width, WFlags<UpdateEvent::UpdateEventType> typeUpdate) {
+        return Controller::instance()->_toolBar->getImg(painter, width, typeUpdate);
     };
+
     W_ASSERT(controllerCanvas);
     Controller::instance()->_canvas = controllerCanvas;
 

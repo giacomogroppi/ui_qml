@@ -1,6 +1,7 @@
 #include "controller/Controller.h"
 
 #include <QtTest>
+#include <QFlags>
 
 class ControllerTest: public QObject
 {

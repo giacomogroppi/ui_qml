@@ -12,7 +12,8 @@
 
 static WQMLCanvasHandler *handler = nullptr;
 static ControllerCanvas *controllerCanvas = nullptr;
-static QList<WQMLCanvasComponentStroke *> drawer;
+static QList<WQMLCanvasComponentPage *> drawerPage;
+static WQMLCanvasComponentStroke *drawerStroke;
 
 bool init = false;
 
@@ -43,8 +44,8 @@ void ControllerCanvas::endTimer()
     //_timer->start(1);
     qDebug() << "ControllerCanvas::endTimer" << this->getHeigthObject();
 
-    for (int i = 0; i < drawer.size(); i++) {
-        drawer[i]->callUpdate(i);
+    for (int i = 0; i < drawerPage.size(); i++) {
+        drawerPage[i]->callUpdate(i);
     }
 }
 
@@ -110,9 +111,9 @@ void ControllerCanvas::setPositionY(double newPosition)
     }
 }
 
-void ControllerCanvas::setFunc(std::function<void (QPainter &, double)> getImg)
+void ControllerCanvas::setFunc(std::function<void (QPainter &painter, double width, WFlags<UpdateEvent::UpdateEventType> updateFlag)> getImg)
 {
-    this->_getImg = getImg;
+    this->_getImg = std::move(getImg);
 }
 
 int ControllerCanvas::rowCount(const QModelIndex &parent) const
@@ -167,12 +168,13 @@ void ControllerCanvas::removeData(int row)
     */
 }
 
-void ControllerCanvas::registerDrawer(WQMLCanvasComponentStroke *object)
+void ControllerCanvas::registerDrawerStroke(WQMLCanvasComponentStroke *object)
 {
     W_ASSERT(object != nullptr);
     W_ASSERT(controllerCanvas != nullptr);
+    W_ASSERT(drawerStroke == nullptr);
 
-    drawer.append(object);
+    drawerStroke = object;
 
     QObject::connect(object, &WQMLCanvasComponentStroke::onXPositionChanged, [object]() {
         emit controllerCanvas->positionChanged(QPointF(object->xPosition(), 0.));
@@ -184,33 +186,49 @@ void ControllerCanvas::registerDrawer(WQMLCanvasComponentStroke *object)
     object->setFunc(controllerCanvas->_getImg);
 }
 
-void ControllerCanvas::callUpdate(const UpdateEvent& event)
+void ControllerCanvas::registerDrawerPage(WQMLCanvasComponentPage *object)
+{
+    W_ASSERT(object != nullptr);
+    W_ASSERT(controllerCanvas != nullptr);
+
+    drawerPage.append(object);
+
+    QObject::connect(object, &WQMLCanvasComponentPage::onXPositionChanged, [object]() {
+        emit controllerCanvas->positionChanged(QPointF(object->xPosition(), 0.));
+    });
+
+    QObject::connect(object, &WQMLCanvasComponentPage::onYPositionChanged, [object]() {
+        emit controllerCanvas->positionChanged(QPointF(0., object->yPosition()));
+    });
+    object->setFunc(controllerCanvas->_getImg);
+}
+
+void ControllerCanvas::callUpdate(int page)
 {
     // da mettere a posto
-    W_ASSERT(page == -1 || (page >= 0 && page < drawer.size()));
+    W_ASSERT(page == -1 || (page >= 0 && page < drawerPage.size()));
     if (page == -1) {
-        for (auto &d : drawer) {
+        for (auto &d : drawerPage) {
             d->callUpdate(page);
         }
     } else {
-        drawer[page]->callUpdate(page);
+        drawerPage[page]->callUpdate(page);
     }
 }
 
-void ControllerCanvas::callUpdate(int pageMin, int pageMax, bool all)
+void ControllerCanvas::callUpdate(const UpdateEvent& event)
 {
 #if defined(DEBUGINFO)
-    if (!all) {
-        W_ASSERT(pageMin < pageMax);
-        W_ASSERT(pageMin >= 0 && pageMin <  drawer.size());
-        W_ASSERT(pageMax >= 1 && pageMax <= drawer.size());
+    if (!event.isAll()) {
+        W_ASSERT(event.getPageLow() >= 0 && event.getPageLow() <  drawerPage.size());
+        W_ASSERT(event.getPageHigh() >= 1 && event.getPageHigh() <= drawerPage.size());
     }
 #endif
 
-    if (all) {
+    if (event.isAll()) {
         ControllerCanvas::callUpdate(-1);
     } else {
-        for (int i = pageMin; i < pageMax; i++) {
+        for (int i = event.getPageLow(); i < event.getPageHigh(); i++) {
             ControllerCanvas::callUpdate(i);
         }
     }
@@ -235,7 +253,7 @@ void ControllerCanvas::sizeHasChanged(const QSizeF &size)
     emit this->onWidthObjectChanged();
     emit this->onHeigthObjectChanged();
 
-    ControllerCanvas::callUpdate(0, 0, true);
+    ControllerCanvas::callUpdate(UpdateEvent::makeAll());
 }
 
 void ControllerCanvas::touchBegin(const QPointF &point, double pressure)

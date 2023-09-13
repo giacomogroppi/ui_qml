@@ -15,11 +15,11 @@
 WQMLCanvasComponentPage::WQMLCanvasComponentPage(QQuickItem *parent)
         : QQuickPaintedItem(parent)
         , _index(0)
-        , _getImg([](QPainter &, double) {})
+        , _getImg([](QPainter &, double, WFlags<UpdateEvent::UpdateEventType>) {})
         , _functionSet(false)
 {
     qDebug() << "WQMLCanvasComponentStroke constructor call";
-    //ControllerCanvas::registerDrawer(this);
+    ControllerCanvas::registerDrawerPage(this);
     this->setAntialiasing(true);
     this->setFlag(QQuickItem::Flag::ItemClipsChildrenToShape);
     this->callUpdate(this->getIndex());
@@ -75,7 +75,7 @@ void WQMLCanvasComponentPage::setIndex(int index)
     }
 }
 
-void WQMLCanvasComponentPage::setFunc(std::function<void (QPainter &painter, double width)> getImg)
+void WQMLCanvasComponentPage::setFunc(std::function<void (QPainter &painter, double width, WFlags<UpdateEvent::UpdateEventType> updateFlag)> getImg)
 {
     assert(_functionSet == false);
     this->_functionSet = true;

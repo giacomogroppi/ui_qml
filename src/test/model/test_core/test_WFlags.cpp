@@ -2,6 +2,8 @@
 
 #include "core/WFlags.h"
 #include "utils/WCommonScript.h"
+#include <QFlags>
+#include <QPainter>
 
 class test_WFlags : public QObject
 {
@@ -29,11 +31,11 @@ enum Flag {
 void test_WFlags::testConstructor()
 {
     WFlags<Flag> flag;
-    flag = Flag::f1;
+    flag = WFlags(Flag::f1);
 
     QCOMPARE(flag, Flag::f1);
 
-    flag = Flag::f8;
+    flag = WFlags(Flag::f8);
     const WFlags<Flag> r = flag & Flag::f1;
     QVERIFY(!(flag & Flag::f1));
     QVERIFY(flag & Flag::f8);
@@ -42,7 +44,7 @@ void test_WFlags::testConstructor()
 void test_WFlags::testOr()
 {
     WFlags<Flag> flag;
-    flag = WFlags<Flag>{Flag::f1} | WFlags<Flag>{Flag::f2};
+    flag = WFlags{Flag::f1} | WFlags{Flag::f2};
 
     QVERIFY(flag & Flag::f1);
     QVERIFY(flag & Flag::f2);

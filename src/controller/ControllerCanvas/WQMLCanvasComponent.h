@@ -12,6 +12,9 @@
 #include <QOpenGLContext>
 #include <QQuickWindow>
 
+#include "core/WFlags.h"
+#include "touch/UpdateEvent.h"
+
 class WQMLCanvasComponentStroke: public QQuickPaintedItem
 {
     Q_OBJECT
@@ -30,7 +33,7 @@ public:
     int getIndex() const;
     void setIndex(int index);
 
-    void setFunc(std::function<void (QPainter &painter, double width)> getImg);
+    void setFunc(std::function<void (QPainter &painter, double width, WFlags<UpdateEvent::UpdateEventType>)> getImg);
 
 signals:
     void onXPositionChanged();
@@ -46,6 +49,6 @@ private:
     int _index;
     bool event(QEvent *event) override;
     int _x, _y;
-    std::function<void(QPainter &painter, double width)> _getImg;
+    std::function<void(QPainter &painter, double width, WFlags<UpdateEvent::UpdateEventType> type)> _getImg;
     bool _functionSet;
 };

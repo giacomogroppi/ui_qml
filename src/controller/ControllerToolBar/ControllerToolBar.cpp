@@ -169,7 +169,7 @@ bool ControllerToolBar::isCut() const
     return this->_tabletController->getCurrentTool()->getType() == Square::type();
 }
 
-void ControllerToolBar::getImg(QPainter &painter, double width)
+void ControllerToolBar::getImg(QPainter &painter, double width, WFlags<UpdateEvent::UpdateEventType> flags)
 {
     WPainter adapterPainter (&painter);
     this->_tabletController->getImageStroke(adapterPainter, width);
@@ -203,7 +203,8 @@ QColor ControllerToolBar::getColor()
 void ControllerToolBar::touchBegin(const QPointF &point, double pressure)
 {
     WDebug(false, "call");
-    emit this->onNeedRefreshPage(0, 1);
+    // in teoria tabletController chiama già l'evento di update quindi possiamo non chiamarlo
+    //emit this->onNeedRefreshPage(0, 1);
     this->_tabletController->touchBegin({point.x(), point.y()}, pressure);
 }
 
@@ -212,13 +213,13 @@ void ControllerToolBar::touchUpdate(const QPointF &point, double pressure)
     WDebug(false, "call");
 
     this->_tabletController->touchUpdate({point.x(), point.y()}, pressure);
-    emit this->onNeedRefreshPage(0, 1);
+    //emit this->onNeedRefreshPage(0, 1);
 }
 
 void ControllerToolBar::touchEnd(const QPointF &point, double pressure)
 {
     WDebug(false, "call");
-    emit this->onNeedRefreshPage(0, 1);
+    //emit this->onNeedRefreshPage(0, 1);
     this->_tabletController->touchEnd({point.x(), point.y()}, pressure);
 }
 
