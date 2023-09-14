@@ -283,7 +283,8 @@ set(PROJECT_SOURCES_WRITERNOTE
 		${A_DIR_ROOT}/src/model/sheet/style_struct.cpp
 		${A_DIR_ROOT}/src/model/Scheduler/SchedulerQt.cpp
 		${A_DIR_ROOT}/src/model/touch/UpdateEvent.cpp
-                ${A_DIR_ROOT}/src/model/core/WFlags.cpp
+		${A_DIR_ROOT}/src/model/core/WFlags.cpp
+		${A_DIR_ROOT}/src/model/core/ObjectFinal.cpp
 )
 
 if(IOS)
