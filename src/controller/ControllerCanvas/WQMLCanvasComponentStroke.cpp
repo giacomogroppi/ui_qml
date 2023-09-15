@@ -1,4 +1,4 @@
-#include "WQMLCanvasComponent.h"
+#include "WQMLCanvasComponentStroke.h"
 #include <QPainter>
 #include <QBrush>
 #include "ControllerCanvas.h"
@@ -22,7 +22,7 @@ WQMLCanvasComponentStroke::WQMLCanvasComponentStroke(QQuickItem *parent)
     ControllerCanvas::registerDrawerStroke(this);
     this->setAntialiasing(true);
     this->setFlag(QQuickItem::Flag::ItemClipsChildrenToShape);
-    this->callUpdate(this->getIndex());
+    this->callUpdate();
     qDebug() << this->width() << this->height();
     //Q_ASSERT(false);
 }
@@ -49,14 +49,11 @@ void WQMLCanvasComponentStroke::paint(QPainter *painter)
     paint_hz = e;
 
     if (hz < 50 or 1) {
-        qDebug() << "problemi signori: " << hz << "\t" << (void *)this << this->getIndex();
+        qDebug() << "problemi signori: " << hz << "\t" << (void *)this;
     }
 
     TIME_STOP_STATIC(paint_hz, "Paint call: ");
     //TIME_STOP(paint_var, "Paint: ");
-    if (getIndex() == 0){
-        //update();
-    }
 }
 
 bool WQMLCanvasComponentStroke::event(QEvent *event)
@@ -81,21 +78,6 @@ double WQMLCanvasComponentStroke::yPosition() const
     return this->_y;
 }
 
-int WQMLCanvasComponentStroke::getIndex() const
-{
-    //qDebug() << "getIndex" << (void*)this << _index;
-    return this->_index;
-}
-
-void WQMLCanvasComponentStroke::setIndex(int index)
-{
-    if (this->_index != index) {
-        this->_index = index;
-        emit onIndexChanged();
-        this->callUpdate(index);
-    }
-}
-
 void WQMLCanvasComponentStroke::setFunc(std::function<void (QPainter &painter, double width, WFlags<UpdateEvent::UpdateEventType>)> getImg)
 {
     assert(_functionSet == false);
@@ -103,12 +85,9 @@ void WQMLCanvasComponentStroke::setFunc(std::function<void (QPainter &painter, d
     this->_getImg = std::move(getImg);
 }
 
-void WQMLCanvasComponentStroke::callUpdate(int page)
+void WQMLCanvasComponentStroke::callUpdate()
 {
-    if (page == this->_index) {
-        this->update();
-        WDebug(false, "call");
-    }
+    this->update();
 }
 
 void WQMLCanvasComponentStroke::setYPosition(double y)

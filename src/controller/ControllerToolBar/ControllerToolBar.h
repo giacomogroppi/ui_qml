@@ -30,8 +30,6 @@ public:
     explicit ControllerToolBar(QObject *parent, TabletController *tabletController);
     ~ControllerToolBar();
 
-    Q_INVOKABLE QImage getPixmap() const;
-
     Q_INVOKABLE void clickSelectPen();
     Q_INVOKABLE void clickRubber();
     Q_INVOKABLE void clickHand();

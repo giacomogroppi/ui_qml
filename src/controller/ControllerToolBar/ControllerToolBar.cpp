@@ -66,20 +66,6 @@ ControllerToolBar::~ControllerToolBar()
     delete __tmp;
 }
 
-QImage ControllerToolBar::getPixmap() const
-{
-    WPixmap pix(1, false);
-    WPainter painter;
-
-    if (!painter.begin(&pix))
-        std::abort();
-
-
-    _tabletController->getImg(painter, Page::getWidth());
-    painter.end();
-    return pix.toImage();
-}
-
 void ControllerToolBar::numberOfPageChanged(int n)
 {
     const auto w = Page::getWidth();
@@ -172,7 +158,7 @@ bool ControllerToolBar::isCut() const
 void ControllerToolBar::getImg(QPainter &painter, double width, WFlags<UpdateEvent::UpdateEventType> flags)
 {
     WPainter adapterPainter (&painter);
-    this->_tabletController->getImageStroke(adapterPainter, width);
+    this->_tabletController->getImg(adapterPainter, width, flags);
     //this->_tabletController->getImg(adapterPainter, width);
 }
 

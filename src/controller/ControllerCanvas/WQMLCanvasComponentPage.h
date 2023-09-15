@@ -4,8 +4,9 @@
 #include <QQuickPaintedItem>
 
 #include "touch/UpdateEvent.h"
+#include "Scheduler/WObject.h"
 
-class WQMLCanvasComponentPage: public QQuickPaintedItem
+class WQMLCanvasComponentPage: public QQuickPaintedItem, public WObject
 {
     Q_OBJECT
     Q_PROPERTY(double xPosition READ xPosition  WRITE setXPosition  NOTIFY onXPositionChanged);
@@ -34,6 +35,8 @@ public slots:
     void callUpdate(int page);
 
     void paint(QPainter *painter) override;
+
+    W_EMITTABLE_0(FinishDraw);
 
 private:
     int _index;

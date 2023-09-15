@@ -19,34 +19,19 @@ bool init = false;
 
 ControllerCanvas::ControllerCanvas(QObject *parent)
     : QAbstractListModel(parent)
-    , _timer(new QTimer(nullptr))
     , _width(Page::getWidth())
     , _heigth(Page::getHeight())
     , _status(waitingFor::begin)
     , _positionX(0.)
-#ifdef DEBUGINFO
     , _positionY(0.)
-#endif
 {
     Q_ASSERT(init == false);
     init = true;
 
-    QObject::connect(_timer, &QTimer::timeout, this, &ControllerCanvas::endTimer);
     controllerCanvas = this;
     //Controller::registerControllerCanvas(this);
 
     qDebug() << "ControllerCanvas::ControllerCanvas call";
-}
-
-void ControllerCanvas::endTimer()
-{
-    //this->wSetHeigth(this->heigthObject() + 100);
-    //_timer->start(1);
-    qDebug() << "ControllerCanvas::endTimer" << this->getHeigthObject();
-
-    for (int i = 0; i < drawerPage.size(); i++) {
-        drawerPage[i]->callUpdate(i);
-    }
 }
 
 bool ControllerCanvas::event(QEvent *event)
@@ -201,11 +186,20 @@ void ControllerCanvas::registerDrawerPage(WQMLCanvasComponentPage *object)
         emit controllerCanvas->positionChanged(QPointF(0., object->yPosition()));
     });
     object->setFunc(controllerCanvas->_getImg);
+
+    object->regFinishDraw([]() {
+        if (controllerCanvas->_isWaitingForDrawInPage) {
+            if (controllerCanvas->eventWaiting & UpdateEvent::stroke) drawerStroke->callUpdate();
+            // TODO: update other drawer in case
+
+            controllerCanvas->_isWaitingForDrawInPage = false;
+        }
+    });
 }
 
 void ControllerCanvas::callUpdate(int page)
 {
-    // da mettere a posto
+    // TODO: da mettere a posto
     W_ASSERT(page == -1 || (page >= 0 && page < drawerPage.size()));
     if (page == -1) {
         for (auto &d : drawerPage) {
@@ -218,19 +212,19 @@ void ControllerCanvas::callUpdate(int page)
 
 void ControllerCanvas::callUpdate(const UpdateEvent& event)
 {
-#if defined(DEBUGINFO)
-    if (!event.isAll()) {
-        W_ASSERT(event.getPageLow() >= 0 && event.getPageLow() <  drawerPage.size());
-        W_ASSERT(event.getPageHigh() >= 1 && event.getPageHigh() <= drawerPage.size());
-    }
-#endif
-
-    if (event.isAll()) {
-        ControllerCanvas::callUpdate(-1);
-    } else {
-        for (int i = event.getPageLow(); i < event.getPageHigh(); i++) {
-            ControllerCanvas::callUpdate(i);
+    if (event & (UpdateEvent::page | UpdateEvent::sheet)) {
+        if (event.isAll()) {
+            ControllerCanvas::callUpdate(-1);
+        } else {
+            for (int i = event.getPageLow(); i < event.getPageHigh(); i++) {
+                ControllerCanvas::callUpdate(i);
+            }
         }
+    }
+
+    if (event & UpdateEvent::stroke) {
+        if (not (event & (UpdateEvent::page)))
+            drawerStroke->callUpdate();
     }
 }
 

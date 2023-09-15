@@ -20,7 +20,6 @@ class WQMLCanvasComponentStroke: public QQuickPaintedItem
     Q_OBJECT
     Q_PROPERTY(double xPosition READ xPosition  WRITE setXPosition  NOTIFY onXPositionChanged);
     Q_PROPERTY(double yPosition READ yPosition  WRITE setYPosition  NOTIFY onYPositionChanged);
-    Q_PROPERTY(int indexDrawer  READ getIndex   WRITE setIndex      NOTIFY onIndexChanged);
 public:
     explicit WQMLCanvasComponentStroke(QQuickItem *parent = nullptr);
 
@@ -30,9 +29,6 @@ public:
     void setYPosition(double y);
     double yPosition() const;
 
-    int getIndex() const;
-    void setIndex(int index);
-
     void setFunc(std::function<void (QPainter &painter, double width, WFlags<UpdateEvent::UpdateEventType>)> getImg);
 
 signals:
@@ -41,7 +37,7 @@ signals:
     void onIndexChanged();
 
 public slots:
-    void callUpdate(int page);
+    void callUpdate();
 
     void paint(QPainter *painter) override;
 

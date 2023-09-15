@@ -305,7 +305,7 @@ set(A_SOURCES_CPP
     ${A_DIR_ROOT}/src/controller/ControllerAudio/ControllerAudioRecorder.cpp
     ${A_DIR_ROOT}/src/controller/ControllerAudio/ControllerAudioPlayer.cpp
     ${A_DIR_ROOT}/src/controller/ControllerCanvas/ControllerCanvas.cpp
-    ${A_DIR_ROOT}/src/controller/ControllerCanvas/WQMLCanvasComponent.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerCanvas/WQMLCanvasComponentStroke.cpp
 	${A_DIR_ROOT}/src/controller/ControllerCanvas/WQMLCanvasComponentPage.cpp
     ${A_DIR_ROOT}/src/controller/ControllerList/ControllerList.cpp
     ${A_DIR_ROOT}/src/controller/ControllerList/WQMLItemListComponent.cpp

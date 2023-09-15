@@ -135,8 +135,6 @@ Item {
                 anchors.left: parent.left
                 anchors.top: parent.top
 
-                indexDrawer: index
-
                 height: parent.height
                 width: parent.width
                 //width: _controllerCanvas.widthObject * canvasSurface.scale

@@ -6,7 +6,7 @@
 #include <QAbstractListModel>
 
 #include "WQMLCanvasHandler.h"
-#include "WQMLCanvasComponent.h"
+#include "WQMLCanvasComponentStroke.h"
 #include "WQMLCanvasComponentPage.h"
 #include "touch/UpdateEvent.h"
 
@@ -18,8 +18,6 @@ class ControllerCanvas: public QAbstractListModel
     Q_PROPERTY(int heigthObject READ getHeigthObject NOTIFY onHeigthObjectChanged);
     Q_PROPERTY(int widthObject READ getWidthObject NOTIFY onWidthObjectChanged);
 private:
-    QTimer *_timer;
-
     int _width;
     int _heigth;
 
@@ -64,6 +62,14 @@ public:
 private:
     double _positionX;
     double _positionY;
+
+    /**
+     * If true it means that we are waiting for the scheduler
+     * to call the update function in the page object
+     * */
+    bool _isWaitingForDrawInPage = false;
+    UpdateEvent eventWaiting = {UpdateEvent::stroke};
+
     std::function<void (QPainter &painter, double width, WFlags<UpdateEvent::UpdateEventType> updateFlag)> _getImg;
 
     static void callUpdate(const UpdateEvent& event);
@@ -78,9 +84,6 @@ public slots:
 
     void duplicateData(int row);
     void removeData(int row);
-
-private slots:
-    void endTimer();
 
 protected:
     bool event(QEvent *event) override;

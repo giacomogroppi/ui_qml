@@ -14,6 +14,7 @@
 
 WQMLCanvasComponentPage::WQMLCanvasComponentPage(QQuickItem *parent)
         : QQuickPaintedItem(parent)
+        , WObject(nullptr)
         , _index(0)
         , _getImg([](QPainter &, double, WFlags<UpdateEvent::UpdateEventType>) {})
         , _functionSet(false)
@@ -25,17 +26,17 @@ WQMLCanvasComponentPage::WQMLCanvasComponentPage(QQuickItem *parent)
     this->callUpdate(this->getIndex());
     qDebug() << this->width() << this->height();
 
-    QTimer::singleShot(100, [this]() {
-        this->callUpdate(0);
-    });
-
     //Q_ASSERT(false);
 }
 
 void WQMLCanvasComponentPage::paint(QPainter *painter)
 {
-    WDebug(true, "call");
-    painter->drawLine(0, 0, 1000, 1000);
+    WDebug(true, "call" << _functionSet);
+    if (this->_functionSet) {
+        this->_getImg(*painter, width(), UpdateEvent::page | UpdateEvent::sheet);
+    }
+    W_EMIT_0(FinishDraw);
+    painter->drawLine(200, 0, 1000, 1000);
 }
 
 bool WQMLCanvasComponentPage::event(QEvent *event)
@@ -84,12 +85,11 @@ void WQMLCanvasComponentPage::setFunc(std::function<void (QPainter &painter, dou
 
 void WQMLCanvasComponentPage::callUpdate(int page)
 {
+    WDebug(true, page << _index);
     if (page == this->_index) {
         this->update();
         WDebug(false, "call");
     }
-
-    QTimer::singleShot(100, [this]() {this->callUpdate(0);});
 }
 
 void WQMLCanvasComponentPage::setYPosition(double y)
