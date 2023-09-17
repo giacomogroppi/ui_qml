@@ -33,7 +33,7 @@ void test_WVector::removeIf_removeAllDescending()
             1, 1, 1, 1, 1, 1, 1
     };
 
-    tmp.removeOrderDescending(1, cmp<int>);
+    tmp.removeOrderHighToLow(1, cmp<int>);
 
     const WVector<int> result = {};
 
@@ -45,7 +45,7 @@ void test_WVector::removeIf_removeAllAscending()
     WVector<int> tmp = {
         1, 1, 1, 1, 1, 1, 1
     };
-    tmp.removeOrderAscending(1, cmp<int>);
+    tmp.removeOrderLowToHigh(1, cmp<int>);
 
     const WVector<int> result = {};
 
@@ -57,7 +57,7 @@ void test_WVector::removeIfAscendingElementPresentMiddle()
     WVector<int> tmp = {
             1, 2, 3, 4, 5, 6, 7, 8, 9
     };
-    tmp.removeOrderAscending(5, cmp<int>);
+    tmp.removeOrderLowToHigh(5, cmp<int>);
 
     const WVector<int> result = {
             1, 2, 3, 4, 6, 7, 8, 9
@@ -71,7 +71,7 @@ void test_WVector::removeIfDescendingElementPresentMiddle()
     WVector<int> tmp = {
             9, 8, 6, 5, 4, 3, 2, 1
     };
-    tmp.removeOrderDescending(4, cmp<int>);
+    tmp.removeOrderHighToLow(4, cmp<int>);
 
     const WVector<int> result = {
             9, 8, 6, 5, 3, 2, 1
@@ -86,7 +86,7 @@ void test_WVector::removeIfAscendingElementPresentEnd()
             1, 2, 3, 4, 5, 6, 7, 8, 9
     };
 
-    tmp.removeOrderAscending(7, cmp<int>);
+    tmp.removeOrderLowToHigh(7, cmp<int>);
 
     const auto result = WVector<int> {
             1, 2, 3, 4, 5, 6, 8, 9
@@ -104,7 +104,7 @@ void test_WVector::removeIfDescendingElementPresentEnd()
             7, 4, 3, 2
     };
 
-    tmp.removeOrderDescending(1, cmp<int>);
+    tmp.removeOrderHighToLow(1, cmp<int>);
 
     QCOMPARE(tmp, result);
 }
@@ -115,7 +115,7 @@ void test_WVector::removeIfAscendingElementNotPresent()
             1, 2, 3, 4, 5, 6, 7, 8, 9
     };
 
-    tmp.removeOrderAscending(10, cmp<int>);
+    tmp.removeOrderLowToHigh(10, cmp<int>);
 
     const auto result = WVector<int> {
             1, 2, 3, 4, 5, 6, 7, 8, 9
@@ -131,7 +131,7 @@ void test_WVector::removeIfDescendingElementNotPresent()
 
     const auto result(tmp);
 
-    tmp.removeOrderDescending(10, cmp<int>);
+    tmp.removeOrderHighToLow(10, cmp<int>);
 
     QCOMPARE(tmp, result);
 }

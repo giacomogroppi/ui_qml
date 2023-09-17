@@ -41,7 +41,7 @@ void test_WAbstractList::test_no_item()
             1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
     };
 
-    const auto i = WAbstractList::binary_search(tmp.begin(), tmp.end(), 5);
+    const auto i = WAbstractList::binary_search<std::vector<int>::iterator, int, true>(tmp.begin(), tmp.end(), 5);
 
     QVERIFY(i == tmp.end());
 }
@@ -49,7 +49,7 @@ void test_WAbstractList::test_no_item()
 void test_WAbstractList::test_binary_search_single_item()
 {
     std::vector<int> tmp = {1};
-    const auto i = WAbstractList::binary_search(tmp.begin(), tmp.end(), 1);
+    const auto i = WAbstractList::binary_search<std::vector<int>::iterator, int, true>(tmp.begin(), tmp.end(), 1);
 
     QVERIFY(i != tmp.end());
 
@@ -63,7 +63,7 @@ void test_WAbstractList::test_binary_search_right()
             1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
     };
 
-    const auto i = WAbstractList::binary_search(tmp.begin(), tmp.end(), 5);
+    const auto i = WAbstractList::binary_search<std::vector<int>::iterator, int, true>(tmp.begin(), tmp.end(), 5);
 
     QVERIFY(i != tmp.end());
     QCOMPARE(*i, 5);

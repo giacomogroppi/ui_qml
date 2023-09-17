@@ -327,6 +327,7 @@ set(A_SOURCES_CPP
     ${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/ToolController.cpp
     ${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/ToolController.h
 
+
     ${PROJECT_SOURCES_WRITERNOTE}
 )
 
@@ -530,5 +531,7 @@ SETUP_TESTS(
 		src/test/model/test_core/test_WVector
 		src/test/model/test_core/test_WAbstractList
 		src/test/model/test_core/test_WFlags
+		src/test/model/test_core/test_WHeap
+		src/test/model/test_Scheduler/test_WTimer
 )
 endif()
