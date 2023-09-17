@@ -91,7 +91,7 @@ void ControllerToolBar::clickHand()
 
 void ControllerToolBar::clickHighlighter()
 {
-    this->selectTool(Highligter::type());
+    this->selectTool(Highlighter::type());
 }
 
 void ControllerToolBar::clickCut()
@@ -147,7 +147,7 @@ bool ControllerToolBar::isHand() const
 
 bool ControllerToolBar::isHighlighter() const
 {
-    return this->_tabletController->getCurrentTool()->getType() == Highligter::type();
+    return this->_tabletController->getCurrentTool()->getType() == Highlighter::type();
 }
 
 bool ControllerToolBar::isCut() const

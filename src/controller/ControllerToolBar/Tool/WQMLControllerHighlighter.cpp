@@ -80,5 +80,5 @@ void WQMLControllerHighlighter::callUpdate()
 
 int WQMLControllerHighlighter::getType() const
 {
-    return Highligter::type();
+    return Highlighter::type();
 }

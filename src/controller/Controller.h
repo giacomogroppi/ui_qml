@@ -16,7 +16,8 @@
 /* writernote include */
 #include "touch/TabletController.h"
 
-class Controller: public QObject {
+class Controller: public QObject
+{
     Q_OBJECT
 private:
     TabletController *_tabletController;
@@ -46,7 +47,7 @@ private:
 
 public:
     explicit Controller(QObject *parent, QQmlContext* content, QQmlApplicationEngine* engine);
-    ~Controller();
+    ~Controller() override;
 
     static void registerType(const QString &name, QObject *object)
     {
