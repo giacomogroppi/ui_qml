@@ -8,11 +8,18 @@
 #include "Scheduler/WTimer.h"
 #include "Scheduler/Scheduler.h"
 
+#define REPEATED_TEST(stuff, numberOfTimes) \
+    for (int _i = 0; _i < (numberOfTimes); _i++) { \
+        init();                              \
+        stuff;\
+        cleanup();\
+    }
+
 class test_WTimer : public QObject
 {
 Q_OBJECT
 private:
-    Scheduler *scheduler;
+    Scheduler *scheduler = nullptr;
 
 private slots:
     void init();
@@ -25,29 +32,35 @@ private slots:
 
 void test_WTimer::init()
 {
-    scheduler = new Scheduler();
+    if (scheduler == nullptr) {
+        scheduler = new Scheduler();
+    }
 }
 
 void test_WTimer::cleanup()
 {
     delete scheduler;
+    scheduler = nullptr;
 }
 
 void test_WTimer::singleTimer()
 {
-    std::atomic<bool> call = false;
+    REPEATED_TEST(
+            WDebug(true, _i);
+        std::atomic<bool> call = false;
+        auto *timer = new WTimer(nullptr, [&]{
+            call = true;
+        }, 200, false);
 
-    auto *timer = new WTimer(nullptr, [&]{
-        call = true;
-    }, 200, false);
+        timer->start();
 
-    timer->start();
+        QThread::msleep(200 + 50);
 
-    QThread::msleep(200 + 50);
+        QCOMPARE(call, true);
 
-    QCOMPARE(call, true);
+        delete timer;
+    , 500);
 
-    delete timer;
 }
 
 void test_WTimer::secondTimerAddWithLessTime()
