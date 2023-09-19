@@ -285,6 +285,10 @@ set(PROJECT_SOURCES_WRITERNOTE
 		${A_DIR_ROOT}/src/model/touch/UpdateEvent.cpp
 		${A_DIR_ROOT}/src/model/core/WFlags.cpp
 		${A_DIR_ROOT}/src/model/core/ObjectFinal.cpp
+		${A_DIR_ROOT}/src/model/core/Settable.cpp
+		${A_DIR_ROOT}/src/model/core/Settable.h
+		${A_DIR_ROOT}/src/model/core/Color/WColor.cpp
+		${A_DIR_ROOT}/src/model/core/Color/WColor.h
 )
 
 if(IOS)
@@ -326,7 +330,6 @@ set(A_SOURCES_CPP
     ${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/WQMLControllerRubber.h
     ${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/ToolController.cpp
     ${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/ToolController.h
-
 
     ${PROJECT_SOURCES_WRITERNOTE}
 )
