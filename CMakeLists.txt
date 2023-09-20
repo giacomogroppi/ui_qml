@@ -310,7 +310,7 @@ set(A_SOURCES_CPP
     ${A_DIR_ROOT}/src/controller/ControllerAudio/ControllerAudioPlayer.cpp
     ${A_DIR_ROOT}/src/controller/ControllerCanvas/ControllerCanvas.cpp
     ${A_DIR_ROOT}/src/controller/ControllerCanvas/WQMLCanvasComponentStroke.cpp
-	${A_DIR_ROOT}/src/controller/ControllerCanvas/WQMLCanvasComponentPage.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerCanvas/WQMLCanvasComponentPage.cpp
     ${A_DIR_ROOT}/src/controller/ControllerList/ControllerList.cpp
     ${A_DIR_ROOT}/src/controller/ControllerList/WQMLItemListComponent.cpp
     ${A_DIR_ROOT}/src/controller/ControllerListFiles/ControllerListFiles.cpp
@@ -330,6 +330,9 @@ set(A_SOURCES_CPP
     ${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/WQMLControllerRubber.h
     ${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/ToolController.cpp
     ${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/ToolController.h
+
+    ${A_DIR_ROOT}/src/controller/ControllerSettings/ControllerSettings.h
+    ${A_DIR_ROOT}/src/controller/ControllerSettings/ControllerSettings.cpp
 
     ${PROJECT_SOURCES_WRITERNOTE}
 )

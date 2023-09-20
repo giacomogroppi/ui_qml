@@ -15,9 +15,9 @@ Controller::Controller(QObject *parent,
                        QQmlApplicationEngine *engine)
     : QObject(parent)
     , _tabletController(new TabletController(nullptr,
-            [this]() { return _audioRecorder->getSecondRecording(); },
-            [this] () { return this->_audioPlayer->isPlaying(); },
-            [this] () { return this->_audioPlayer->getPositionInSeconds();
+            [this] { return _audioRecorder->getSecondRecording(); },
+            [this] { return this->_audioPlayer->isPlaying(); },
+            [this] { return this->_audioPlayer->getPositionInSeconds();
       }))
     , _engine(engine)
     , _listPreview(new ControllerList(this))
@@ -28,7 +28,7 @@ Controller::Controller(QObject *parent,
     , _pageCounter(new ControllerPageCounter(this))
     , _listFiles(new ControllerListFilesFolder(this))
     , _color(new ControllerColor(this))
-    , _uiSelected(uiSelected::Main)
+    , _uiSelected(uiSelected::Settings)
 {
     controller = this;
     this->registerPrivateType();
@@ -36,7 +36,7 @@ Controller::Controller(QObject *parent,
     registerControllerCanvas(_canvas);
 }
 
-QString Controller::getUiSelected() const
+auto Controller::getUiSelected() const -> QString
 {
     constexpr char const* listFiles = "qrc:/src/ui/listOfFiles/MainWindowListFile.qml";
     constexpr char const* settings  = "qrc:/src/ui/settings/Settings.qml";
@@ -53,7 +53,16 @@ QString Controller::getUiSelected() const
     Q_ASSERT(0);
 }
 
-Controller *Controller::instance()
+void Controller::setCurrentPage(QString value)
+{
+    // TODO: define a way to save the current state in base of the current one
+    if (value == "Main") _uiSelected = Controller::Main;
+    else if (value == "Settings") _uiSelected = Controller::Settings;
+    else if (value == "ListFiles") _uiSelected = Controller::ListFiles;
+    else W_ASSERT(0);
+}
+
+auto Controller::instance() -> Controller *
 {
     Q_ASSERT(controller != nullptr);
     return controller;

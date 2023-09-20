@@ -9,6 +9,14 @@ Window {
     visible: true
     title: qsTr("Writernote")
 
+    /**
+      * unfortunatly we can't read the enum defined in Controller
+      * so we need to replicate it here
+    */
+    readonly property string mainName: "Main"
+    readonly property string settingsName: "Settings"
+    readonly property string listOfFilesName: "ListFiles"
+
     id: mainRoot
 
     StackView {
@@ -17,9 +25,24 @@ Window {
         initialItem: _controller.uiSelected
     }
 
+    // list of files
+    function showFiles() {
+        var newView = Qt.createComponent("qrc:/src/ui/listOfFiles/MainWindowListFile.qml");
+        stackViewMain.push(newView);
+        _controller.uiSelected = listOfFilesName
+        console.log("call show Files");
+    }
+
+    function closeFiles() {
+        stackView.pop();
+        console.log("Call close list of files");
+    }
+
+    // main options
     function showMain() {
         var newView = Qt.createComponent("qrc:/src/ui/pageCanvas/MainWindow.qml")
         stackViewMain.push(newView)
+        _controller.uiSelected = ""
         console.log("Call show main")
     }
 
@@ -28,6 +51,7 @@ Window {
         console.log("Call close main")
     }
 
+    // settings options
     function showSettings() {
         stackViewMain.push(Qt.createComponent("qrc:/src/ui/settings/Settings.qml"))
         console.log("Call show settings");

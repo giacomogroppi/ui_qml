@@ -55,9 +55,11 @@ public:
         content->setContextProperty(name, object);
     };
 
-    Q_PROPERTY(QString uiSelected READ getUiSelected NOTIFY onUiSelectedChanged);
-    [[nodiscard]] QString getUiSelected() const;
+    Q_PROPERTY(QString uiSelected READ getUiSelected WRITE setCurrentPage NOTIFY onUiSelectedChanged);
+    [[nodiscard]] auto getUiSelected() const -> QString;
     Q_SIGNAL void onUiSelectedChanged();
+
+    void setCurrentPage(QString currentPage);
 
     static Controller *instance();
     static void registerControllerCanvas(ControllerCanvas *controllerCanvas);
