@@ -31,6 +31,7 @@ Rectangle {
             text: qsTr("back")
         }
     }
+
     ButtonToolInstruments {
         id: undoButton
         buttonImageSource: ""
@@ -42,6 +43,7 @@ Rectangle {
             text: qsTr("undo")
         }
     }
+
     Rectangle {
         id: containerCenter
         anchors.centerIn: parent
@@ -190,6 +192,7 @@ Rectangle {
             }
         }
     }
+
     ButtonToolInstruments {
         id: recordingButton
         buttonImageSource: ":/prefix_1/images/cut_option.png"
@@ -201,6 +204,7 @@ Rectangle {
             text: qsTr("rec")
         }
     }
+
     ButtonToolInstruments {
         id: hidePreviewButton
         anchors.right: parent.right

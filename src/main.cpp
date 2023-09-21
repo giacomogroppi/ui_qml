@@ -19,8 +19,6 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/src/main.qml"));
 
-
-
     qmlRegisterType<WQMLCanvasComponentStroke>("writernote.WQMLCanvasComponentStroke",
                                                1, 0,
                                                "WCanvasComponent");

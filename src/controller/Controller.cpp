@@ -15,10 +15,11 @@ Controller::Controller(QObject *parent,
                        QQmlApplicationEngine *engine)
     : QObject(parent)
     , _tabletController(new TabletController(nullptr,
-            [this] { return _audioRecorder->getSecondRecording(); },
-            [this] { return this->_audioPlayer->isPlaying(); },
-            [this] { return this->_audioPlayer->getPositionInSeconds();
-      }))
+                                             [this] { return _audioRecorder->getSecondRecording(); },
+                                             [this] { return this->_audioPlayer->isPlaying(); },
+                                             [this] {
+                                                 return this->_audioPlayer->getPositionInSeconds();
+                                             }, ControllerSettings::getDefaultSavePath()))
     , _engine(engine)
     , _listPreview(new ControllerList(this))
     , _audioRecorder(new ControllerAudioRecorder(this))
@@ -28,12 +29,21 @@ Controller::Controller(QObject *parent,
     , _pageCounter(new ControllerPageCounter(this))
     , _listFiles(new ControllerListFilesFolder(this))
     , _color(new ControllerColor(this))
-    , _uiSelected(uiSelected::Settings)
+    , _settings(new ControllerSettings(this, _getPath))
+    , _uiSelected(uiSelected::ListFiles)
 {
     controller = this;
     this->registerPrivateType();
 
     registerControllerCanvas(_canvas);
+
+    w_connect_lister(_tabletController, onPathChanged, [this] { emit this->onPathSavingChanged(); });
+
+    QObject::connect(this, &Controller::onPathSavingChanged, _settings, &ControllerSettings::onPositionChanged);
+
+    QObject::connect(_settings, &ControllerSettings::onPositionFileChange, [&] {
+        this->_tabletController->setCurrentPathSaving(_settings->getPositionFile());
+    });
 }
 
 auto Controller::getUiSelected() const -> QString

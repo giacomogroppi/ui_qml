@@ -12,6 +12,7 @@
 #include "ControllerAudio/ControllerAudioRecorder.h"
 #include "ControllerAudio/ControllerAudioPlayer.h"
 #include "QtQml/qqmlcontext.h"
+#include "ControllerSettings/ControllerSettings.h"
 
 /* writernote include */
 #include "touch/TabletController.h"
@@ -20,6 +21,9 @@ class Controller: public QObject
 {
     Q_OBJECT
 private:
+    Fn<WString()> _getPath = [] { return Controller::instance()->_tabletController->getCurrentPathSaving(); };
+
+
     TabletController *_tabletController;
 
     QQmlApplicationEngine *_engine;
@@ -32,6 +36,7 @@ private:
     ControllerPageCounter       *_pageCounter;
     ControllerListFilesFolder   *_listFiles;
     ControllerColor             *_color;
+    ControllerSettings          *_settings;
 
     void registerPrivateType();
 
@@ -61,8 +66,11 @@ public:
 
     void setCurrentPage(QString currentPage);
 
-    static Controller *instance();
+    static auto instance() -> Controller *;
     static void registerControllerCanvas(ControllerCanvas *controllerCanvas);
+
+signals:
+    void onPathSavingChanged();
 
 public slots:
     void newFile();

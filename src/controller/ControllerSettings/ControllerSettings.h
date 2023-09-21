@@ -4,6 +4,7 @@
 #include "core/WOptionSetting/WOptionSettings.h"
 #include "core/pointer/UniquePtr.h"
 #include <QString>
+#include "utils/WCommonScript.h"
 
 class ControllerSettings: public QObject
 {
@@ -15,28 +16,26 @@ private:
     UniquePtr<WOptionSettings> _options;
 
 public:
-    explicit ControllerSettings(QObject *parent = nullptr);
+    explicit ControllerSettings(QObject *parent, Fn<WString()> getPath);
     ~ControllerSettings() override;
 
     auto getPositionFile() const -> QString;
-    auto setPositionFile(QString newPosition) -> void;
+    auto setPositionFile(const QString& newPosition) -> void;
+
+public slots:
+    void onPositionChanged();
 
 signals:
     void onPositionFileChange();
 
-private:
+public:
     static auto getDefaultSavePath() -> QString;
-
+private:
 
     /**
      * This is the path in which the application
      * should save the documents
     */
+    Fn<WString()> _getPath;
     QString _pathSaving;
-
-    /**
-     * This is the name used for WOptionSettings for identify the
-     * position in which the application should save.
-    */
-    static constexpr auto namePositionSettings = "position_path";
 };

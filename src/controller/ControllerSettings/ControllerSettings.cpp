@@ -2,15 +2,17 @@
 #include <QStandardPaths>
 
 #include "utils/slash/slash.h"
+#include "Scheduler/Scheduler.h"
 
-ControllerSettings::ControllerSettings(QObject *parent)
+ControllerSettings::ControllerSettings(QObject *parent, Fn<WString()> getPath)
     : QObject(parent)
     , _options(new WOptionSettings())
+    , _getPath(std::move(getPath))
+    , _pathSaving()
 {
     _options->begin();
 
-
-    _pathSaving = _options->value(namePositionSettings, getDefaultSavePath()).toString();
+    Scheduler::addTaskMainThread(new WTaskFunction(nullptr, [this] { _pathSaving = _getPath(); }, true));
 }
 
 ControllerSettings::~ControllerSettings()
@@ -18,12 +20,21 @@ ControllerSettings::~ControllerSettings()
     _options->save();
 }
 
+auto ControllerSettings::onPositionChanged() -> void
+{
+    const auto newPath = _getPath();
+    if (newPath != _pathSaving) {
+        _pathSaving = newPath;
+        emit onPositionFileChange();
+    }
+}
+
 auto ControllerSettings::getPositionFile() const -> QString
 {
     return this->_pathSaving;
 }
 
-auto ControllerSettings::setPositionFile(QString path) -> void
+auto ControllerSettings::setPositionFile(const QString& path) -> void
 {
     if (_pathSaving != path) {
         _pathSaving = path;
