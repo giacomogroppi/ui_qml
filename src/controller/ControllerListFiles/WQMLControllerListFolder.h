@@ -2,23 +2,23 @@
 
 #include <QObject>
 #include <QAbstractListModel>
-#include "Folder.h"
-#include "ControllerListFiles.h"
+#include "WQMLControllerListFiles.h"
+#include "file/Directory.h"
 
-class ControllerListFilesFolder: public QAbstractListModel
+class WQMLControllerListFolder: public QAbstractListModel
 {
     Q_OBJECT
 
 public:
-    explicit ControllerListFilesFolder(QObject *parent = nullptr);
-    ~ControllerListFilesFolder() = default;
+    explicit WQMLControllerListFolder(QObject *parent = nullptr, WQMLControllerListFiles *files = nullptr);
+    ~WQMLControllerListFolder() override = default;
 
     enum Roles {
         FolderName = Qt::UserRole, /* QByteArray */
     };
 
     [[nodiscard]] int rowCount(const QModelIndex& parent) const override;
-    QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const override;
+    QVariant data( const QModelIndex& index, int role ) const override;
     [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
     Q_PROPERTY(bool isVisible READ isVisible WRITE setVisible NOTIFY isVisibleChanged);
@@ -30,14 +30,22 @@ public:
     [[nodiscard]] QString getDirSelected() const;
     Q_SIGNAL void onDirSelectedChanged();
 
+    void addFolder(Directory &&directory);
+    auto getFiles() const -> const WListFast<WFile> &;
+
+    /**
+     * \return &lt 0 in case of error
+     * */
+    auto removeFile(QString name) -> int;
+
 public slots:
     void duplicateData(int row);
     void removeData(int row);
     void click(int index);
 
 private:
-    QList<Folder> _folder;
+    WListFast<Directory> _folder;
     bool _is_visible;
     int _selected;
-    ControllerListFiles *_controllerListFiles;
+    WQMLControllerListFiles *_controllerListFiles;
 };

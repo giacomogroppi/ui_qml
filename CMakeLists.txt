@@ -313,12 +313,11 @@ set(A_SOURCES_CPP
     ${A_DIR_ROOT}/src/controller/ControllerCanvas/WQMLCanvasComponentPage.cpp
     ${A_DIR_ROOT}/src/controller/ControllerList/ControllerList.cpp
     ${A_DIR_ROOT}/src/controller/ControllerList/WQMLItemListComponent.cpp
-    ${A_DIR_ROOT}/src/controller/ControllerListFiles/ControllerListFiles.cpp
-    ${A_DIR_ROOT}/src/controller/ControllerListFiles/ControllerListFilesFolder.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerListFiles/WQMLControllerListFiles.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerListFiles/WQMLControllerListFolder.cpp
     ${A_DIR_ROOT}/src/controller/ControllerPageCounter/ControllerPageCounter.cpp
     ${A_DIR_ROOT}/src/controller/ControllerToolBar/ControllerToolBar.cpp
     ${A_DIR_ROOT}/src/controller/ControllerToolBar/ControllerDocument.cpp
-    ${A_DIR_ROOT}/src/controller/ControllerListFiles/Folder.cpp
     ${A_DIR_ROOT}/src/controller/ControllerColor/ControllerColor.cpp
     ${A_DIR_ROOT}/src/controller/ControllerCanvas/WQMLCanvasHandler.h
     ${A_DIR_ROOT}/src/controller/ControllerCanvas/WQMLCanvasHandler.cpp
@@ -330,6 +329,9 @@ set(A_SOURCES_CPP
     ${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/WQMLControllerRubber.h
     ${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/ToolController.cpp
     ${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/ToolController.h
+
+    ${A_DIR_ROOT}/src/controller/ControllerListFiles/ControllerListFiles.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerListFiles/ControllerListFiles.h
 
     ${A_DIR_ROOT}/src/controller/ControllerSettings/ControllerSettings.h
     ${A_DIR_ROOT}/src/controller/ControllerSettings/ControllerSettings.cpp

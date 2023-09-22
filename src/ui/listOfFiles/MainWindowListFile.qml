@@ -20,7 +20,7 @@ Item {
             anchors.centerIn: parent
 
             Text{
-                text: _controllerListFilesFolder.dir_selected
+                text: _controllerListFiles.dir_selected
                 anchors.fill: parent
                 font.pointSize: 16
             }
@@ -48,7 +48,7 @@ Item {
             height: 30
             color: "yellow"
 
-            RoundButton {
+            RoundButton {
                 text: "+"
 
                 anchors {
@@ -71,13 +71,14 @@ Item {
 
                 onClicked: {
                     console.log("New folder button")
+                    _controllerListFiles.createNewFolder("prova")
                 }
             }
         }
 
         ListOfFolders {
             id: listOfFolders
-            visible: _controllerListFilesFolder.isVisible
+            visible: _controllerListFolder.isVisible
             anchors {
                 left: parent.left
                 bottom: containerBottom.top

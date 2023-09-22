@@ -27,9 +27,9 @@ Controller::Controller(QObject *parent,
     , _toolBar(new ControllerToolBar(this, _tabletController))
     , _canvas(new ControllerCanvas(nullptr))
     , _pageCounter(new ControllerPageCounter(this))
-    , _listFiles(new ControllerListFilesFolder(this))
     , _color(new ControllerColor(this))
     , _settings(new ControllerSettings(this, _getPath))
+    , _listOfFiles(new ControllerListFiles(this, _getPath))
     , _uiSelected(uiSelected::ListFiles)
 {
     controller = this;
@@ -135,7 +135,8 @@ void Controller::registerPrivateType()
     registerType("_controllerCanvas",           this->_canvas);
     registerType("_controllerToolBar",          this->_toolBar);
     registerType("_controllerPageCounter",      this->_pageCounter);
-    registerType("_controllerListFilesFolder",  this->_listFiles);
     registerType("_controllerColor",            this->_color);
+    registerType("_controllerSettings",         this->_settings);
+    registerType("_controllerListFiles",        this->_listOfFiles);
 }
 

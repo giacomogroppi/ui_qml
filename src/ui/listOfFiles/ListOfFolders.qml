@@ -2,7 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.12
 
 ListView {
-    model: _controllerListFilesFolder
+    model: _controllerListFoldersModel
 
     height: parent.height
     width: parent.width

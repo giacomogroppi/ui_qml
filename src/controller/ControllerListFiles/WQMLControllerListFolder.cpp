@@ -1,35 +1,32 @@
-#include "ControllerListFilesFolder.h"
+#include "WQMLControllerListFolder.h"
 #include "QtQml/qqml.h"
 #include <qqml.h>
 #include <QByteArray>
 #include "controller/Controller.h"
 
-ControllerListFilesFolder::ControllerListFilesFolder(QObject *parent)
+static const WListFast<WFile> listEmpty;
+
+WQMLControllerListFolder::WQMLControllerListFolder(QObject *parent, WQMLControllerListFiles *files)
     : QAbstractListModel(parent)
     , _is_visible(true)
     , _selected(0)
-    , _controllerListFiles(new ControllerListFiles(this, [this]() {
-        return &_folder[_selected].getFiles();
-    }))
+    , _controllerListFiles(files)
 {
-    qmlRegisterType<ControllerListFilesFolder>(
-        "writernote.WQMLControllerListFile", 1, 0, "WItemListFiles");
 
-    Controller::registerType("_controllerListFiles",  this->_controllerListFiles);
-
-    this->_folder.append(Folder("/home/giacomo/writernote", "Elettronica"));
+    /*
+    this->_folder.append(Directory("/home/giacomo/writernote", "Elettronica"));
     this->_folder.append(Folder("/home/giacomo/writernote", "Economia"));
     this->_folder.append(Folder("/home/giacomo/writernote", "Robotica"));
     this->_folder.append(Folder("/home/giacomo/writernote", "Bioinformatica"));
 
-
     this->_folder[0].addFile(WFile(qstr("Elettronica lez 1")));
     this->_folder[1].addFile(WFile(qstr("Economica lez 2")));
+    */
 
     this->_controllerListFiles->updateList();
 }
 
-int ControllerListFilesFolder::rowCount(const QModelIndex &parent) const
+auto WQMLControllerListFolder::rowCount(const QModelIndex &parent) const -> int
 {
     if (parent.isValid())
         return 0;
@@ -37,7 +34,7 @@ int ControllerListFilesFolder::rowCount(const QModelIndex &parent) const
     return this->_folder.size();
 }
 
-QHash<int, QByteArray> ControllerListFilesFolder::roleNames() const
+auto WQMLControllerListFolder::roleNames() const -> QHash<int, QByteArray>
 {
     static QHash<int, QByteArray> mapping {
         {Roles::FolderName, "folder_name"}
@@ -46,13 +43,13 @@ QHash<int, QByteArray> ControllerListFilesFolder::roleNames() const
     return mapping;
 }
 
-bool ControllerListFilesFolder::isVisible() const
+auto WQMLControllerListFolder::isVisible() const -> bool
 {
     qDebug() << "ControllerListFilesFolder::isVisible call" << this->_is_visible;
     return this->_is_visible;
 }
 
-void ControllerListFilesFolder::setVisible(bool visible)
+void WQMLControllerListFolder::setVisible(bool visible)
 {
     const auto changed = visible != this->_is_visible;
     this->_is_visible = visible;
@@ -61,27 +58,63 @@ void ControllerListFilesFolder::setVisible(bool visible)
     }
 }
 
-QString ControllerListFilesFolder::getDirSelected() const
+auto WQMLControllerListFolder::getDirSelected() const -> QString
 {
     return this->_folder[_selected].getFolderName();
 }
 
-void ControllerListFilesFolder::duplicateData(int row)
+auto WQMLControllerListFolder::getFiles() const -> const WListFast<WFile> &
+{
+    if (_folder.isEmpty())
+        return listEmpty;
+
+    return _folder.at(_selected).getFiles();
+}
+
+auto WQMLControllerListFolder::removeFile(QString name) -> int
+{
+    int i;
+    const auto &listFiles = this->_folder[_selected].getFiles();
+
+    for (i = 0; i < listFiles.size(); i++) {
+        if (_folder.at(i).getFolderName() == name)
+            break;
+    }
+
+    W_ASSERT(listFiles.size() != i);
+
+    _folder.remove(i);
+    this->removeData(i);
+    this->_controllerListFiles->updateList();
+}
+
+void WQMLControllerListFolder::addFolder(Directory &&directory)
+{
+    beginInsertRows(QModelIndex(), _folder.size(), _folder.size());
+    _folder.append(std::move(directory));
+    endInsertRows();
+}
+
+void WQMLControllerListFolder::duplicateData(int row)
 {
     if (row < 0 or row >= this->_folder.size()) {
         qWarning() << "ControllerListFilesFolder::duplicateData index out of bound";
         return;
     }
 
-    const Folder &data = _folder[row];
+    W_ASSERT("Not possibile");
+
+    /*
+    const auto &data = _folder[row];
     const int rowOfInsert = row + 1;
 
     beginInsertRows(QModelIndex(), rowOfInsert, rowOfInsert);
     _folder.insert(rowOfInsert, data);
     endInsertRows();
+    */
 }
 
-void ControllerListFilesFolder::removeData(int row)
+void WQMLControllerListFolder::removeData(int row)
 {
     if (row < 0 or row >= this->_folder.size()) {
         qWarning() << "ControllerListFilesFolder::duplicateData index out of bound";
@@ -89,11 +122,11 @@ void ControllerListFilesFolder::removeData(int row)
     }
 
     beginRemoveRows(QModelIndex(), row, row);
-    _folder.removeAt(row);
+    _folder.remove(row);
     endRemoveRows();
 }
 
-void ControllerListFilesFolder::click(int index)
+void WQMLControllerListFolder::click(int index)
 {
     Q_ASSERT(index >= 0 and index < this->_folder.size());
     const auto last_index = _selected;
@@ -105,7 +138,7 @@ void ControllerListFilesFolder::click(int index)
     }
 }
 
-QVariant ControllerListFilesFolder::data(const QModelIndex& index, int role) const
+auto WQMLControllerListFolder::data(const QModelIndex& index, int role) const -> QVariant
 {
     if (not index.isValid()) {
         qWarning() << "Index is not valid";
@@ -114,7 +147,7 @@ QVariant ControllerListFilesFolder::data(const QModelIndex& index, int role) con
 
     qDebug() << "data" << role << index.row();
 
-    if (index.row() < 0 || index.row() >= _folder.count())
+    if (index.row() < 0 || index.row() >= _folder.size())
         return {};
 
     const auto &data = _folder.at(index.row());

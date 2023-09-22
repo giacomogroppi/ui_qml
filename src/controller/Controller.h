@@ -7,12 +7,12 @@
 #include "ControllerCanvas/ControllerCanvas.h"
 #include "ControllerToolBar/ControllerToolBar.h"
 #include "ControllerPageCounter/ControllerPageCounter.h"
-#include "ControllerListFiles/ControllerListFilesFolder.h"
 #include "ControllerColor/ControllerColor.h"
 #include "ControllerAudio/ControllerAudioRecorder.h"
 #include "ControllerAudio/ControllerAudioPlayer.h"
 #include "QtQml/qqmlcontext.h"
 #include "ControllerSettings/ControllerSettings.h"
+#include "ControllerListFiles/ControllerListFiles.h"
 
 /* writernote include */
 #include "touch/TabletController.h"
@@ -22,7 +22,6 @@ class Controller: public QObject
     Q_OBJECT
 private:
     Fn<WString()> _getPath = [] { return Controller::instance()->_tabletController->getCurrentPathSaving(); };
-
 
     TabletController *_tabletController;
 
@@ -34,9 +33,9 @@ private:
     ControllerToolBar           *_toolBar;
     ControllerCanvas            *_canvas;
     ControllerPageCounter       *_pageCounter;
-    ControllerListFilesFolder   *_listFiles;
     ControllerColor             *_color;
     ControllerSettings          *_settings;
+    ControllerListFiles         *_listOfFiles;
 
     void registerPrivateType();
 

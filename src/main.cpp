@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 
     //qGuiApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 
-    const auto res = app.exec();
+    const auto res = QGuiApplication::exec();
 
     delete scheduler;
 

@@ -1,33 +1,34 @@
 #pragma once
 
 #include <QObject>
-#include <QAbstractListModel>
-#include "file/File.h"
 
-class ControllerListFiles: public QAbstractListModel
+#include "WQMLControllerListFiles.h"
+#include "WQMLControllerListFolder.h"
+
+class ControllerListFiles: public QObject
 {
     Q_OBJECT
 public:
-    ControllerListFiles(QObject *parent = nullptr);
-    ControllerListFiles(QObject *parent, std::function<QList<WFile> *()> getFiles);
-    ~ControllerListFiles() = default;
+    ControllerListFiles(QObject *parent, const Fn<WString()>& getCurrentPath);
+    ~ControllerListFiles() override = default;
 
-    enum Roles {
-        Path = Qt::UserRole, /* QByteArray */
-        LastModification /*  */
-    };
+public:
+    Q_INVOKABLE void selectFile(QString name);
+    Q_INVOKABLE void selectFolder(QString name);
+    Q_INVOKABLE bool createNewFolder(QString name);
 
-    [[nodiscard]] int rowCount(const QModelIndex& parent) const override;
-    QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const override;
-    [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
+    static
+    auto getInstance() -> ControllerListFiles *;
 
-public slots:
-    void duplicateData(int row);
-    void removeData(int row);
-    void clickFile(int index);
+signals:
+    void onSelectFile(QString name);
+    void onSelectFolder(QString name);
 
 private:
-    std::function<QList<WFile> *()> _getFile;
-public:
-    void updateList();
+    Fn<const WListFast<WFile>& ()> _getCurrentFiles = [] { return ControllerListFiles::getInstance()->_controllerFolders->getFiles(); };
+    Fn<int(QString name)> _removeFileFromFolder = [] (QString name) { return ControllerListFiles::getInstance()->_controllerFolders->removeFile(name); };
+    Fn<WString()> _getCurrentPath;
+
+    WQMLControllerListFiles  *_controllerFiles;
+    WQMLControllerListFolder *_controllerFolders;
 };

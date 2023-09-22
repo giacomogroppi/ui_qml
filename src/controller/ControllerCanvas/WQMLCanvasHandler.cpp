@@ -7,10 +7,10 @@
 
 WQMLCanvasHandler::WQMLCanvasHandler(QQuickItem *parent)
     : QQuickItem(parent)
-    , _targetTouchArea(nullptr)
-    , _waitingForEnd(false)
-    , _w(0)
     , _h(0)
+    , _w(0)
+    , _waitingForEnd(false)
+    , _targetTouchArea(nullptr)
 {
     this->update();
 

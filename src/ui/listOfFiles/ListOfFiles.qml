@@ -3,7 +3,7 @@ import QtQuick 2.15
 Rectangle {
     ListView {
         anchors.fill: parent
-        model: _controllerListFiles
+        model: _controllerListFilesModel
 
         delegate: Rectangle {
             width: parent.width

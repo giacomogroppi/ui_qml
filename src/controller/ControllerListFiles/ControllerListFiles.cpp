@@ -1,107 +1,48 @@
-#include "ControllerListFiles.h"
-
+#include <QQuickWindow>
 #include <utility>
+#include "ControllerListFiles.h"
+#include "core/WDir.h"
 #include "controller/Controller.h"
 
-ControllerListFiles::ControllerListFiles(QObject *parent)
+static ControllerListFiles *instance;
+
+ControllerListFiles::ControllerListFiles(
+            QObject *parent,
+            const Fn<WString()>& getCurrentPath
+        )
+    : QObject(parent)
+    , _getCurrentPath(getCurrentPath)
+    , _controllerFiles(new WQMLControllerListFiles(this, _getCurrentFiles, _removeFileFromFolder))
+    , _controllerFolders(new WQMLControllerListFolder(this, _controllerFiles))
 {
-    Q_ASSERT(0);
+    Controller::registerType("_controllerListFilesModel", _controllerFiles);
+    Controller::registerType("_controllerListFoldersModel", _controllerFolders);
+
+    instance = this;
 }
 
-ControllerListFiles::ControllerListFiles(QObject *parent,
-                                         std::function<QList<WFile> *()> getFiles)
-    :   QAbstractListModel(parent)
-    ,   _getFile(std::move(getFiles))
+auto ControllerListFiles::getInstance() -> ControllerListFiles *
 {
+    return instance;
 }
 
-int ControllerListFiles::rowCount(const QModelIndex &parent) const
+auto ControllerListFiles::selectFile(QString name) -> void
 {
-    qDebug() << "ControllerListFiles::rowCount() call";
-    if (parent.isValid())
-        return 0;
-
-    return this->_getFile()->size();
+    emit this->onSelectFile(std::move(name));
 }
 
-QHash<int, QByteArray> ControllerListFiles::roleNames() const
+auto ControllerListFiles::selectFolder(QString name) -> void
 {
-    static QHash<int, QByteArray> mapping {
-        {Roles::Path, "name_file"},
-        {Roles::LastModification, "last_mod"}
-    };
-
-    return mapping;
+    emit this->onSelectFolder(std::move(name));
 }
 
-void ControllerListFiles::duplicateData(int row)
+auto ControllerListFiles::createNewFolder(QString name) -> bool
 {
-    QList<WFile> &files = *this->_getFile();
-    if (row < 0 or row >= files.size()) {
-        qWarning() << "ControllerListFilesFolder::duplicateData index out of bound";
-        return;
-    }
+    WString currentPath = _getCurrentPath().addSlashIfNecessary() + name;
 
-    const WFile &data = files[row];
-    const int rowOfInsert = row + 1;
+    if (Directory::exists(currentPath.toUtf8()))
+        return false;
 
-    beginInsertRows(QModelIndex(), rowOfInsert, rowOfInsert);
-    files.insert(rowOfInsert, data);
-    endInsertRows();
-}
-
-void ControllerListFiles::removeData(int row)
-{
-    QList<WFile> &files = *this->_getFile();
-    if (row < 0 or row >= files.size()) {
-        qWarning() << "ControllerListFilesFolder::duplicateData index out of bound";
-        return;
-    }
-
-    beginRemoveRows(QModelIndex(), row, row);
-    files.removeAt(row);
-    endRemoveRows();
-}
-
-void ControllerListFiles::updateList()
-{
-    beginResetModel();
-    endResetModel();
-    //beginRemoveRows(QModelIndex(), row, row);
-    //endRemoveRows();
-}
-
-QVariant ControllerListFiles::data(const QModelIndex& index, int role) const
-{
-    QList<WFile> &files = *this->_getFile();
-    if (not index.isValid()) {
-        qWarning() << "Index is not valid";
-        return {};
-    }
-
-    qDebug() << "ControllerListFiles::data" << role << index.row();
-
-    if (index.row() < 0 || index.row() >= files.count())
-        return {};
-
-    const auto &data = files.at(index.row());
-
-    switch (role) {
-        case Roles::Path: return {
-                QString(data.getName().constData())
-        };
-        case Roles::LastModification: return {
-            data.getLastMod().toString().toUtf8().constData()
-        };
-        default: break;
-    }
-
-    qWarning() << "ControllerListFiles::data unkown role" << role;
-    return {};
-}
-
-void ControllerListFiles::clickFile(int index)
-{
-    Q_ASSERT(index >= 0 and index < this->_getFile()->size());
-    Controller::instance()->showMain();
+    _controllerFolders->addFolder(Directory(currentPath.toUtf8()));
+    return true;
 }
