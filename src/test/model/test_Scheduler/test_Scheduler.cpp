@@ -16,7 +16,7 @@ void test_Scheduler::test_timers()
 {
     Scheduler scheduler;
     bool call = false;
-    WTimer *timer = new WTimer(nullptr, [&call] { call = true; }, 100);
+    WTimer *timer = new WTimer(nullptr, [&call] { call = true; }, 100, false);
     scheduler.addTimer(timer);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(50));

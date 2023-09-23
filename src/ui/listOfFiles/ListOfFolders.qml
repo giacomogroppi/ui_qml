@@ -28,7 +28,7 @@ ListView {
             anchors.fill: parent
             onClicked: {
                 console.log("ListOfFolders click on " + index)
-                _controllerListFilesFolder.click(index)
+                _controllerListFoldersModel.click(index)
             }
 
             pressAndHoldInterval: 400

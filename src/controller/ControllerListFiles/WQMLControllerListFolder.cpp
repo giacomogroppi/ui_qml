@@ -83,9 +83,11 @@ auto WQMLControllerListFolder::removeFile(QString name) -> int
 
     W_ASSERT(listFiles.size() != i);
 
+    _folder[i].removeFile(name);
     _folder.remove(i);
     this->removeData(i);
     this->_controllerListFiles->updateList();
+
 }
 
 void WQMLControllerListFolder::addFolder(Directory &&directory)
