@@ -6,24 +6,18 @@
 
 static const WListFast<WFile> listEmpty;
 
-WQMLControllerListFolder::WQMLControllerListFolder(QObject *parent, WQMLControllerListFiles *files)
+WQMLControllerListFolder::WQMLControllerListFolder(QObject *parent, const SharedPtr<FileManager>& fileManager)
     : QAbstractListModel(parent)
+    , _fileManager(fileManager)
     , _is_visible(true)
-    , _selected(0)
-    , _controllerListFiles(files)
 {
+    w_connect_lister(_fileManager.get(), onDirectoryListChanged, [this] { updateList(); });
+    w_connect_lister(_fileManager.get(), onCurrentDirectoryChanged, [this] { updateList(); });
+}
 
-    /*
-    this->_folder.append(Directory("/home/giacomo/writernote", "Elettronica"));
-    this->_folder.append(Folder("/home/giacomo/writernote", "Economia"));
-    this->_folder.append(Folder("/home/giacomo/writernote", "Robotica"));
-    this->_folder.append(Folder("/home/giacomo/writernote", "Bioinformatica"));
-
-    this->_folder[0].addFile(WFile(qstr("Elettronica lez 1")));
-    this->_folder[1].addFile(WFile(qstr("Economica lez 2")));
-    */
-
-    this->_controllerListFiles->updateList();
+auto WQMLControllerListFolder::getPath(const WString &path) -> Path
+{
+    return (path.addSlashIfNecessary().toStdString());
 }
 
 auto WQMLControllerListFolder::rowCount(const QModelIndex &parent) const -> int
@@ -31,7 +25,7 @@ auto WQMLControllerListFolder::rowCount(const QModelIndex &parent) const -> int
     if (parent.isValid())
         return 0;
 
-    return this->_folder.size();
+    return this->_fileManager->getDirectory().size();
 }
 
 auto WQMLControllerListFolder::roleNames() const -> QHash<int, QByteArray>
@@ -58,48 +52,15 @@ void WQMLControllerListFolder::setVisible(bool visible)
     }
 }
 
-auto WQMLControllerListFolder::getDirSelected() const -> QString
+auto WQMLControllerListFolder::updateList() -> void
 {
-    return this->_folder[_selected].getFolderName();
-}
-
-auto WQMLControllerListFolder::getFiles() const -> const WListFast<WFile> &
-{
-    if (_folder.isEmpty())
-        return listEmpty;
-
-    return _folder.at(_selected).getFiles();
-}
-
-auto WQMLControllerListFolder::removeFile(QString name) -> int
-{
-    int i;
-    const auto &listFiles = this->_folder[_selected].getFiles();
-
-    for (i = 0; i < listFiles.size(); i++) {
-        if (_folder.at(i).getFolderName() == name)
-            break;
-    }
-
-    W_ASSERT(listFiles.size() != i);
-
-    _folder[i].removeFile(name);
-    _folder.remove(i);
-    this->removeData(i);
-    this->_controllerListFiles->updateList();
-
-}
-
-void WQMLControllerListFolder::addFolder(Directory &&directory)
-{
-    beginInsertRows(QModelIndex(), _folder.size(), _folder.size());
-    _folder.append(std::move(directory));
-    endInsertRows();
+    beginResetModel();
+    endResetModel();
 }
 
 void WQMLControllerListFolder::duplicateData(int row)
 {
-    if (row < 0 or row >= this->_folder.size()) {
+    if (row < 0 or row >= this->_fileManager->getDirectory().size()) {
         qWarning() << "ControllerListFilesFolder::duplicateData index out of bound";
         return;
     }
@@ -118,24 +79,22 @@ void WQMLControllerListFolder::duplicateData(int row)
 
 void WQMLControllerListFolder::removeData(int row)
 {
-    if (row < 0 or row >= this->_folder.size()) {
+    if (row < 0 or row >= this->_fileManager->getDirectory().size()) {
         qWarning() << "ControllerListFilesFolder::duplicateData index out of bound";
         return;
     }
 
     beginRemoveRows(QModelIndex(), row, row);
-    _folder.remove(row);
+    _fileManager->removeDirectory(row);
+    emit onDirSelectedChanged();
     endRemoveRows();
 }
 
 void WQMLControllerListFolder::click(int index)
 {
-    Q_ASSERT(index >= 0 and index < this->_folder.size());
-    const auto last_index = _selected;
-    this->_selected = index;
-    this->_controllerListFiles->updateList();
+    Q_ASSERT(index >= 0 and index < this->_fileManager->getDirectory().size());
 
-    if (last_index != _selected) {
+    if (_fileManager->selectedDirectory(index)) {
         emit this->onDirSelectedChanged();
     }
 }
@@ -147,12 +106,14 @@ auto WQMLControllerListFolder::data(const QModelIndex& index, int role) const ->
         return {};
     }
 
+    const auto &directory = _fileManager->getDirectory();
+
     qDebug() << "data" << role << index.row();
 
-    if (index.row() < 0 || index.row() >= _folder.size())
+    if (index.row() < 0 || index.row() >= directory.size())
         return {};
 
-    const auto &data = _folder.at(index.row());
+    const auto &data = directory.at(index.row());
 
     switch (role) {
         case Roles::FolderName: return {
@@ -163,5 +124,10 @@ auto WQMLControllerListFolder::data(const QModelIndex& index, int role) const ->
 
     qWarning() << "ControllerListFilesFolder::data unkown role" << role;
     return {};
+}
+
+auto WQMLControllerListFolder::getDirSelected() const -> QString
+{
+    return _fileManager->getCurrentDirectory().getFolderName();
 }
 

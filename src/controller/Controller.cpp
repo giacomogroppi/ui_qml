@@ -29,7 +29,7 @@ Controller::Controller(QObject *parent,
     , _pageCounter(new ControllerPageCounter(this))
     , _color(new ControllerColor(this))
     , _settings(new ControllerSettings(this, _getPath))
-    , _listOfFiles(new ControllerListFiles(this, _getPath))
+    , _listOfFiles(new ControllerListFiles(this, _tabletController->getFileManager()))
     , _uiSelected(uiSelected::ListFiles)
 {
     controller = this;

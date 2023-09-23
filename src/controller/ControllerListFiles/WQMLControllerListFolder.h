@@ -4,13 +4,18 @@
 #include <QAbstractListModel>
 #include "WQMLControllerListFiles.h"
 #include "file/Directory.h"
+#include "core/pointer/SharedPtr.h"
+#include <filesystem>
+#include "file/FileManager.h"
 
 class WQMLControllerListFolder: public QAbstractListModel
 {
     Q_OBJECT
 
+    using Path = std::filesystem::path;
+
 public:
-    explicit WQMLControllerListFolder(QObject *parent = nullptr, WQMLControllerListFiles *files = nullptr);
+    explicit WQMLControllerListFolder(QObject *parent, const SharedPtr<FileManager>& fileManager);
     ~WQMLControllerListFolder() override = default;
 
     enum Roles {
@@ -30,22 +35,22 @@ public:
     [[nodiscard]] QString getDirSelected() const;
     Q_SIGNAL void onDirSelectedChanged();
 
-    void addFolder(Directory &&directory);
-    auto getFiles() const -> const WListFast<WFile> &;
-
-    /**
-     * \return &lt 0 in case of error
-     * */
-    auto removeFile(QString name) -> int;
-
 public slots:
     void duplicateData(int row);
     void removeData(int row);
     void click(int index);
 
 private:
-    WListFast<Directory> _folder;
+    const SharedPtr<FileManager> &_fileManager;
     bool _is_visible;
-    int _selected;
-    WQMLControllerListFiles *_controllerListFiles;
+    //WQMLControllerListFiles *_controllerListFiles;
+
+    /**
+     * \brief This method reset all the data structure and add all the object
+     * to the view.
+     * */
+    auto updateList() -> void;
+
+    static
+    auto getPath(const WString &path) -> Path;
 };

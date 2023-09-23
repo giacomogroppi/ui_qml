@@ -4,14 +4,16 @@
 #include <QAbstractListModel>
 #include "file/File.h"
 #include "file/Directory.h"
+#include "core/pointer/SharedPtr.h"
+#include "file/FileManager.h"
 
 class WQMLControllerListFiles: public QAbstractListModel
 {
     Q_OBJECT
+
 public:
     explicit WQMLControllerListFiles(QObject *parent,
-                                     Fn<const WListFast<WFile>&()> getCurrentFiles,
-                                     Fn<int(QString name)> removeFileFromDirectory );
+                                     const SharedPtr<FileManager>& fileManager);
 
     ~WQMLControllerListFiles() override = default;
 
@@ -24,14 +26,15 @@ public:
     QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const override;
     [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
+    auto createNewFile(const QString &name) -> int;
+
 public slots:
     void duplicateData(int row);
     void removeData(int row);
     void clickFile(int index);
 
 private:
-    Fn<const WListFast<WFile>&()> _getCurrentFiles;
-    Fn<int(QString file)> _removeFileFromDirectory;
+    const SharedPtr<FileManager>& _fileManager;
 
 public:
     void updateList();

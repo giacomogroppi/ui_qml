@@ -146,7 +146,7 @@ Item {
         radius: width/2
         onClicked: {
             console.log("Button clicked")
-            _controller.newFile()
+            _controllerListFiles.createNewFile("default")
         }
     }
 }

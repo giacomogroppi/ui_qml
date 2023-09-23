@@ -2,12 +2,12 @@
 #include "controller/Controller.h"
 
 WQMLControllerListFiles::WQMLControllerListFiles(QObject *parent,
-                                                 Fn<const WListFast<WFile>&()> getCurrentFiles,
-                                                 Fn<int(QString name)> removeFileFromDirectory )
+                                                 const SharedPtr<FileManager>& fileManager)
     : QAbstractListModel(parent)
-    , _getCurrentFiles(std::move(getCurrentFiles))
-    , _removeFileFromDirectory(std::move(removeFileFromDirectory))
+    , _fileManager(fileManager)
 {
+    w_connect_lister(fileManager.get(), onListFilesChanged, [this] { this->updateList(); });
+    w_connect_lister(fileManager.get(), onCurrentDirectoryChanged, [this] { this->updateList(); });
 }
 
 auto WQMLControllerListFiles::rowCount(const QModelIndex &parent) const -> int
@@ -16,7 +16,7 @@ auto WQMLControllerListFiles::rowCount(const QModelIndex &parent) const -> int
     if (parent.isValid())
         return 0;
 
-    return this->_getCurrentFiles().size();
+    return this->_fileManager->getCurrentFiles().size();
 }
 
 auto WQMLControllerListFiles::roleNames() const -> QHash<int, QByteArray>
@@ -29,15 +29,19 @@ auto WQMLControllerListFiles::roleNames() const -> QHash<int, QByteArray>
     return mapping;
 }
 
+auto WQMLControllerListFiles::createNewFile(const QString &name) -> int
+{
+    if (WString(name).contains({slash::__slash(), ':', '/'}))
+        return -1;
+
+    if (_fileManager->createFile (name) < 0)
+        return -1;
+
+    return 0;
+}
+
 void WQMLControllerListFiles::duplicateData(int row)
 {
-    const auto &files = this->_getCurrentFiles();
-
-    if (row < 0 or row >= files.size()) {
-        qWarning() << "ControllerListFilesFolder::duplicateData index out of bound";
-        return;
-    }
-
     W_ASSERT(0);
 
     /*
@@ -52,15 +56,15 @@ void WQMLControllerListFiles::duplicateData(int row)
 
 void WQMLControllerListFiles::removeData(int row)
 {
-    const auto &files = this->_getCurrentFiles();
+    const auto &files = this->_fileManager->getCurrentFiles();
 
     if (row < 0 or row >= files.size()) {
         qWarning() << "ControllerListFilesFolder::duplicateData index out of bound";
         return;
     }
-
+    W_ASSERT(0);
     beginRemoveRows(QModelIndex(), row, row);
-    this->_removeFileFromDirectory(files.at(row).getName());
+    //this->_removeFileFromDirectory(files.at(row).getName());
     endRemoveRows();
 }
 
@@ -74,7 +78,7 @@ void WQMLControllerListFiles::updateList()
 
 auto WQMLControllerListFiles::data(const QModelIndex& index, int role) const -> QVariant
 {
-    const auto &files = this->_getCurrentFiles();
+    const auto &files = this->_fileManager->getCurrentFiles();
 
     if (not index.isValid()) {
         qWarning() << "Index is not valid";
@@ -104,6 +108,6 @@ auto WQMLControllerListFiles::data(const QModelIndex& index, int role) const -> 
 
 void WQMLControllerListFiles::clickFile(int index)
 {
-    Q_ASSERT(index >= 0 and index < this->_getCurrentFiles().size());
+    Q_ASSERT(index >= 0 and index < this->_fileManager->getCurrentFiles().size());
     Controller::instance()->showMain();
 }

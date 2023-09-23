@@ -8,17 +8,26 @@ static ControllerListFiles *instance;
 
 ControllerListFiles::ControllerListFiles(
             QObject *parent,
-            const Fn<WString()>& getCurrentPath
+            const SharedPtr<FileManager>& fileManager
         )
     : QObject(parent)
-    , _getCurrentPath(getCurrentPath)
-    , _controllerFiles(new WQMLControllerListFiles(this, _getCurrentFiles, _removeFileFromFolder))
-    , _controllerFolders(new WQMLControllerListFolder(this, _controllerFiles))
+    , _fileManager(fileManager)
+    , _controllerFiles(new WQMLControllerListFiles(this, _fileManager))
+    , _controllerFolders(new WQMLControllerListFolder(this, _fileManager))
 {
     Controller::registerType("_controllerListFilesModel", _controllerFiles);
     Controller::registerType("_controllerListFoldersModel", _controllerFolders);
 
     instance = this;
+
+    _controllerFiles->updateList();
+
+    QObject::connect(_controllerFolders, &WQMLControllerListFolder::onDirSelectedChanged, [&] { _controllerFiles->updateList(); });
+}
+
+auto ControllerListFiles::createNewFile(QString name) -> bool
+{
+    return this->_controllerFiles->createNewFile(name) == 0;
 }
 
 auto ControllerListFiles::getInstance() -> ControllerListFiles *
@@ -38,11 +47,8 @@ auto ControllerListFiles::selectFolder(QString name) -> void
 
 auto ControllerListFiles::createNewFolder(QString name) -> bool
 {
-    WString currentPath = _getCurrentPath().addSlashIfNecessary() + name;
-
-    if (Directory::exists(currentPath.toUtf8()))
+    if (_fileManager->createDirectory(name) < 0)
         return false;
 
-    _controllerFolders->addFolder(Directory(currentPath.toUtf8()));
     return true;
 }
