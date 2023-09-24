@@ -34,7 +34,7 @@ Window {
     }
 
     function closeFiles() {
-        stackView.pop();
+        stackViewMain.pop();
         console.log("Call close list of files");
     }
 
@@ -42,7 +42,7 @@ Window {
     function showMain() {
         var newView = Qt.createComponent("qrc:/src/ui/pageCanvas/MainWindow.qml")
         stackViewMain.push(newView)
-        _controller.uiSelected = ""
+        _controller.uiSelected = mainName
         console.log("Call show main")
     }
 
@@ -54,6 +54,7 @@ Window {
     // settings options
     function showSettings() {
         stackViewMain.push(Qt.createComponent("qrc:/src/ui/settings/Settings.qml"))
+        _controller.uiSelected = settingsName
         console.log("Call show settings");
     }
 

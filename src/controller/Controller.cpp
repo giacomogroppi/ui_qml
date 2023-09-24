@@ -44,6 +44,13 @@ Controller::Controller(QObject *parent,
     QObject::connect(_settings, &ControllerSettings::onPositionFileChange, [&] {
         this->_tabletController->setCurrentPathSaving(_settings->getPositionFile());
     });
+
+    QObject::connect(_listOfFiles, &ControllerListFiles::onSelectFile, this, &Controller::openFile);
+}
+
+void Controller::openFile (QString name)
+{
+    _tabletController->openFile(name);
 }
 
 auto Controller::getUiSelected() const -> QString

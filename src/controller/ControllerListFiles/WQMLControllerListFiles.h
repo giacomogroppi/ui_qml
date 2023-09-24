@@ -31,7 +31,6 @@ public:
 public slots:
     void duplicateData(int row);
     void removeData(int row);
-    void clickFile(int index);
 
 private:
     const SharedPtr<FileManager>& _fileManager;

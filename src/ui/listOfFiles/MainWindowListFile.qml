@@ -147,6 +147,10 @@ Item {
         onClicked: {
             console.log("Button clicked")
             _controllerListFiles.createNewFile("default")
+
+            // by default if you create a new file you automatically open it
+            mainRoot.closeFiles()
+            mainRoot.showMain()
         }
     }
 }

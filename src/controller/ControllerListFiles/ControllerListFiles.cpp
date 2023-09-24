@@ -27,7 +27,12 @@ ControllerListFiles::ControllerListFiles(
 
 auto ControllerListFiles::createNewFile(QString name) -> bool
 {
-    return this->_controllerFiles->createNewFile(name) == 0;
+    const auto result = this->_controllerFiles->createNewFile(name) == 0;
+
+    if (result)
+        emit onSelectFile(name);
+
+    return result;
 }
 
 auto ControllerListFiles::getInstance() -> ControllerListFiles *

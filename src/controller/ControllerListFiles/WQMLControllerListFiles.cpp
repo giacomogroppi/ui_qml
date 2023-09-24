@@ -105,9 +105,3 @@ auto WQMLControllerListFiles::data(const QModelIndex& index, int role) const -> 
     qWarning() << "ControllerListFiles::data unkown role" << role;
     return {};
 }
-
-void WQMLControllerListFiles::clickFile(int index)
-{
-    Q_ASSERT(index >= 0 and index < this->_fileManager->getCurrentFiles().size());
-    Controller::instance()->showMain();
-}

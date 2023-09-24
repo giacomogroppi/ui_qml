@@ -28,6 +28,9 @@ Rectangle {
                 anchors.fill: parent
                 onClicked: {
                     _controllerListFiles.clickFile(index)
+
+                    mainRoot.closeFiles();
+                    mainRoot.showMain();
                 }
             }
         }

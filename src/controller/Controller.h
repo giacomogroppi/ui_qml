@@ -72,6 +72,7 @@ public slots:
     void clickSetting();
     void clickBack();
     void showMain();
+    void openFile (QString name);
 };
 
 inline void Controller::registerType(const QString &name, QObject *object)
