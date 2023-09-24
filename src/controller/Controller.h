@@ -21,7 +21,7 @@ class Controller: public QObject
 {
     Q_OBJECT
 private:
-    Fn<WString()> _getPath = [] { return Controller::instance()->_tabletController->getCurrentPathSaving(); };
+    Fn<WPath()> _getPath = [] { return Controller::instance()->_tabletController->getCurrentPathSaving(); };
 
     TabletController *_tabletController;
 

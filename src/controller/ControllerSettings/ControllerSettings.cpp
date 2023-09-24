@@ -4,7 +4,7 @@
 #include "utils/slash/slash.h"
 #include "Scheduler/Scheduler.h"
 
-ControllerSettings::ControllerSettings(QObject *parent, Fn<WString()> getPath)
+ControllerSettings::ControllerSettings(QObject *parent, Fn<WPath()> getPath)
     : QObject(parent)
     , _options(new WOptionSettings())
     , _getPath(std::move(getPath))
@@ -31,19 +31,20 @@ auto ControllerSettings::onPositionChanged() -> void
 
 auto ControllerSettings::getPositionFile() const -> QString
 {
-    return this->_pathSaving;
+    return this->_pathSaving.toString();
 }
 
 auto ControllerSettings::setPositionFile(const QString& path) -> void
 {
-    if (_pathSaving != path) {
-        _pathSaving = path;
+    const auto newPath = WPath(path);
+    if (_pathSaving != newPath) {
+        _pathSaving = newPath;
         emit onPositionFileChange();
     }
 }
 
-auto ControllerSettings::getDefaultSavePath() -> QString
+auto ControllerSettings::getDefaultSavePath() -> WPath
 {
-    QString path = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + slash::__slash() + "Writernote";
+    const auto path = WPath{QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)} / "Writernote";
     return path;
 }

@@ -289,6 +289,8 @@ set(PROJECT_SOURCES_WRITERNOTE
 		${A_DIR_ROOT}/src/model/core/Settable.h
 		${A_DIR_ROOT}/src/model/core/Color/WColor.cpp
 		${A_DIR_ROOT}/src/model/core/Color/WColor.h
+		${A_DIR_ROOT}/src/model/core/Path/WPath.h
+		${A_DIR_ROOT}/src/model/core/Path/WPath.cpp
 )
 
 if(IOS)

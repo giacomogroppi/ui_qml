@@ -14,12 +14,15 @@ Controller::Controller(QObject *parent,
                        QQmlContext *content,
                        QQmlApplicationEngine *engine)
     : QObject(parent)
-    , _tabletController(new TabletController(nullptr,
-                                             [this] { return _audioRecorder->getSecondRecording(); },
-                                             [this] { return this->_audioPlayer->isPlaying(); },
-                                             [this] {
-                                                 return this->_audioPlayer->getPositionInSeconds();
-                                             }, ControllerSettings::getDefaultSavePath()))
+    , _tabletController(
+            new TabletController(
+                    nullptr,
+                    [this] { return _audioRecorder->getSecondRecording(); },
+                    [this] { return this->_audioPlayer->isPlaying(); },
+                    [this] { return this->_audioPlayer->getPositionInSeconds(); },
+                    ControllerSettings::getDefaultSavePath()
+            )
+        )
     , _engine(engine)
     , _listPreview(new ControllerList(this))
     , _audioRecorder(new ControllerAudioRecorder(this))
