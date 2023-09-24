@@ -34,7 +34,7 @@ auto WQMLControllerListFiles::createNewFile(const QString &name) -> int
     if (WString(name).contains({slash::__slash(), ':', '/'}))
         return -1;
 
-    if (_fileManager->createFile (name, Document()) < 0)
+    if (_fileManager->createFile (name, Document(), Extention::makeWriternote()) < 0)
         return -1;
 
     return 0;

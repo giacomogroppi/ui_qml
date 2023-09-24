@@ -53,11 +53,7 @@ public:
     explicit Controller(QObject *parent, QQmlContext* content, QQmlApplicationEngine* engine);
     ~Controller() override;
 
-    static void registerType(const QString &name, QObject *object)
-    {
-        QQmlContext *content = Controller::getContent();
-        content->setContextProperty(name, object);
-    };
+    static void registerType(const QString &name, QObject *object);
 
     Q_PROPERTY(QString uiSelected READ getUiSelected WRITE setCurrentPage NOTIFY onUiSelectedChanged);
     [[nodiscard]] auto getUiSelected() const -> QString;
@@ -76,4 +72,10 @@ public slots:
     void clickSetting();
     void clickBack();
     void showMain();
+};
+
+inline void Controller::registerType(const QString &name, QObject *object)
+{
+    QQmlContext *content = Controller::getContent();
+    content->setContextProperty(name, object);
 };
