@@ -272,7 +272,7 @@ void ControllerCanvas::touchEnd(const QPointF &point, double pressure)
     emit this->onTouchEnd(point, pressure);
 }
 
-void ControllerCanvas::registerHangler(WQMLCanvasHandler *object)
+void ControllerCanvas::registerHandler(WQMLCanvasHandler *object)
 {
     Q_ASSERT(object != nullptr);
     Q_ASSERT(handler == nullptr);

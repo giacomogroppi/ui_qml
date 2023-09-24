@@ -27,7 +27,8 @@ Rectangle {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    _controllerListFiles.clickFile(index)
+
+                    _controllerListFiles.selectFile(model.name_file)
 
                     mainRoot.closeFiles();
                     mainRoot.showMain();

@@ -14,7 +14,7 @@ WQMLCanvasHandler::WQMLCanvasHandler(QQuickItem *parent)
 {
     this->update();
 
-    ControllerCanvas::registerHangler(this);
+    ControllerCanvas::registerHandler(this);
 
     qDebug() << "WQMLCanvasComponentStroke constructor call";
 }

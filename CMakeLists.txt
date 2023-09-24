@@ -541,5 +541,7 @@ SETUP_TESTS(
 		src/test/model/test_core/test_WFlags
 		src/test/model/test_core/test_WHeap
 		src/test/model/test_Scheduler/test_WTimer
+		src/test/model/test_file/test_FileManager
+		src/test/model/test_file/test_Directory
 )
 endif()

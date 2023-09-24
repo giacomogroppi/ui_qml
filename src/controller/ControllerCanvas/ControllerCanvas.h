@@ -58,7 +58,7 @@ public:
 
     static void registerDrawerPage(WQMLCanvasComponentPage *object);
     static void registerDrawerStroke(WQMLCanvasComponentStroke *object);
-    static void registerHangler(WQMLCanvasHandler *object);
+    static void registerHandler(WQMLCanvasHandler *object);
 private:
     double _positionX;
     double _positionY;

@@ -22,9 +22,14 @@ public:
         LastModification /*  */
     };
 
-    [[nodiscard]] int rowCount(const QModelIndex& parent) const override;
-    QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const override;
-    [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
+    [[nodiscard]]
+    auto rowCount(const QModelIndex& parent) const -> int override;
+
+    [[nodiscard]]
+    auto data( const QModelIndex& index, int role = Qt::DisplayRole ) const -> QVariant override;
+
+    [[nodiscard]]
+    auto roleNames() const -> QHash<int, QByteArray> override;
 
     auto createNewFile(const QString &name) -> int;
 
@@ -34,7 +39,7 @@ public slots:
 
 private:
     const SharedPtr<FileManager>& _fileManager;
-
+    static constexpr auto debug = true;
 public:
     void updateList();
 };

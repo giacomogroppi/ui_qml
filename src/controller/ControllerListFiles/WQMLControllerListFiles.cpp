@@ -1,5 +1,6 @@
 #include "ControllerListFiles.h"
 #include "controller/Controller.h"
+#include "Scheduler/Scheduler.h"
 
 WQMLControllerListFiles::WQMLControllerListFiles(QObject *parent,
                                                  const SharedPtr<FileManager>& fileManager)
@@ -8,11 +9,15 @@ WQMLControllerListFiles::WQMLControllerListFiles(QObject *parent,
 {
     w_connect_lister(fileManager.get(), onListFilesChanged, [this] { this->updateList(); });
     w_connect_lister(fileManager.get(), onCurrentDirectoryChanged, [this] { this->updateList(); });
+
+    Scheduler::addTaskMainThread(new WTaskFunction(nullptr, [this] {
+        updateList();
+    }, true));
 }
 
 auto WQMLControllerListFiles::rowCount(const QModelIndex &parent) const -> int
 {
-    qDebug() << "ControllerListFiles::rowCount() call";
+    WDebug(debug, "call with size: " << _fileManager->getCurrentFiles().size());
     if (parent.isValid())
         return 0;
 
@@ -62,6 +67,7 @@ void WQMLControllerListFiles::removeData(int row)
         qWarning() << "ControllerListFilesFolder::duplicateData index out of bound";
         return;
     }
+
     W_ASSERT(0);
     beginRemoveRows(QModelIndex(), row, row);
     //this->_removeFileFromDirectory(files.at(row).getName());
@@ -70,6 +76,7 @@ void WQMLControllerListFiles::removeData(int row)
 
 void WQMLControllerListFiles::updateList()
 {
+    WDebug(debug, "call");
     beginResetModel();
     endResetModel();
     //beginRemoveRows(QModelIndex(), row, row);
@@ -79,6 +86,8 @@ void WQMLControllerListFiles::updateList()
 auto WQMLControllerListFiles::data(const QModelIndex& index, int role) const -> QVariant
 {
     const auto &files = this->_fileManager->getCurrentFiles();
+
+    WDebug(debug, "call with size of file:" << files.size());
 
     if (not index.isValid()) {
         qWarning() << "Index is not valid";
