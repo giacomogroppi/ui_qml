@@ -50,7 +50,7 @@ void test_FileManager::loadDirectoryWithFiles()
 
     createFile(std::filesystem::path(path) / nameTmp / "testing.txt");
 
-    FileManager manager (nullptr, path, true);
+    FileManager manager (nullptr, WPath(path), true);
 
     QCOMPARE(manager.getDirectory().size(), 1);
     QCOMPARE(manager.getCurrentFiles().size(), 1);
@@ -60,7 +60,7 @@ void test_FileManager::loadEmptyDirectory()
 {
     return;
     {
-        FileManager manager(nullptr, path, true);
+        FileManager manager(nullptr, WPath(path), true);
         QCOMPARE(manager.getDirectory().size(), 0);
         QCOMPARE(manager.getCurrentFiles().size(), 0);
     }

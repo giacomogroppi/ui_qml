@@ -291,6 +291,9 @@ set(PROJECT_SOURCES_WRITERNOTE
 		${A_DIR_ROOT}/src/model/core/Color/WColor.h
 		${A_DIR_ROOT}/src/model/core/Path/WPath.h
 		${A_DIR_ROOT}/src/model/core/Path/WPath.cpp
+		${A_DIR_ROOT}/src/model/core/WElement.cpp
+		${A_DIR_ROOT}/src/model/audiorecord/audiorecord_qt.cpp
+		${A_DIR_ROOT}/src/model/audioplay/audioplayer_qt.cpp
 )
 
 if(IOS)

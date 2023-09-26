@@ -4,7 +4,7 @@
 QQmlContext *_content;
 Controller *controller = nullptr;
 
-QQmlContext *Controller::getContent()
+auto Controller::getContent() -> QQmlContext *
 {
     Q_ASSERT(_content != nullptr);
     return _content;
@@ -17,9 +17,6 @@ Controller::Controller(QObject *parent,
     , _tabletController(
             new TabletController(
                     nullptr,
-                    [this] { return _audioRecorder->getSecondRecording(); },
-                    [this] { return this->_audioPlayer->isPlaying(); },
-                    [this] { return this->_audioPlayer->getPositionInSeconds(); },
                     ControllerSettings::getDefaultSavePath()
             )
         )
@@ -148,5 +145,15 @@ void Controller::registerPrivateType()
     registerType("_controllerColor",            this->_color);
     registerType("_controllerSettings",         this->_settings);
     registerType("_controllerListFiles",        this->_listOfFiles);
+}
+
+void Controller::stopRecording() noexcept
+{
+    this->_tabletController->stopRecording();
+}
+
+void Controller::startRecording() noexcept
+{
+    this->_tabletController->startRecording();
 }
 

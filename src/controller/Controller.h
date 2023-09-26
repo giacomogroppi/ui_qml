@@ -21,7 +21,10 @@ class Controller: public QObject
 {
     Q_OBJECT
 private:
-    Fn<WPath()> _getPath = [] { return Controller::instance()->_tabletController->getCurrentPathSaving(); };
+    Fn<WPath()> _getPath = [this] { return _tabletController->getCurrentPathSaving(); };
+    Fn<int()>   _currentPositionRecording = [this] { return _audioRecorder->getSecondRecording(); };
+    Fn<bool()>  _isPlaying = [this] { return this->_audioPlayer->isPlaying(); };
+    Fn<int()>   _getPositionAudioPlaying = [this] { return this->_audioPlayer->getPositionInSeconds(); };
 
     TabletController *_tabletController;
 
@@ -73,6 +76,10 @@ public slots:
     void clickBack();
     void showMain();
     void openFile (QString name);
+
+    void stopRecording() noexcept;
+
+    void startRecording() noexcept;
 };
 
 inline void Controller::registerType(const QString &name, QObject *object)

@@ -1,4 +1,5 @@
 #include "ControllerAudioRecorder.h"
+#include "controller/Controller.h"
 
 ControllerAudioRecorder::ControllerAudioRecorder(QObject *parent)
     : QObject(parent)
@@ -18,6 +19,11 @@ bool ControllerAudioRecorder::isRecording()
 
 void ControllerAudioRecorder::setRecording(bool recording)
 {
+    if (recording)
+        Controller::instance()->stopRecording();
+    else
+        Controller::instance()->startRecording();
+
     emit isRecordingChange();
 }
 
