@@ -87,6 +87,6 @@ public slots:
 
     void positionChanged(const QPointF &newPosition);
     void updateGui();
-private slots:
-    void numberOfPageChanged(int);
+private:
+    DEFINE_LISTENER_1(numberOfPageChanged, int, to);
 };

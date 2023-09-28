@@ -7,8 +7,9 @@ WQMLControllerListFiles::WQMLControllerListFiles(QObject *parent,
     : QAbstractListModel(parent)
     , _fileManager(fileManager)
 {
-    w_connect_lister(fileManager.get(), onListFilesChanged, [this] { this->updateList(); });
-    w_connect_lister(fileManager.get(), onCurrentDirectoryChanged, [this] { this->updateList(); });
+    const auto update = [this] { updateList(); };
+    w_connect_lambda(fileManager.get(), onListFilesChanged, update);
+    w_connect_lambda(fileManager.get(), onCurrentDirectoryChanged, update);
 
     Scheduler::addTaskMainThread(new WTaskFunction(nullptr, [this] {
         updateList();

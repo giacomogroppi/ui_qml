@@ -1,6 +1,8 @@
 #pragma once
 
 #include <QObject>
+#include "Scheduler/Scheduler.h"
+#include "core/WElement.h"
 
 class ControllerAudioPlayer : public QObject
 {
@@ -11,6 +13,7 @@ public:
     int getPositionInSeconds() const;
 
     bool isPlaying() const;
-signals:
 
+
+    DEFINE_LISTENER_1(audioPositionChanged, Unsigned, time);
 };

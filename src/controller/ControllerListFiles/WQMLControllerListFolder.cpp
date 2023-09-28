@@ -11,8 +11,9 @@ WQMLControllerListFolder::WQMLControllerListFolder(QObject *parent, const Shared
     , _fileManager(fileManager)
     , _is_visible(true)
 {
-    w_connect_lister(_fileManager.get(), onDirectoryListChanged, [this] { updateList(); });
-    w_connect_lister(_fileManager.get(), onCurrentDirectoryChanged, [this] { updateList(); });
+    auto update = [this] { updateList(); };
+    w_connect_lambda(_fileManager.get(), onDirectoryListChanged, update);
+    w_connect_lambda(_fileManager.get(), onCurrentDirectoryChanged, update);
 }
 
 auto WQMLControllerListFolder::getPath(const WString &path) -> Path

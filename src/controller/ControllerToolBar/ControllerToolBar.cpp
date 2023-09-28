@@ -24,11 +24,11 @@ ControllerToolBar::ControllerToolBar(QObject *parent, TabletController *tabletCo
         _tabletController->selectColor(WColor(this->_color));
     });
 
-    w_connect_lister(_tabletController, onNeedRefresh, [this](const UpdateEvent& event) {
+    w_connect_lambda(_tabletController, onNeedRefresh, [this](const UpdateEvent& event) {
         emit this->onNeedRefresh(event);
     });
 
-    w_connect_lister(_tabletController, onNumberOfPageChanged, [this] (int index) { numberOfPageChanged(index); });
+    w_connect_listener(_tabletController, onNumberOfPageChanged, this, numberOfPageChanged);
 
     qmlRegisterType<WQMLControllerHighlighter>( "writernote.WQMLControllerHighlighter", 1, 0, "WHighlighterButton");
     qmlRegisterType<WQMLControllerPen>(         "writernote.WQMLControllerPen",         1, 0, "WPenButton");

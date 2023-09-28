@@ -37,7 +37,8 @@ Controller::Controller(QObject *parent,
 
     registerControllerCanvas(_canvas);
 
-    w_connect_lister(_tabletController, onPathChanged, [this] { emit this->onPathSavingChanged(); });
+    w_connect_lambda(_tabletController, onPathChanged, [this] { emit this->onPathSavingChanged(); });
+    w_connect_listener(&_tabletController->getAudioPlayer(), onTimeChanged, _audioPlayer, audioPositionChanged);
 
     QObject::connect(this, &Controller::onPathSavingChanged, _settings, &ControllerSettings::onPositionChanged);
 
@@ -46,6 +47,7 @@ Controller::Controller(QObject *parent,
     });
 
     QObject::connect(_listOfFiles, &ControllerListFiles::onSelectFile, this, &Controller::openFile);
+
 }
 
 void Controller::openFile (QString name)
@@ -149,11 +151,11 @@ void Controller::registerPrivateType()
 
 void Controller::stopRecording() noexcept
 {
-    this->_tabletController->stopRecording();
+    this->_tabletController->getAudioRecorder().stopRecording();
 }
 
 void Controller::startRecording() noexcept
 {
-    this->_tabletController->startRecording();
+    this->_tabletController->getAudioRecorder().startRecord();
 }
 
