@@ -1,17 +1,48 @@
 #include "ControllerAudioPlayer.h"
 
-ControllerAudioPlayer::ControllerAudioPlayer(QObject *parent)
-    : QObject{parent}
+ControllerAudioPlayer::ControllerAudioPlayer(QObject *parent,
+                                             AudioPlayer& audioPlayer)
+    : QObject (parent)
+    , _audioPlayer (audioPlayer)
 {
-
+    w_connect_listener(&audioPlayer, onTimeChanged, this, audioPositionChanged);
 }
 
-int ControllerAudioPlayer::getPositionInSeconds() const
+auto ControllerAudioPlayer::getPositionInSeconds() const -> unsigned
 {
-    return 0;
+    return _audioPlayer.getCurrentTimeSecond();
 }
 
-bool ControllerAudioPlayer::isPlaying() const
+auto ControllerAudioPlayer::isPlaying() const -> bool
 {
-    return false;
+    return _audioPlayer.isPlaying();
+}
+
+auto ControllerAudioPlayer::audioPositionChanged(Unsigned position) -> void
+{
+    emit onPositionChanged();
+}
+
+auto ControllerAudioPlayer::getDuration() const -> unsigned
+{
+    return this->_audioPlayer.getCurrentDurationSeconds();
+}
+
+auto ControllerAudioPlayer::durationChanged() -> void
+{
+    emit onDurationChanged();
+}
+
+auto ControllerAudioPlayer::getPosition() const -> unsigned
+{
+    return this->_audioPlayer.getCurrentTimeSecond();
+}
+
+void ControllerAudioPlayer::setPosition(unsigned newPosition)
+{
+    const auto currentPosition = this->getPositionInSeconds();
+
+    if (currentPosition != newPosition) {
+        this->_audioPlayer.setPositionSecond(Unsigned(newPosition));
+    }
 }

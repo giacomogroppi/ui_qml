@@ -23,7 +23,7 @@ Controller::Controller(QObject *parent,
     , _engine(engine)
     , _listPreview(new ControllerList(this))
     , _audioRecorder(new ControllerAudioRecorder(this))
-    , _audioPlayer(new ControllerAudioPlayer(this))
+    , _audioPlayer(new ControllerAudioPlayer(this, _tabletController->getAudioPlayer()))
     , _toolBar(new ControllerToolBar(this, _tabletController))
     , _canvas(new ControllerCanvas(nullptr))
     , _pageCounter(new ControllerPageCounter(this))
