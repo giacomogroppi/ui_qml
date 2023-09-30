@@ -20,6 +20,8 @@
 class Controller: public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString uiSelected READ getUiSelected WRITE setCurrentPage NOTIFY onUiSelectedChanged);
+
 private:
     Fn<WPath()> _getPath = [this] { return _tabletController->getCurrentPathSaving(); };
     Fn<int()>   _currentPositionRecording = [this] { return _audioRecorder->getSecondRecording(); };
@@ -59,9 +61,7 @@ public:
 
     static void registerType(const QString &name, QObject *object);
 
-    Q_PROPERTY(QString uiSelected READ getUiSelected WRITE setCurrentPage NOTIFY onUiSelectedChanged);
-    [[nodiscard]] auto getUiSelected() const -> QString;
-    Q_SIGNAL void onUiSelectedChanged();
+    nd auto getUiSelected() const -> QString;
 
     void setCurrentPage(QString currentPage);
 
@@ -70,8 +70,10 @@ public:
 
 signals:
     void onPathSavingChanged();
+    void onUiSelectedChanged();
 
 public slots:
+    void dropView();
     void newFile();
     void clickSetting();
     void clickBack();

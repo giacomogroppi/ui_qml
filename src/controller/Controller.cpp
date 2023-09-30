@@ -160,3 +160,10 @@ void Controller::startRecording() noexcept
     this->_tabletController->getAudioRecorder().startRecord();
 }
 
+void Controller::dropView()
+{
+    if (_uiSelected == uiSelected::Main) {
+        if (this->_tabletController->closeCurrentFile() < 0)
+            _showGenericError("Error closing current file");
+    }
+}

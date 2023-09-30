@@ -28,7 +28,7 @@ Rectangle {
             left: parent.left
         }
         Text {
-            text: qsTr("back")
+            text: qsTr("<")
         }
     }
 

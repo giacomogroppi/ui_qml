@@ -12,7 +12,7 @@ ToolController::~ToolController()
     ControllerToolBar::unregisterTool(this);
 }
 
-bool ToolController::isSelected() const
+auto ToolController::isSelected() const -> bool
 {
     return this->_selected;
 }

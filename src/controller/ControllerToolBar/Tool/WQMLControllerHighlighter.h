@@ -17,5 +17,5 @@ public slots:
     void callUpdate() final;
 
     void paint(QPainter *painter) override;
-    int getType() const final;
+    nd int getType() const final;
 };

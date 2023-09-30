@@ -16,7 +16,7 @@ public:
     void select();
     void deselect();
 
-    bool  isSelected() const;
+    nd auto isSelected() const -> bool;
 
     virtual int getType() const = 0;
     virtual void callUpdate() = 0;

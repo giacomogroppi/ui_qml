@@ -58,6 +58,7 @@ Window {
 
     function closeMain() {
         stackViewMain.pop()
+        _controller.dropView()
         console.log("Call close main")
     }
 
