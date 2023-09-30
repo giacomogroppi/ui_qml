@@ -14,6 +14,7 @@ class WQMLCanvasComponentPage: public QQuickPaintedItem, public WObject
     Q_PROPERTY(int indexDrawer  READ getIndex   WRITE setIndex      NOTIFY onIndexChanged);
 public:
     explicit WQMLCanvasComponentPage(QQuickItem *parent = nullptr);
+    ~WQMLCanvasComponentPage() override;
 
     void setXPosition(double x);
     double xPosition() const;

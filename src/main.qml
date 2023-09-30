@@ -17,6 +17,10 @@ Window {
     readonly property string settingsName: "Settings"
     readonly property string listOfFilesName: "ListFiles"
 
+    property var viewFiles: Component = null;
+    property var viewSettings: Component = null;
+    property var viewCanvas: Component = null;
+
     id: mainRoot
 
     StackView {
@@ -27,8 +31,11 @@ Window {
 
     // list of files
     function showFiles() {
-        var newView = Qt.createComponent("qrc:/src/ui/listOfFiles/MainWindowListFile.qml");
-        stackViewMain.push(newView);
+        if (viewFiles == null) {
+            viewFiles = Qt.createComponent("qrc:/src/ui/listOfFiles/MainWindowListFile.qml");
+        }
+
+        stackViewMain.push(viewFiles);
         _controller.uiSelected = listOfFilesName
         console.log("call show Files");
     }
@@ -40,8 +47,11 @@ Window {
 
     // main options
     function showMain() {
-        var newView = Qt.createComponent("qrc:/src/ui/pageCanvas/MainWindow.qml")
-        stackViewMain.push(newView)
+        if (viewCanvas == null) {
+            viewCanvas = Qt.createComponent("qrc:/src/ui/pageCanvas/MainWindow.qml")
+        }
+
+        stackViewMain.push(viewCanvas)
         _controller.uiSelected = mainName
         console.log("Call show main")
     }
@@ -53,7 +63,10 @@ Window {
 
     // settings options
     function showSettings() {
-        stackViewMain.push(Qt.createComponent("qrc:/src/ui/settings/Settings.qml"))
+        if (viewSettings == null) {
+            viewSettings = Qt.createComponent("qrc:/src/ui/settings/Settings.qml")
+        }
+        stackViewMain.push(viewSettings)
         _controller.uiSelected = settingsName
         console.log("Call show settings");
     }

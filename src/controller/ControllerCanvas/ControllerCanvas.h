@@ -56,9 +56,15 @@ public:
     QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const override;
     QHash<int, QByteArray> roleNames() const override;
 
-    static void registerDrawerPage(WQMLCanvasComponentPage *object);
-    static void registerDrawerStroke(WQMLCanvasComponentStroke *object);
-    static void registerHandler(WQMLCanvasHandler *object);
+    static void registerDrawerPage(WQMLCanvasComponentPage* object);
+    static void unregisterDrawerPage(WQMLCanvasComponentPage* object);
+
+    static void registerDrawerStroke(WQMLCanvasComponentStroke* object);
+    static void unregisterDrawerStroke(WQMLCanvasComponentStroke* object);
+
+    static void registerHandler(WQMLCanvasHandler* object);
+    static void unregisterHandler(WQMLCanvasHandler* object);
+
 private:
     double _positionX;
     double _positionY;

@@ -17,12 +17,13 @@ Controller::Controller(QObject *parent,
     , _tabletController(
             new TabletController(
                     nullptr,
-                    ControllerSettings::getDefaultSavePath()
+                    ControllerSettings::getDefaultSavePath(),
+                    _showGenericError
             )
         )
     , _engine(engine)
     , _listPreview(new ControllerList(this))
-    , _audioRecorder(new ControllerAudioRecorder(this))
+    , _audioRecorder(new ControllerAudioRecorder(this, _tabletController->getAudioRecorder()))
     , _audioPlayer(new ControllerAudioPlayer(this, _tabletController->getAudioPlayer()))
     , _toolBar(new ControllerToolBar(this, _tabletController))
     , _canvas(new ControllerCanvas(nullptr))

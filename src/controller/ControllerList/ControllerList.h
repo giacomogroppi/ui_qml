@@ -28,12 +28,12 @@ public:
 
     explicit ControllerList(QObject *parent = nullptr);
 
-    int rowCount(const QModelIndex& parent) const override;
-    QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const override;
-    QHash<int, QByteArray> roleNames() const override;
+    auto rowCount(const QModelIndex& parent) const -> int override;
+    auto data( const QModelIndex& index, int role = Qt::DisplayRole ) const -> QVariant override;
+    auto roleNames() const -> QHash<int, QByteArray> override;
 
     Q_PROPERTY(bool isVisible READ isVisible WRITE setVisible NOTIFY isVisibleChanged);
-    bool isVisible() const;
+    auto isVisible() const -> bool;
     void setVisible(bool visible);
     Q_SIGNAL void isVisibleChanged();
 

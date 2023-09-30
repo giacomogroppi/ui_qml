@@ -19,6 +19,11 @@ WQMLCanvasHandler::WQMLCanvasHandler(QQuickItem *parent)
     qDebug() << "WQMLCanvasComponentStroke constructor call";
 }
 
+WQMLCanvasHandler::~WQMLCanvasHandler()
+{
+    ControllerCanvas::unregisterHandler(this);
+}
+
 void WQMLCanvasHandler::touchEventPrivate(QTouchEvent *event)
 {
     qDebug() << "WQMLCanvasComponentStroke::touchEvent " << event->type();

@@ -72,7 +72,8 @@ public:
     void getImg(QPainter &painter, double width, WFlags<UpdateEvent::UpdateEventType> flags);
 
     static void registerTool(ToolController *tool);
-    static QColor getColor();
+    static void unregisterTool(ToolController *tool);
+    static auto getColor() -> QColor;
 signals:
     void toolHasChanged();
     void colorChanged();

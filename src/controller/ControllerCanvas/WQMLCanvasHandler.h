@@ -16,6 +16,7 @@ class WQMLCanvasHandler: public QQuickItem
 
 public:
     WQMLCanvasHandler(QQuickItem *parent = nullptr);
+    ~WQMLCanvasHandler() override;
 
     bool eventFilter(QObject *, QEvent *event) override;
 

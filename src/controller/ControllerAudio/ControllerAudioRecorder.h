@@ -1,21 +1,29 @@
 #pragma once
 
 #include <QObject>
+#include "AudioData/AudioData.h"
+#include "audiorecord/AudioRecorderQt.h"
+#include "utils/WCommonScript.h"
 
 class ControllerAudioRecorder: public QObject {
     Q_OBJECT
-public:
-    explicit ControllerAudioRecorder(QObject *parent);
-    ~ControllerAudioRecorder();
 
     Q_PROPERTY(bool isRecording READ isRecording WRITE setRecording NOTIFY isRecordingChange);
-    bool isRecording();
+    Q_PROPERTY(unsigned secondRecording READ getSecondRecording NOTIFY secondRecordingChange);
+
+    AudioRecord& _audioRecorder;
+
+public:
+    explicit ControllerAudioRecorder(QObject *parent, AudioRecord& audioRecord);
+    ~ControllerAudioRecorder() override;
+
+    nd auto isRecording() const -> bool;
     void setRecording(bool recording);
-    Q_SIGNAL void isRecordingChange();
 
-    Q_PROPERTY(size_t secondRecording READ getSecondRecording NOTIFY secondRecordingChange);
-    size_t getSecondRecording();
-    Q_SIGNAL void secondRecordingChange();
+    nd auto getSecondRecording() const -> unsigned;
 
+signals:
+    void isRecordingChange();
+    void secondRecordingChange();
 
 };

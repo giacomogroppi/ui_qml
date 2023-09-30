@@ -24,9 +24,13 @@ WQMLCanvasComponentPage::WQMLCanvasComponentPage(QQuickItem *parent)
     this->setAntialiasing(true);
     this->setFlag(QQuickItem::Flag::ItemClipsChildrenToShape);
     this->callUpdate(this->getIndex());
-    qDebug() << this->width() << this->height();
 
-    //Q_ASSERT(false);
+    qDebug() << this->width() << this->height();
+}
+
+WQMLCanvasComponentPage::~WQMLCanvasComponentPage()
+{
+    ControllerCanvas::unregisterDrawerPage(this);
 }
 
 void WQMLCanvasComponentPage::paint(QPainter *painter)

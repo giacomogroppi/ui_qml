@@ -11,6 +11,7 @@ private:
     bool _selected;
 public:
     explicit ToolController(bool selected);
+    ~ToolController();
 
     void select();
     void deselect();

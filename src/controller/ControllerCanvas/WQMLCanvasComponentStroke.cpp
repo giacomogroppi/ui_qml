@@ -27,6 +27,11 @@ WQMLCanvasComponentStroke::WQMLCanvasComponentStroke(QQuickItem *parent)
     //Q_ASSERT(false);
 }
 
+WQMLCanvasComponentStroke::~WQMLCanvasComponentStroke()
+{
+    ControllerCanvas::unregisterDrawerStroke(this);
+}
+
 void WQMLCanvasComponentStroke::paint(QPainter *painter)
 {
     const auto width = this->width();

@@ -171,6 +171,12 @@ void ControllerCanvas::registerDrawerStroke(WQMLCanvasComponentStroke *object)
     object->setFunc(controllerCanvas->_getImg);
 }
 
+void ControllerCanvas::unregisterDrawerStroke(WQMLCanvasComponentStroke *object)
+{
+    W_ASSERT(object != nullptr);
+    drawerStroke = nullptr;
+}
+
 void ControllerCanvas::registerDrawerPage(WQMLCanvasComponentPage *object)
 {
     W_ASSERT(object != nullptr);
@@ -195,6 +201,12 @@ void ControllerCanvas::registerDrawerPage(WQMLCanvasComponentPage *object)
             controllerCanvas->_isWaitingForDrawInPage = false;
         }
     });
+}
+
+void ControllerCanvas::unregisterDrawerPage(WQMLCanvasComponentPage *object)
+{
+    W_ASSERT(object != nullptr);
+    drawerPage.remove(drawerPage.indexOf(object));
 }
 
 void ControllerCanvas::callUpdate(int page)
@@ -274,14 +286,26 @@ void ControllerCanvas::touchEnd(const QPointF &point, double pressure)
 
 void ControllerCanvas::registerHandler(WQMLCanvasHandler *object)
 {
-    Q_ASSERT(object != nullptr);
-    Q_ASSERT(handler == nullptr);
-    Q_ASSERT(controllerCanvas != nullptr);
+    W_ASSERT(object != nullptr);
+    W_ASSERT(handler == nullptr);
+    W_ASSERT(controllerCanvas != nullptr);
 
     handler = object;
 
     QObject::connect(handler, &WQMLCanvasHandler::touchBegin,   controllerCanvas, &ControllerCanvas::touchBegin);
     QObject::connect(handler, &WQMLCanvasHandler::touchUpdate,  controllerCanvas, &ControllerCanvas::touchUpdate);
     QObject::connect(handler, &WQMLCanvasHandler::touchEnd,     controllerCanvas, &ControllerCanvas::touchEnd);
+}
+
+void ControllerCanvas::unregisterHandler(WQMLCanvasHandler* object)
+{
+    W_ASSERT(object != nullptr);
+    W_ASSERT(handler != nullptr);
+
+    handler = nullptr;
+
+    QObject::disconnect(object, &WQMLCanvasHandler::touchBegin,   controllerCanvas, &ControllerCanvas::touchBegin);
+    QObject::disconnect(object, &WQMLCanvasHandler::touchUpdate,  controllerCanvas, &ControllerCanvas::touchUpdate);
+    QObject::disconnect(object, &WQMLCanvasHandler::touchEnd,     controllerCanvas, &ControllerCanvas::touchEnd);
 }
 

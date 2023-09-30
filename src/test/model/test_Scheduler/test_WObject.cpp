@@ -42,7 +42,7 @@ void test_WObject::test_launch_signal0()
     ObjectTesting *tmp = new ObjectTesting;
     bool call = false;
 
-    w_connect_lister(tmp, signalsEmpty, [&call]() {
+    w_connect_lambda(tmp, signalsEmpty, [&call]() {
         call = true;
     });
 
@@ -58,7 +58,7 @@ void test_WObject::test_launch_signal1()
     bool call = false;
     PointF p;
 
-    w_connect_lister(tmp, signals1, [&](const PointF &point) {
+    w_connect_lambda(tmp, signals1, [&](const PointF &point) {
         call = true;
         p = point;
     });

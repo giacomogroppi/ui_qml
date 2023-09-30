@@ -12,6 +12,7 @@ Q_OBJECT
 public:
     explicit WQMLControllerHighlighter(QQuickItem *parent = nullptr);
 
+
 public slots:
     void callUpdate() final;
 

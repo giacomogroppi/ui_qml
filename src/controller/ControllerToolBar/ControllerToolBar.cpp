@@ -35,19 +35,6 @@ ControllerToolBar::ControllerToolBar(QObject *parent, TabletController *tabletCo
     qmlRegisterType<WQMLControllerRubber>(      "writernote.WQMLControllerRubber",      1, 0, "WRubberButton");
 
     this->_tabletController->selectType(Pen::type());
-
-    QTimer::singleShot(50, []() {
-        for (auto *t : tools) {
-            continue;
-            t->callUpdate();
-
-            if (t->getType() == controllerToolBar->_tabletController->getCurrentTool()->getType()) {
-                t->select();
-            } else {
-                t->deselect();
-            }
-        }
-    });
 }
 
 void ControllerToolBar::selectTool(int tool)
@@ -166,6 +153,11 @@ void ControllerToolBar::registerTool(ToolController *tool)
 {
     tools.append(tool);
     QTimer::singleShot(0, controllerToolBar, &ControllerToolBar::updateGui);
+}
+
+void ControllerToolBar::unregisterTool(ToolController *tool)
+{
+    tools.removeOne(tool);
 }
 
 void ControllerToolBar::updateGui()

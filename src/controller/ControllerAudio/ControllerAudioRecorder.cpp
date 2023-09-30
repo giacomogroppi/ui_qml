@@ -1,20 +1,18 @@
 #include "ControllerAudioRecorder.h"
 #include "controller/Controller.h"
 
-ControllerAudioRecorder::ControllerAudioRecorder(QObject *parent)
+ControllerAudioRecorder::ControllerAudioRecorder(QObject *parent, AudioRecord& audioRecorder)
     : QObject(parent)
+    , _audioRecorder(audioRecorder)
 {
 
 }
 
-ControllerAudioRecorder::~ControllerAudioRecorder()
-{
+ControllerAudioRecorder::~ControllerAudioRecorder() = default;
 
-}
-
-bool ControllerAudioRecorder::isRecording()
+auto ControllerAudioRecorder::isRecording() const -> bool
 {
-    return false;
+    return _audioRecorder.isRecording();
 }
 
 void ControllerAudioRecorder::setRecording(bool recording)
@@ -27,7 +25,7 @@ void ControllerAudioRecorder::setRecording(bool recording)
     emit isRecordingChange();
 }
 
-size_t ControllerAudioRecorder::getSecondRecording()
+auto ControllerAudioRecorder::getSecondRecording() const -> unsigned
 {
-    return 0;
+    return _audioRecorder.getCurrentTime();
 }

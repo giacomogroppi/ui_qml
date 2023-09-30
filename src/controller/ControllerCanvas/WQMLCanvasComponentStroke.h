@@ -22,6 +22,7 @@ class WQMLCanvasComponentStroke: public QQuickPaintedItem
     Q_PROPERTY(double yPosition READ yPosition  WRITE setYPosition  NOTIFY onYPositionChanged);
 public:
     explicit WQMLCanvasComponentStroke(QQuickItem *parent = nullptr);
+    ~WQMLCanvasComponentStroke() override;
 
     void setXPosition(double x);
     double xPosition() const;
