@@ -549,5 +549,11 @@ SETUP_TESTS(
 		src/test/model/test_Scheduler/test_WTimer
 		src/test/model/test_file/test_FileManager
 		src/test/model/test_file/test_Directory
+		src/test/model/test_touch/dataTouch/test_Document
+		src/test/model/test_touch/dataTouch/test_Page
+		src/test/model/test_core/test_WFile
+		src/test/model/test_core/pointer/test_SharedPtr
+		src/test/model/test_touch/dataTouch/test_StrokeNormal
+		src/test/model/test_touch/dataTouch/test_StrokeForPage
 )
 endif()
