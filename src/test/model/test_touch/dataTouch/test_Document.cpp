@@ -36,8 +36,7 @@ void test_Document::testLoad()
 
     {
         MemWritable writable;
-        //WFile file (tmp / "prova.txt", WFile::WFileWrite);
-        //QVERIFY(file.isValid());
+
         QCOMPARE(Document::write(writable, doc), 0);
         writable.merge([&] (const void *d, size_t size) -> int {
             data.append(static_cast<const char *>(d), size);
@@ -47,8 +46,7 @@ void test_Document::testLoad()
 
     {
         MemReadable readable (data.constData(), data.size());
-        //WFile file (tmp / "prova.txt", WFile::WFileReadOnly);
-        //QVERIFY(file.isValid());
+
         const auto [result, data] = Document::load(VersionFileController(), readable);
 
         QVERIFY(result == 0);

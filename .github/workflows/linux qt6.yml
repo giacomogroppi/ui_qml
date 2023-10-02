@@ -54,6 +54,8 @@ jobs:
           sudo apt install -y libxcb-sync-dev libxcb-util-dev libxcb-xfixes0-dev libxcb-xkb-dev libxcursor-dev libxkbcommon-dev libxkbcommon-x11-dev zlib1g-dev
           sudo apt install -y valgrind libzip-dev
 
+          sudo apt install libxcb1 libxcb1-dev libx11-xcb1 libx11-xcb-dev libxcb-keysyms1 libxcb-keysyms1-dev libxcb-image0 libxcb-image0-dev libxcb-shm0 libxcb-shm0-dev libxcb-icccm4 libxcb-icccm4-dev libxcb-sync1 libxcb-sync-dev libxcb-xfixes0-dev libxrender-dev libxcb-shape0-dev
+
       - name: Qt 6 cache.
         id: cache-qt
         uses: actions/cache@v2
