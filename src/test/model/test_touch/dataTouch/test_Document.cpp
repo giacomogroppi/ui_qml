@@ -57,6 +57,6 @@ void test_Document::testLoad()
 
 }
 
-QTEST_GUILESS_MAIN(test_Document)
+QTEST_MAIN(test_Document)
 
 #include "test_Document.moc"
