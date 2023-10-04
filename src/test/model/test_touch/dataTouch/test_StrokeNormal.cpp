@@ -27,7 +27,7 @@ void test_StrokeNormal::testLoadWithNoStroke()
 
     {
         MemWritable writable;
-        //WFile file (tmp / "prova.txt", WFile::WFileWrite);
+        //WFile file (tmp / "prova.txt", WFile::Write);
         //QVERIFY(file.isValid());
         QCOMPARE(Stroke::write(writable, stroke), 0);
         writable.merge([&] (const void *d, size_t size) -> int {
@@ -38,7 +38,7 @@ void test_StrokeNormal::testLoadWithNoStroke()
 
     {
         MemReadable readable (data.constData(), data.size());
-        //WFile file (tmp / "prova.txt", WFile::WFileReadOnly);
+        //WFile file (tmp / "prova.txt", WFile::ReadOnly);
         //QVERIFY(file.isValid());
         const auto [result, data] = Stroke::loadPtr(VersionFileController(), readable);
 
@@ -61,7 +61,7 @@ void test_StrokeNormal::testLoadWith200Points()
 
     {
         MemWritable writable;
-        //WFile file (tmp / "prova.txt", WFile::WFileWrite);
+        //WFile file (tmp / "prova.txt", WFile::Write);
         //QVERIFY(file.isValid());
         QCOMPARE(Stroke::write(writable, stroke), 0);
         writable.merge([&] (const void *d, size_t size) -> int {
@@ -72,7 +72,7 @@ void test_StrokeNormal::testLoadWith200Points()
 
     {
         MemReadable readable (data.constData(), data.size());
-        //WFile file (tmp / "prova.txt", WFile::WFileReadOnly);
+        //WFile file (tmp / "prova.txt", WFile::ReadOnly);
         //QVERIFY(file.isValid());
         const auto [result, data] = Stroke::loadPtr(VersionFileController(), readable);
 

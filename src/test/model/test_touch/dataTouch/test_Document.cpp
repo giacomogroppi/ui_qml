@@ -13,7 +13,46 @@ Q_OBJECT
 
 private slots:
     void testLoad();
+    void test200Pages();
 };
+
+void test_Document::test200Pages()
+{
+    Document doc;
+
+    for (int i = 0; i < 200; i++) {
+        doc.newPage(n_style::square);
+
+        for (int k = 0; k < 400; k++) {
+            auto *stroke = new StrokeNormal();
+
+            for (int j = 0; j < 500; j++) {
+                stroke->append(PointF(i, j), pressure_t((double) k));
+            }
+
+            doc.appendStroke(SharedPtr<Stroke>(stroke));
+        }
+    }
+
+    MemWritable writable;
+    MemReadable readable;
+    WByteArray data;
+
+    {
+        QCOMPARE(Document::write(writable, doc), 0);
+        writable.merge([&](const void *d, size_t size) {
+            data.append(static_cast<const char*>(d), size);
+            return 0;
+        });
+    }
+
+    {
+        readable.setData(data.constData(), data.size());
+        auto [result, d] = Document::load(VersionFileController(), readable);
+        QCOMPARE(result, 0);
+        QCOMPARE(d, doc);
+    }
+}
 
 void test_Document::testLoad()
 {

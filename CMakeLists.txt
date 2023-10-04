@@ -555,5 +555,6 @@ SETUP_TESTS(
 		src/test/model/test_core/pointer/test_SharedPtr
 		src/test/model/test_touch/dataTouch/test_StrokeNormal
 		src/test/model/test_touch/dataTouch/test_StrokeForPage
+		src/test/model/test_VersionFileController
 )
 endif()

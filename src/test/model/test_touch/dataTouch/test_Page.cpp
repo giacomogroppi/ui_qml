@@ -28,7 +28,7 @@ void test_Page::testLoadWithNoStroke()
 
     {
         MemWritable writable;
-        //WFile file (tmp / "prova.txt", WFile::WFileWrite);
+        //WFile file (tmp / "prova.txt", WFile::Write);
         //QVERIFY(file.isValid());
         QCOMPARE(Page::write(writable, doc), 0);
         writable.merge([&] (const void *d, size_t size) -> int {
@@ -39,7 +39,7 @@ void test_Page::testLoadWithNoStroke()
 
     {
         MemReadable readable (data.constData(), data.size());
-        //WFile file (tmp / "prova.txt", WFile::WFileReadOnly);
+        //WFile file (tmp / "prova.txt", WFile::ReadOnly);
         //QVERIFY(file.isValid());
         const auto [result, data] = Page::load(VersionFileController(), readable);
 
@@ -67,7 +67,7 @@ void test_Page::testLoadWith1Stroke()
 
     {
         MemWritable writable;
-        //WFile file (tmp / "prova.txt", WFile::WFileWrite);
+        //WFile file (tmp / "prova.txt", WFile::Write);
         //QVERIFY(file.isValid());
         QCOMPARE(Page::write(writable, doc), 0);
         writable.merge([&] (const void *d, size_t size) -> int {
@@ -107,7 +107,7 @@ void test_Page::testLoadWith200Stroke()
 
     {
         MemWritable writable;
-        //WFile file (tmp / "prova.txt", WFile::WFileWrite);
+        //WFile file (tmp / "prova.txt", WFile::Write);
         //QVERIFY(file.isValid());
         QCOMPARE(Page::write(writable, doc), 0);
         writable.merge([&] (const void *d, size_t size) -> int {
@@ -118,7 +118,7 @@ void test_Page::testLoadWith200Stroke()
 
     {
         MemReadable readable (data.constData(), data.size());
-        //WFile file (tmp / "prova.txt", WFile::WFileReadOnly);
+        //WFile file (tmp / "prova.txt", WFile::ReadOnly);
         //QVERIFY(file.isValid());
         const auto [result, data] = Page::load(VersionFileController(), readable);
 
