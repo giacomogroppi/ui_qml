@@ -93,7 +93,6 @@ void test_WListFast::saveAndLoadsingleThreadZeroElement()
 
 void test_WListFast::saveAndLoadSingleThread()
 {
-    return;
     WListFast<pressure_t> list;
     MemWritable writable;
     MemReadable readable;
@@ -209,7 +208,6 @@ void test_WListFast::midWithListEmpty()
 
 void test_WListFast::saveAndLoadSingleThreadCustomLambda()
 {
-    return;
     WListFast<size_t> tmp;
     MemWritable writable;
     WritableTest writableTest;
@@ -252,7 +250,6 @@ void test_WListFast::saveAndLoadSingleThreadCustomLambda()
 
 void test_WListFast::testSaveSingleThread()
 {
-    return;
     for (int i = 0; i < 100; i++) {
         WritableTest writableFinal;
         MemWritable writable;
@@ -292,7 +289,6 @@ void test_WListFast::testSaveSingleThread()
 
 void test_WListFast::writeCallOnce()
 {
-    return;
     for (int i = 0; i < 100; i++) {
         WritableTest writableFinal;
         MemWritable writable;
@@ -335,7 +331,6 @@ void test_WListFast::writeCallOnce()
 
 void test_WListFast::testBuildSave()
 {
-    return;
     for (int i = 0; i < 100; i++) {
         Scheduler sched;
         WListFast<pressure_t> list;

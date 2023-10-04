@@ -3,6 +3,9 @@
 #include "core/WPair.h"
 #include "utils/WCommonScript.h"
 #include "core/WVector.h"
+#include "Scheduler/Scheduler.h"
+#include "touch/dataTouch/datastruct/utils_datastruct.h"
+#include "core/ByteArray/WByteArray.h"
 
 class test_WVector : public QObject
 {
@@ -20,12 +23,59 @@ private slots:
 
     void removeIf_removeAllAscending();
     void removeIf_removeAllDescending();
+
+    void saveMultiThread();
 };
 
 template <class T>
 const auto cmp = [](const T& t1, const T& t2 ) -> bool {
     return t1 >= t2;
 };
+
+void test_WVector::saveMultiThread()
+{
+    for (int i = 0; i < 100; i++) {
+        MemWritable writable;
+        WByteArray data;
+
+        Scheduler sched;
+        WVector<pressure_t> list;
+
+        list.append(pressure_t(32.))
+                .append(pressure_t(57.))
+                .append(pressure_t(45.))
+                .append(pressure_t(9.));
+
+        const auto result = WVector<pressure_t>::writeMultiThread(
+                writable,
+                list,
+                Scheduler::startNewTask
+        );
+
+        writable.merge([&](const void *d, size_t size) {
+            data.append(static_cast<const char*>(d), size);
+            return 0;
+        });
+
+        QCOMPARE(0, result);
+
+        {
+            VersionFileController versionController{};
+            MemReadable readable;
+
+            readable.setData(data.constData(), data.size());
+
+            auto [res, listRead] = WVector<pressure_t>::loadMultiThread(
+                    versionController,
+                    readable,
+                    Scheduler::startNewTask
+            );
+
+            QCOMPARE(0, res);
+            QCOMPARE(list, listRead);
+        }
+    }
+}
 
 void test_WVector::removeIf_removeAllDescending()
 {
