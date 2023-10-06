@@ -21,7 +21,7 @@ void test_WAbstractList::test_all_item()
 {
     WVector<int> tmp = {1, 1, 1, 1, 1, 1, 1};
     const auto i = WAbstractList::binary_search<
-                std::vector<int>::iterator,
+                WVector<int>::iterator,
                 int,
                 false>
             (

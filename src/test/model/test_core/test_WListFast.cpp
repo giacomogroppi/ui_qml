@@ -17,6 +17,8 @@ private slots:
     // operator copy
     void test_copy ();
     void copy_not_empty();
+    void copyListWithLessItem();
+    void copyListWithMoreItems();
 
     void append_2Argument();
     void operatorCopy();
@@ -47,7 +49,50 @@ private slots:
 
     // operator move
     void operatorMove();
+    void moveObjects();
+
+    // remove
+    void removeOne();
+    void removeMultiple();
 };
+
+void test_WListFast::removeMultiple()
+{
+    WListFast<WByteArray> list ({
+        WByteArray("tmp1"),
+        WByteArray("banana"),
+        WByteArray("prova"),
+        WByteArray("tmp2"),
+        WByteArray("tmp3"),
+        WByteArray("tmp4"),
+        WByteArray("tmp5"),
+        WByteArray("tmp6"),
+    });
+
+    auto shouldBe = WListFast<WByteArray> ({
+        WByteArray("tmp1"),
+        WByteArray("tmp3"),
+        WByteArray("tmp4"),
+        WByteArray("tmp5"),
+        WByteArray("tmp6"),
+    });
+
+    list.remove(1, 4);
+    QCOMPARE(list.size(), 5);
+    QCOMPARE(list, shouldBe);
+}
+
+void test_WListFast::removeOne()
+{
+    WListFast<WByteArray> list ({
+        WByteArray("tmp1"),
+        WByteArray("banana"),
+        WByteArray("prova")
+    });
+
+    list.remove(0);
+    QCOMPARE(list.size(), 2);
+}
 
 class WritableTest final: public WritableAbstract {
 public:
@@ -115,6 +160,21 @@ void test_WListFast::saveAndLoadSingleThread()
     QCOMPARE(readable.getSeek(), readable.getMax());
     QCOMPARE(r, 0);
     QCOMPARE(d, list);
+}
+
+void test_WListFast::moveObjects()
+{
+    WListFast<WByteArray> list ({
+        WByteArray("tmp1"),
+        WByteArray("banana"),
+        WByteArray("prova")
+    });
+
+    list.move(0, 1);
+
+    QCOMPARE(list.size(), 3);
+    QCOMPARE(list.first(), WByteArray("banana"));
+    QCOMPARE(list[1], WByteArray("tmp1"));
 }
 
 void test_WListFast::operatorMove()
@@ -369,8 +429,8 @@ void test_WListFast::test_copy()
 {
     WListFast<int> c;
 
-    c.append(4);
-    c.append(6);
+    c.append(4)
+        .append(6);
 
     WListFast<int> c2(c);
 
@@ -468,6 +528,44 @@ void test_WListFast::iteratorOperator()
 
     for (auto *ref: list)
         delete ref;
+}
+
+void test_WListFast::copyListWithMoreItems()
+{
+    WListFast<long> list1;
+    WListFast<long> copiedList;
+
+    for (long i = 0; i < std::pow(2, 20); i++)
+        list1.append(i);
+
+    for (long i = 0; i < std::pow(2, 24); i++)
+        copiedList.append(i + std::pow(2, 20));
+
+    list1 = copiedList;
+
+    QCOMPARE(list1.size(), copiedList.size());
+    copiedList.clear();
+
+    QCOMPARE(list1.size(), std::pow(2, 24));
+}
+
+void test_WListFast::copyListWithLessItem()
+{
+    WListFast<long> list1;
+    WListFast<long> copiedList;
+
+    for (long i = 0; i < std::pow(2, 20); i++)
+        list1.append(i);
+
+    for (long i = 0; i < std::pow(2, 18); i++)
+        copiedList.append(i + std::pow(2, 20));
+
+    list1 = copiedList;
+
+    QCOMPARE(list1.size(), copiedList.size());
+    copiedList.clear();
+
+    QCOMPARE(list1.size(), std::pow(2, 18));
 }
 
 void test_WListFast::copy_not_empty()
