@@ -7,12 +7,16 @@
 #include "touch/dataTouch/datastruct/utils_datastruct.h"
 #include "core/ByteArray/WByteArray.h"
 #include "touch/dataTouch/stroke/StrokeNormal.h"
+#include <QList>
 
 class test_WVector : public QObject
 {
 Q_OBJECT
 
 private slots:
+    // insert
+    void insertForcingReallocation();
+    void insertNotForcingReallocation();
 
     void testAppendCopyConstructor();
 
@@ -52,6 +56,69 @@ private slots:
     void copyListWithLessItem();
     void copy_not_empty();
 };
+
+void test_WVector::insertNotForcingReallocation()
+{
+    WVector<int> prova;
+    WVector<int> appended;
+    QList<int> provaQt;
+    QList<int> appededQt;
+
+    for (int i = 0; i < 500; i++) {
+        prova.append(i);
+        provaQt.append(i);
+    }
+
+    for (int i = 0; i < 5000; i++){
+        appended.append(i + (2 << 14));
+        appededQt.append(i + (2 << 14));
+    }
+
+    prova.reserve(2 << 20);
+
+    prova.insert(60, std::move(appended));
+
+    for (int i = 0; i < appededQt.size(); i++)
+        provaQt.insert(60 + i, appededQt[i]);
+
+    QCOMPARE(prova.size(), provaQt.size());
+
+    WDebug(true, prova);
+    WDebug(true, provaQt);
+
+    for (int i = 0; i < prova.size(); i++) {
+        QCOMPARE(prova[i], provaQt[i]);
+    }
+}
+
+void test_WVector::insertForcingReallocation()
+{
+    WVector<int> prova;
+    WVector<int> appended;
+    QList<int> provaQt;
+    QList<int> appededQt;
+
+    for (int i = 0; i < 500; i++) {
+        prova.append(i);
+        provaQt.append(i);
+    }
+
+    for (int i = 0; i < 5000; i++){
+        appended.append(i);
+        appededQt.append(i);
+    }
+
+    prova.insert(60, std::move(appended));
+
+    for (int i = 0; i < appededQt.size(); i++)
+        provaQt.insert(60 + i, appededQt[i]);
+
+    QCOMPARE(prova.size(), provaQt.size());
+
+    for (int i = 0; i < prova.size(); i++) {
+        QCOMPARE(prova[i], provaQt[i]);
+    }
+}
 
 void test_WVector::testAppendCopyConstructor ()
 {
