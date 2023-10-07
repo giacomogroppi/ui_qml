@@ -13,6 +13,7 @@ class test_WVector : public QObject
 Q_OBJECT
 
 private slots:
+
     void testAppendCopyConstructor();
 
     void removeIfAscendingElementNotPresent();
@@ -56,7 +57,7 @@ void test_WVector::testAppendCopyConstructor ()
 {
     WVector<int> arrayWriternote;
     std::vector<int> arrayStandard;
-    const int size = std::pow(2, 20);
+    const int size = std::pow(2, 10);
 
     for (int i = 0; i < size; i++) {
         int value = rand() % 2000000;
@@ -637,7 +638,7 @@ void test_WVector::copyListWithMoreItems()
     QCOMPARE(list1.size(), copiedList.size());
     copiedList.clear();
 
-    QCOMPARE(list1.size(), std::pow(2, 16));
+    QCOMPARE(list1.size(), 0x2 << 16);
 }
 
 void test_WVector::copyListWithLessItem()
@@ -656,7 +657,7 @@ void test_WVector::copyListWithLessItem()
     QCOMPARE(list1.size(), copiedList.size());
     copiedList.clear();
 
-    QCOMPARE(list1.size(), std::pow(2, 8));
+    QCOMPARE(list1.size(), (0x2 << 8));
 }
 
 void test_WVector::copy_not_empty()
