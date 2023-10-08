@@ -34,6 +34,8 @@ private slots:
 
     void saveMultiThread();
 
+    void takeFirst();
+
     // imported from WListFast
     void removeMultiple();
     void removeOne();
@@ -56,6 +58,24 @@ private slots:
     void copyListWithLessItem();
     void copy_not_empty();
 };
+
+void test_WVector::takeFirst()
+{
+    WListFast<int> tmp;
+    QList<int> tmpQt;
+
+    for (int i = 0; i < 400; i++) {
+        tmp.append(i);
+        tmpQt.append(i);
+    }
+
+    while (tmp.size() > 0) {
+        QCOMPARE(tmp.takeFirst(), tmpQt.takeFirst());
+        QCOMPARE(tmp.size(), tmpQt.size());
+    }
+
+    QCOMPARE(tmp.size(), tmpQt.size());
+}
 
 void test_WVector::insertNotForcingReallocation()
 {

@@ -12,6 +12,8 @@ private slots:
     void test_makeHeapHighToLow();
     void test_makeHeapLowToHigh();
 
+    void appendMassiveData();
+
     void testAddNewElementDescending();
     void testAddNewElementAscending();
 
@@ -19,6 +21,48 @@ private slots:
     void removeObjectNotPresent1();
     void removeObjectNotPresent2();
 };
+
+template <class List, class T>
+inline auto max(const List& data)
+{
+    T value = data.first();
+
+    for (const auto &ref: std::as_const(data)) {
+        if (ref > value) {
+            value = ref;
+        }
+    }
+    return value;
+}
+
+template <class List, class T>
+inline auto min(const List& data)
+{
+    T value = data.first();
+
+    for (const auto &ref: std::as_const(data)) {
+        if (ref < value) {
+            value = ref;
+        }
+    }
+    return value;
+}
+
+void test_WHeap::appendMassiveData()
+{
+    WHeap<int, true> tmp;
+    QList<int> tmpQt;
+
+    for (int i = 0; i < 50000; i++) {
+        const int value = rand() % 40000;
+        tmp.add(value);
+        tmpQt.append(value);
+
+        const auto valueQt = min<QList<int>, int>(tmpQt);
+
+        QCOMPARE(tmp.getFirst(), valueQt);
+    }
+}
 
 void test_WHeap::test_makeHeapLowToHigh()
 {
