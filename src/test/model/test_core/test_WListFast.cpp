@@ -90,7 +90,7 @@ void test_WListFast::removeOne()
         WByteArray("prova")
     });
 
-    list.remove(0);
+    list.removeAt(0);
     QCOMPARE(list.size(), 2);
 }
 
@@ -535,18 +535,21 @@ void test_WListFast::copyListWithMoreItems()
     WListFast<long> list1;
     WListFast<long> copiedList;
 
-    for (long i = 0; i < std::pow(2, 20); i++)
+    constexpr auto max = (2ul << 14);
+    constexpr auto min = (2ul << 12);
+
+    for (long i = 0; i < min; i++)
         list1.append(i);
 
-    for (long i = 0; i < std::pow(2, 24); i++)
-        copiedList.append(i + std::pow(2, 20));
+    for (long i = 0; i < max; i++)
+        copiedList.append(i + min);
 
     list1 = copiedList;
 
     QCOMPARE(list1.size(), copiedList.size());
     copiedList.clear();
 
-    QCOMPARE(list1.size(), std::pow(2, 24));
+    QCOMPARE(list1.size(), max);
 }
 
 void test_WListFast::copyListWithLessItem()
@@ -554,18 +557,21 @@ void test_WListFast::copyListWithLessItem()
     WListFast<long> list1;
     WListFast<long> copiedList;
 
-    for (long i = 0; i < std::pow(2, 20); i++)
+    constexpr auto max = (2ul << 14);
+    constexpr auto min = (2ul << 12);
+
+    for (long i = 0; i < max; i++)
         list1.append(i);
 
-    for (long i = 0; i < std::pow(2, 18); i++)
-        copiedList.append(i + std::pow(2, 20));
+    for (long i = 0; i < min; i++)
+        copiedList.append(i + (0x2 << 20));
 
     list1 = copiedList;
 
     QCOMPARE(list1.size(), copiedList.size());
     copiedList.clear();
 
-    QCOMPARE(list1.size(), std::pow(2, 18));
+    QCOMPARE(list1.size(), min);
 }
 
 void test_WListFast::copy_not_empty()

@@ -82,7 +82,9 @@ void test_WVector::removeNotExists()
         tmp.append(i);
     }
 
-    tmp.remove(47);
+    tmp.removeIf([](const int& value) {
+        return value == 47;
+    });
 
     QCOMPARE(tmp.size(), max / 2);
 }
@@ -96,7 +98,7 @@ void test_WVector::removeSingleObject()
         tmp.append(QString::number(i).toUtf8());
     }
 
-    tmp.remove("48");
+    tmp.removeObjects("48");
 
     QCOMPARE(tmp.size(), max / 2 - 1);
 }
@@ -114,7 +116,7 @@ void test_WVector::removeMultipleObjects()
         }
     }
 
-    tmp.remove("400");
+    tmp.removeObjects("400");
 
     QCOMPARE(tmp.size(), max / 2 - 1);
 }
