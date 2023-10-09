@@ -557,5 +557,6 @@ SETUP_TESTS(
 		src/test/model/test_touch/dataTouch/test_StrokeNormal
 		src/test/model/test_touch/dataTouch/test_StrokeForPage
 		src/test/model/test_VersionFileController
+		src/test/model/test_touch/test_Rubber
 )
 endif()

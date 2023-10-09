@@ -14,6 +14,17 @@ class test_WVector : public QObject
 Q_OBJECT
 
 private slots:
+    // takeFirst
+    void takeFirstForceReallocation();
+
+    // remove
+    void removeNotExists();
+    void removeSingleObject();
+    void removeMultipleObjects();
+
+    // remove
+    void removeForceReallocation();
+
     // insert
     void insertForcingReallocation();
     void insertNotForcingReallocation();
@@ -31,6 +42,9 @@ private slots:
 
     void removeIf_removeAllAscending();
     void removeIf_removeAllDescending();
+
+    // move operator
+    void moveOperator();
 
     void saveMultiThread();
 
@@ -58,6 +72,87 @@ private slots:
     void copyListWithLessItem();
     void copy_not_empty();
 };
+
+void test_WVector::removeNotExists()
+{
+    WVector<int> tmp;
+    constexpr int max = 10000;
+
+    for (int i = 0; i < max; i += 2) {
+        tmp.append(i);
+    }
+
+    tmp.remove(47);
+
+    QCOMPARE(tmp.size(), max / 2);
+}
+
+void test_WVector::removeSingleObject()
+{
+    WVector<WByteArray> tmp;
+    constexpr int max = 10000;
+
+    for (int i = 0; i < max; i += 2) {
+        tmp.append(QString::number(i).toUtf8());
+    }
+
+    tmp.remove("48");
+
+    QCOMPARE(tmp.size(), max / 2 - 1);
+}
+
+void test_WVector::removeMultipleObjects()
+{
+    WVector<WByteArray> tmp;
+    constexpr int max = 10000;
+
+    for (int i = 0; i < max; i += 2) {
+        tmp.append(QString::number(i).toUtf8());
+
+        if (i == 400) {
+            tmp.append(QString::number(i).toUtf8());
+        }
+    }
+
+    tmp.remove("400");
+
+    QCOMPARE(tmp.size(), max / 2 - 1);
+}
+
+void test_WVector::takeFirstForceReallocation()
+{
+    WVector<int> tmp;
+    constexpr int max = 5000;
+
+    for (int i = 0; i < max; i++)
+        tmp.append(i);
+
+    for (int i = 0; i < max; i++) {
+        QCOMPARE(tmp.takeFirst(), i);
+
+        QCOMPARE(tmp.size(), max - i - 1);
+    }
+}
+
+void test_WVector::removeForceReallocation()
+{
+    WVector<int> tmp;
+    constexpr int max = 5000;
+
+    for (int i = 0; i < max; i++)
+        tmp.append(i);
+
+    for (int i = 0; i < max - 1; i++) {
+        tmp.removeAt(1);
+
+        QCOMPARE(tmp.size(), max - i - 1);
+    }
+}
+
+void test_WVector::moveOperator()
+{
+
+}
 
 void test_WVector::takeFirst()
 {
