@@ -12,7 +12,7 @@ ControllerSettings::ControllerSettings(QObject *parent, Fn<WPath()> getPath)
 {
     _options->begin();
 
-    Scheduler::addTaskMainThread(new WTaskFunction(nullptr, [this] { _pathSaving = _getPath(); }, true));
+    Scheduler::addTaskMainThread(SharedPtrThreadSafe<WTask>(new WTaskFunction(nullptr, [this] { _pathSaving = _getPath(); }, true)));
 }
 
 ControllerSettings::~ControllerSettings()

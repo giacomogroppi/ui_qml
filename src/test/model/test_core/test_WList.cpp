@@ -22,7 +22,7 @@ void test_WList::append_2Argument()
     QCOMPARE_EQ(4, c.last());
 
     QCOMPARE_EQ(1, c.size());
-    QCOMPARE_EQ(4, c.get_first());
+    QCOMPARE_EQ(4, c.takeFirst());
 
     QCOMPARE_EQ(0, c.size());
 }

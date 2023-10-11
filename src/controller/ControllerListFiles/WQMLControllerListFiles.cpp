@@ -11,9 +11,11 @@ WQMLControllerListFiles::WQMLControllerListFiles(QObject *parent,
     w_connect_lambda(fileManager.get(), onListFilesChanged, update);
     w_connect_lambda(fileManager.get(), onCurrentDirectoryChanged, update);
 
-    Scheduler::addTaskMainThread(new WTaskFunction(nullptr, [this] {
-        updateList();
-    }, true));
+    Scheduler::addTaskMainThread(SharedPtrThreadSafe<WTask>(
+            new WTaskFunction(nullptr, [this] {
+                updateList();
+            }, true))
+    );
 }
 
 auto WQMLControllerListFiles::rowCount(const QModelIndex &parent) const -> int

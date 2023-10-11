@@ -296,6 +296,7 @@ set(PROJECT_SOURCES_WRITERNOTE
 		${A_DIR_ROOT}/src/model/audiorecord/AudioRecorderQt.cpp
 		${A_DIR_ROOT}/src/model/AudioData/AudioData.cpp
 		${A_DIR_ROOT}/src/model/core/Index.cpp
+		${A_DIR_ROOT}/src/model/core/pointer/SharedPtrThreadSafe.cpp
 )
 
 if(IOS)
