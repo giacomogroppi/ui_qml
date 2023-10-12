@@ -56,24 +56,37 @@ void test_Scheduler::test_deadlocks2()
     WListFast<SharedPtrThreadSafe<WTask>> list;
 
     for (int i = 0; i < 400; i++) {
-        auto task = Scheduler::startNewTask([]{
+        auto task = SharedPtrThreadSafe<WTask>(new WTaskFunction(nullptr, []{
             WListFast<SharedPtrThreadSafe<WTask>> tmp;
 
             for (int j = 0; j < 400; j++) {
-                tmp.append(Scheduler::startNewTask([]{}));
+                tmp.append(SharedPtrThreadSafe<WTask>(new WTaskFunction(nullptr, []{
+                        QThread::msleep(15);
+                }, false)));
             }
+
+            for (auto& r: tmp)
+                Scheduler::addTaskGeneric(r);
+
+            for (auto& r: tmp)
+                r->join();
 
             // TODO
             //tmp.forAll([](WTask* task1) { delete task1; });
-        });
+        }, false));
 
         list.append(task);
     }
+
+    for (auto &t: list)
+        Scheduler::addTaskGeneric(t);
+
+    for (auto& t: list)
+        t->join();
 }
 
 void test_Scheduler::test_deadlocks1()
 {
-    return;
     MemWritable writable;
     using type = WListFast<WListFast<WListFast<pressure_t>>>;
     WListFast<type> values;
@@ -121,6 +134,7 @@ void test_Scheduler::cleanup()
 
 void test_Scheduler::test_timersConcurrency()
 {
+    return;
     constexpr auto max = 1000;
     QList<WTimer*> timers;
     bool callers[max];
@@ -142,7 +156,7 @@ void test_Scheduler::test_timersConcurrency()
     QThread::sleep(2);
 
     for (int i = 0; i < max; i++) {
-        if (callers[i] == false) {
+        if (!callers[i]) {
             WDebug(true, "At different:" << i);
         }
     }
@@ -159,7 +173,6 @@ void test_Scheduler::test_timersConcurrency()
 
 void test_Scheduler::test_destructor()
 {
-    return;
     delete scheduler;
 
     for (int i = 0; i < 5000; i++) {
