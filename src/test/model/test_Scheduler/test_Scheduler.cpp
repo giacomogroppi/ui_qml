@@ -87,8 +87,6 @@ void test_Scheduler::test_deadlocks2()
 
 void test_Scheduler::test_deadlocks1()
 {
-    //
-    return;
     MemWritable writable;
     using type = WListFast<WListFast<WListFast<pressure_t>>>;
     WListFast<type> values;
@@ -136,7 +134,6 @@ void test_Scheduler::cleanup()
 
 void test_Scheduler::test_timersConcurrency()
 {
-    return;
     constexpr auto max = 1000;
     QList<WTimer*> timers;
     bool callers[max];
@@ -175,8 +172,6 @@ void test_Scheduler::test_timersConcurrency()
 
 void test_Scheduler::test_destructor()
 {
-    //
-    return;
     delete scheduler;
 
     for (int i = 0; i < 5000; i++) {
@@ -194,20 +189,22 @@ void test_Scheduler::test_destructor()
 
 void test_Scheduler::test_timers()
 {
-    return;
     delete scheduler;
 
     for (int i = 0; i < 500; i++) {
         scheduler = new Scheduler;
 
         bool call = false;
-        auto *timer = new WTimer(nullptr, [&call] { call = true; }, 50, false);
+        auto *timer = new WTimer(nullptr, [&call] {
+            call = true;
+        }, 40, false);
 
+        timer->setSingleShot(true);
         timer->start();
 
         QCOMPARE(call, false);
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(70));
+        QThread::msleep(50);
 
         QCOMPARE(call, true);
         QCOMPARE(timer->isActive(), false);
