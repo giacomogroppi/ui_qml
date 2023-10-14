@@ -53,14 +53,14 @@ void test_Scheduler::test_deadlocks3()
 void test_Scheduler::test_deadlocks2()
 {
     MemWritable writable;
-    WListFast<SharedPtrThreadSafe<WTask>> list;
+    WListFast<Scheduler::Ptr<WTask>> list;
 
     for (int i = 0; i < 40; i++) {
-        auto task = SharedPtrThreadSafe<WTask>(new WTaskFunction(nullptr, []{
-            WListFast<SharedPtrThreadSafe<WTask>> tmp;
+        auto task = Scheduler::Ptr<WTask>(new WTaskFunction(nullptr, []{
+            WListFast<Scheduler::Ptr<WTask>> tmp;
 
             for (int j = 0; j < 40; j++) {
-                tmp.append(SharedPtrThreadSafe<WTask>(new WTaskFunction(nullptr, []{
+                tmp.append(Scheduler::Ptr<WTask>(new WTaskFunction(nullptr, []{
                         //QThread::msleep(2);
                 }, false)));
             }
@@ -68,11 +68,10 @@ void test_Scheduler::test_deadlocks2()
             for (auto& r: tmp)
                 Scheduler::addTaskGeneric(r);
 
-            for (auto& r: tmp)
+            for (auto& r: tmp) {
                 r->join();
-
-            // TODO
-            //tmp.forAll([](WTask* task1) { delete task1; });
+                r.release();
+            }
         }, false));
 
         list.append(task);
@@ -81,8 +80,10 @@ void test_Scheduler::test_deadlocks2()
     for (auto &t: list)
         Scheduler::addTaskGeneric(t);
 
-    for (auto& t: list)
+    for (auto& t: list) {
         t->join();
+        t.release();
+    }
 }
 
 void test_Scheduler::test_deadlocks1()
@@ -178,7 +179,7 @@ void test_Scheduler::test_destructor()
         scheduler = new Scheduler;
 
         for (int j = 0; j < 500; j++) {
-            Scheduler::addTaskGeneric(SharedPtrThreadSafe<WTask>(new WTaskFunction(nullptr, []{}, true)));
+            Scheduler::addTaskGeneric(Scheduler::Ptr<WTask>(new WTaskFunction(nullptr, []{}, true)));
         }
 
         delete scheduler;

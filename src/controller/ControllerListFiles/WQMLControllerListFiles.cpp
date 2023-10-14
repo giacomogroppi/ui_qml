@@ -11,7 +11,7 @@ WQMLControllerListFiles::WQMLControllerListFiles(QObject *parent,
     w_connect_lambda(fileManager.get(), onListFilesChanged, update);
     w_connect_lambda(fileManager.get(), onCurrentDirectoryChanged, update);
 
-    Scheduler::addTaskMainThread(SharedPtrThreadSafe<WTask>(
+    Scheduler::addTaskMainThread(Scheduler::Ptr<WTask>(
             new WTaskFunction(nullptr, [this] {
                 updateList();
             }, true))
