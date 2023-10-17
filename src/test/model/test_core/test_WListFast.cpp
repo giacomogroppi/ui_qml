@@ -32,6 +32,9 @@ private slots:
     // save and load single thread
     void testSaveSingleThread();
 
+    // remove with iterator
+    void removeWithIterator();
+
     // test save multithread
     void testBuildSave();
     void writeCallOnce();
@@ -55,6 +58,40 @@ private slots:
     void removeOne();
     void removeMultiple();
 };
+
+void test_WListFast::removeWithIterator()
+{
+    constexpr auto size = 5000;
+    WListFast<WByteArray> tmp;
+    QList<WByteArray> tmpQt;
+
+    WVector<int> indexToRemove;
+
+    for (int i = 0; i < size; i++) {
+        tmp.append(QString::number(i).toUtf8());
+        tmpQt.append(QString::number(i).toUtf8());
+    }
+
+    for (int i = 0; i < 15; i++) {
+        const auto index = std::rand() % size;
+        indexToRemove.append(index);
+    }
+
+    WAbstractList::sort(indexToRemove.begin(), indexToRemove.end());
+
+    tmp.removeAt(indexToRemove.begin(), indexToRemove.end());
+    for (long long i = indexToRemove.size() - 1; i >= 0; i--)
+        tmpQt.removeAt(indexToRemove[i]);
+
+    QCOMPARE(tmp.size(), size - indexToRemove.size());
+    QCOMPARE(tmp.size(), tmpQt.size());
+
+    WDebug(true, tmp);
+    WDebug(true, tmpQt);
+
+    for (int i = 0; i < tmp.size(); i++)
+        QCOMPARE(tmp[i], tmpQt[i]);
+}
 
 void test_WListFast::removeMultiple()
 {
