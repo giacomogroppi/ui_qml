@@ -136,13 +136,13 @@ public:
     char *result = nullptr;
     size_t s = 0;
 
-    auto write (const void *data, size_t size) -> int final
+    auto write (const void *data, size_t size) -> Error final
     {
         W_ASSERT(result == nullptr);
         result = (char *) malloc (size);
         WCommonScript::WMemcpy(result, data, size);
         s = size;
-        return 0;
+        return Error::makeOk();
     }
 
     ~WritableTest() {
@@ -161,7 +161,7 @@ void test_WListFast::saveAndLoadsingleThreadZeroElement()
 
     writable.merge([&](const void *d, size_t size) {
         result.append(static_cast<const char*>(d), size);
-        return 0;
+        return Error::makeOk();
     });
 
     readable.setData(result.constData(), result.size());
@@ -187,7 +187,7 @@ void test_WListFast::saveAndLoadSingleThread()
 
     writable.merge([&](const void *d, size_t size) {
         result.append(static_cast<const char*>(d), size);
-        return 0;
+        return Error::makeOk();
     });
 
     readable.setData(result.constData(), result.size());
@@ -315,10 +315,10 @@ void test_WListFast::saveAndLoadSingleThreadCustomLambda()
         .append(54)
         .append(34);
 
-    const auto result = WListFast<size_t>::write(writable, tmp, [](WritableAbstract &writable, size_t d) -> int {
-        if (writable.write(&d, sizeof(size_t)) < 0)
-            return -1;
-        return 0;
+    const auto result = WListFast<size_t>::write(writable, tmp, [](WritableAbstract &writable, size_t d) {
+        if (auto err = writable.write(&d, sizeof(size_t)))
+            return err;
+        return Error::makeOk();
     });
 
     QVERIFY(result == 0);
@@ -332,12 +332,12 @@ void test_WListFast::saveAndLoadSingleThreadCustomLambda()
             readable,
             []( const VersionFileController &,
                 ReadableAbstract &readable
-               ) -> WPair<int, size_t>
+               ) -> WPair<Error, size_t>
                 {
                     size_t result;
-                    if (readable.read(&result, sizeof(result)) < 0)
-                        return {-1, 0};
-                    return {0, result};
+                    if (auto err = readable.read(&result, sizeof(result)))
+                        return {err, 0};
+                    return {Error::makeOk(), result};
                 }
     );
 
@@ -420,7 +420,7 @@ void test_WListFast::writeCallOnce()
                     Scheduler::startNewTask
             );
 
-            QCOMPARE(0, res);
+            QCOMPARE(res, Error::makeOk());
             QCOMPARE(list, listRead);
         }
     }

@@ -24,14 +24,14 @@ class WritableTest final: public WritableAbstract
     char *_data = nullptr;
     size_t size = 0;
 public:
-    auto write (const void *data, size_t s) -> int final
+    auto write (const void *data, size_t s) -> Error final
     {
         W_ASSERT(this->_data == nullptr);
         this->_data = (char *) malloc (s);
         this->size = s;
         WCommonScript::WMemcpy(_data, data, s);
 
-        return 0;
+        return Error::makeOk();
     }
 
     ~WritableTest()

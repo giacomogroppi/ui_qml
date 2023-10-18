@@ -31,7 +31,7 @@ void test_Scheduler::test_deadlocks3()
     WListFast<WListFast<pressure_t>> tmp;
     class WritableTest: public WritableAbstract {
     public:
-        int write(const void* d, size_t size) { return 0; }
+        Error write(const void* d, size_t size) final { return Error::makeOk(); }
     };
 
     WritableTest writable;

@@ -30,7 +30,7 @@ void test_VersionFileController::test()
 
     writable.merge([&](const void *d, size_t size) {
         result.append(static_cast<const char*>(d), size);
-        return 0;
+        return Error::makeOk();
     });
 
     readable.setData(result.constData(), result.size());

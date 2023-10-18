@@ -30,9 +30,9 @@ void test_StrokeNormal::testLoadWithNoStroke()
         //WFile file (tmp / "prova.txt", WFile::Write);
         //QVERIFY(file.isValid());
         QCOMPARE(Stroke::write(writable, stroke), 0);
-        writable.merge([&] (const void *d, size_t size) -> int {
+        writable.merge([&] (const void *d, size_t size) {
             data.append(static_cast<const char *>(d), size);
-            return 0;
+            return Error::makeOk();
         });
     }
 
@@ -64,9 +64,9 @@ void test_StrokeNormal::testLoadWith200Points()
         //WFile file (tmp / "prova.txt", WFile::Write);
         //QVERIFY(file.isValid());
         QCOMPARE(Stroke::write(writable, stroke), 0);
-        writable.merge([&] (const void *d, size_t size) -> int {
+        writable.merge([&] (const void *d, size_t size) {
             data.append(static_cast<const char *>(d), size);
-            return 0;
+            return Error::makeOk();
         });
     }
 

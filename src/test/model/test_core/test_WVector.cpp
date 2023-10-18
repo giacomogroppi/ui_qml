@@ -200,9 +200,6 @@ void test_WVector::insertNotForcingReallocation()
 
     QCOMPARE(prova.size(), provaQt.size());
 
-    WDebug(true, prova);
-    WDebug(true, provaQt);
-
     for (int i = 0; i < prova.size(); i++) {
         QCOMPARE(prova[i], provaQt[i]);
     }
@@ -283,10 +280,10 @@ void test_WVector::saveMultiThread()
 
         writable.merge([&](const void *d, size_t size) {
             data.append(static_cast<const char*>(d), size);
-            return 0;
+            return Error::makeOk();
         });
 
-        QCOMPARE(0, result);
+        QCOMPARE(result, Error::makeOk());
 
         {
             VersionFileController versionController{};
@@ -300,8 +297,10 @@ void test_WVector::saveMultiThread()
                     Scheduler::startNewTask
             );
 
-            QCOMPARE(0, res);
-            QCOMPARE(list, listRead);
+            WDebug(true, res.isErr() << Error::makeOk().isErr());
+
+            QCOMPARE(res, Error::makeOk());
+            QCOMPARE(listRead, list);
         }
     }
 }
@@ -467,7 +466,7 @@ void test_WVector::saveAndLoadsingleThreadZeroElement()
 
     writable.merge([&](const void *d, size_t size) {
         result.append(static_cast<const char*>(d), size);
-        return 0;
+        return Error::makeOk();
     });
 
     readable.setData(result.constData(), result.size());
@@ -493,7 +492,7 @@ void test_WVector::saveAndLoadSingleThread()
 
     writable.merge([&](const void *d, size_t size) {
         result.append(static_cast<const char*>(d), size);
-        return 0;
+        return Error::makeOk();
     });
 
     readable.setData(result.constData(), result.size());
@@ -563,7 +562,7 @@ void test_WVector::saveAndLoadSingleThreadCustomLambda()
 
     writable.merge([&](const void *d, size_t size) {
         data.append(static_cast<const char*>(d), size);
-        return 0;
+        return Error::makeOk();
     });
 
     MemReadable readable;
@@ -599,7 +598,7 @@ void test_WVector::testSaveSingleThread()
 
         writable.merge([&](const void* d, size_t s) {
             data.append(static_cast<const char*>(d), s);
-            return 0;
+            return Error::makeOk();
         });
 
         QCOMPARE(0, result);
@@ -642,7 +641,7 @@ void test_WVector::writeCallOnce()
 
         writable.merge([&](const void *d, size_t size) {
             data.append(static_cast<const char*>(d), size);
-            return 0;
+            return Error::makeOk();
         });
 
         QCOMPARE(0, result);

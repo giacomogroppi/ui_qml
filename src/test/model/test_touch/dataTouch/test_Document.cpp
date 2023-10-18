@@ -42,7 +42,7 @@ void test_Document::test200Pages()
         QCOMPARE(Document::write(writable, doc), 0);
         writable.merge([&](const void *d, size_t size) {
             data.append(static_cast<const char*>(d), size);
-            return 0;
+            return Error::makeOk();
         });
     }
 
@@ -77,9 +77,9 @@ void test_Document::testLoad()
         MemWritable writable;
 
         QCOMPARE(Document::write(writable, doc), 0);
-        writable.merge([&] (const void *d, size_t size) -> int {
+        writable.merge([&] (const void *d, size_t size) -> Error {
             data.append(static_cast<const char *>(d), size);
-            return 0;
+            return Error::makeOk();
         });
     }
 

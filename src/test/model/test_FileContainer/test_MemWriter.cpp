@@ -28,11 +28,11 @@ private:
     WByteArray result;
     size_t s = 0;
 public:
-    auto write (const void *data, size_t size)-> int final
+    auto write (const void *data, size_t size) -> Error final
     {
         result.append(static_cast<const char*>(data), size);
         this->s += size;
-        return 0;
+        return Error::makeOk();
     }
 
     ~WritableTest() = default;
@@ -61,7 +61,7 @@ void test_MemWriter::writeBig()
 
         writable.merge([&](const void *d, size_t size) {
             result.append(static_cast<const char*>(d), size);
-            return 0;
+            return Error::makeOk();
         });
 
         QCOMPARE(result.size(), tmp.size());
@@ -86,7 +86,7 @@ void test_MemWriter::writeTwoZone()
 
         writable.merge([&](const void *d, size_t size) {
             merged.append(static_cast<const char*>(d), size);
-            return 0;
+            return Error::makeOk();
         });
 
         QCOMPARE(merged.size(), original.size());
