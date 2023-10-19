@@ -80,8 +80,8 @@ void test_WListFast::removeWithIterator()
     WAbstractList::sort(indexToRemove.begin(), indexToRemove.end());
 
     tmp.removeAt(indexToRemove.begin(), indexToRemove.end());
-    for (long long i = indexToRemove.size() - 1; i >= 0; i--)
-        tmpQt.removeAt(indexToRemove[i]);
+    for (auto i = indexToRemove.size() - 1; i >= 0; i--)
+        tmpQt.removeAt(indexToRemove.at(i));
 
     QCOMPARE(tmp.size(), size - indexToRemove.size());
     QCOMPARE(tmp.size(), tmpQt.size());
@@ -591,16 +591,16 @@ void test_WListFast::copyListWithMoreItems()
 
 void test_WListFast::copyListWithLessItem()
 {
-    WListFast<long> list1;
-    WListFast<long> copiedList;
+    WListFast<unsigned long> list1;
+    WListFast<unsigned long> copiedList;
 
     constexpr auto max = (2ul << 14);
     constexpr auto min = (2ul << 12);
 
-    for (long i = 0; i < max; i++)
+    for (auto i = 0ul; i < max; i++)
         list1.append(i);
 
-    for (long i = 0; i < min; i++)
+    for (auto i = 0ul; i < min; i++)
         copiedList.append(i + (0x2 << 20));
 
     list1 = copiedList;
