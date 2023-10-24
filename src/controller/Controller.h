@@ -27,7 +27,7 @@ private:
     Fn<int()>   _currentPositionRecording = [this] { return _audioRecorder->getSecondRecording(); };
     Fn<bool()>  _isPlaying = [this] { return this->_audioPlayer->isPlaying(); };
     Fn<int()>   _getPositionAudioPlaying = [this] { return this->_audioPlayer->getPositionInSeconds(); };
-    Fn<void(const WString&)> _showGenericError = [this] (const WString& error) { WDebug(true, "Error: " << error); };
+    Fn<void(const WString&)> _showGenericError = [] (const WString& error) { WDebug(true, "Error: " << error); };
 
     TabletController *_tabletController;
 

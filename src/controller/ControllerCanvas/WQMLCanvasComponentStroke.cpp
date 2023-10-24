@@ -35,7 +35,7 @@ WQMLCanvasComponentStroke::~WQMLCanvasComponentStroke()
 void WQMLCanvasComponentStroke::paint(QPainter *painter)
 {
     const auto width = this->width();
-    static int i = 0;
+    static not_used int i = 0;
 
     TIME_START_STATIC(paint_hz);
     TIME_START(paint_var);

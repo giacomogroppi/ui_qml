@@ -1,6 +1,7 @@
 #include "WQMLItemListComponent.h"
 #include <QPainter>
 #include "ControllerList.h"
+#include "core/PointF.h"
 
 WQMLItemListComponent::WQMLItemListComponent(QQuickItem *parent)
     : QQuickPaintedItem(parent)
@@ -13,6 +14,7 @@ void WQMLItemListComponent::paint(QPainter *painter)
 {
     auto *instance = ControllerList::instance();
     const auto &img = instance->getImg(this->indexObject());
+    painter->drawImage(QPointF {0., 0.}, img);
 }
 
 int WQMLItemListComponent::indexObject()

@@ -15,7 +15,23 @@ private slots:
 
     void test_no_item();
     void test_all_item();
+
+    void testReverse();
 };
+
+void test_WAbstractList::testReverse()
+{
+    WVector<int> tmp;
+
+    for (int i = 0; i < 500; i++)
+        tmp.append(i);
+
+    int i = 499;
+
+    for (const auto ref: WAbstractList::Reverse(tmp))
+        QCOMPARE(ref, i--);
+
+}
 
 void test_WAbstractList::test_all_item()
 {

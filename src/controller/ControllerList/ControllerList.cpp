@@ -11,9 +11,10 @@ static QList<WQMLItemListComponent*> item = {};
 
 static bool init = false;
 
-ControllerList::ControllerList(QObject *parent) :
-    QAbstractListModel(parent),
-    _isVisible(true)
+ControllerList::ControllerList(QObject *parent)
+    : QAbstractListModel(parent)
+    , _isVisible(true)
+    , m_data()
 {
     Q_ASSERT(init == false);
     init = true;
@@ -21,12 +22,14 @@ ControllerList::ControllerList(QObject *parent) :
     qmlRegisterType<WQMLItemListComponent>("writernote.WQMLItemListPreview",
                                            1, 0,
                                            "WItemListPreview");
+    /*
     m_data
         << Data("Denmark", "Gianfranco", 5.6)
         << Data("Sweden", "Genoveffo", 9.6)
         << Data("Iceland", "Rossi", 0.3)
         << Data("Norway", "Forlanini", 5.1)
         << Data("Finland", "Agnelli", 5.4);
+    */
 
     auto *growthTimer = new QTimer(this);
     connect(growthTimer, &QTimer::timeout, this, &ControllerList::growPopulation);
@@ -54,7 +57,7 @@ QVariant ControllerList::data(const QModelIndex &index, int role) const
 
     qDebug() << "data" << role << index.row();
 
-    const Data &data = m_data.at(index.row());
+    //const Data &data = m_data.at(index.row());
     return QVariant();
 }
 
@@ -93,7 +96,7 @@ void ControllerList::duplicateData(int row)
     if (row < 0 || row >= m_data.count())
         return;
 
-    const Data data = m_data[row];
+    const auto &data = m_data[row];
     const int rowOfInsert = row + 1;
 
     beginInsertRows(QModelIndex(), rowOfInsert, rowOfInsert);

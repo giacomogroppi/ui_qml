@@ -7,12 +7,13 @@
 #include <QObjectList>
 #include <QAbstractListModel>
 
-struct Data {
-    Data() {}
-    Data( const QString& name, const QString& flag, double population ) {};
-
+// TODO: implement
+struct PreviewData {
+    PreviewData();
+    PreviewData( const QString& name, const QString& flag, double population );
 };
 
+// preview list
 class ControllerList : public QAbstractListModel
 {
     Q_OBJECT
@@ -52,7 +53,7 @@ private: //members
 
     const QImage &getImg(int index);
 
-    QVector< Data > m_data;
+    QVector< PreviewData > m_data;
 
     static ControllerList *instance();
     static void registerItem(class WQMLItemListComponent *item);
