@@ -107,7 +107,7 @@ void test_MemWriter::writeInteger()
         writable.merge(writableTest);
 
         int valueRead;
-        WCommonScript::WMemcpy(&valueRead, writableTest.data(), sizeof(int));
+        WUtils::WMemcpy(&valueRead, writableTest.data(), sizeof(int));
         QCOMPARE(tmp, valueRead);
     }
 }
@@ -130,7 +130,7 @@ void test_MemWriter::writeMultipleInteger()
 
         for (int i = 0; i < 500; i++) {
             int valueRead;
-            WCommonScript::WMemcpy(&valueRead, writableTest.data() + sizeof(int) * i, sizeof(int));
+            WUtils::WMemcpy(&valueRead, writableTest.data() + sizeof(int) * i, sizeof(int));
             QCOMPARE(values[i], valueRead);
         }
     }

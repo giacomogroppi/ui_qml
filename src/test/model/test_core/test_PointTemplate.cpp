@@ -23,8 +23,8 @@ void test_PointTemplate::test1()
     PointTemplate<double> point  {0, 0};
     PointTemplate<double> result {0, 1};
     const auto actual = point.rotate({1, 0}, 90);
-    QVERIFY(WCommonScript::is_near(actual.x(), result.x(), 0.));
-    QVERIFY(WCommonScript::is_near(actual.y(), result.y(), 0.));
+    QVERIFY(WUtils::is_near(actual.x(), result.x(), 0.));
+    QVERIFY(WUtils::is_near(actual.y(), result.y(), 0.));
 }
 
 void test_PointTemplate::rotate_distance_1_45()
@@ -32,8 +32,8 @@ void test_PointTemplate::rotate_distance_1_45()
     PointTemplate<double> point  {0, 1};
     PointTemplate<double> result {-1, 0};
     const auto actual = point.rotate({0, 0}, 90);
-    QVERIFY(WCommonScript::is_near(actual.x(), result.x(), 0.));
-    QVERIFY(WCommonScript::is_near(actual.y(), result.y(), WCommonScript::Power(10, -15)));
+    QVERIFY(WUtils::is_near(actual.x(), result.x(), 0.));
+    QVERIFY(WUtils::is_near(actual.y(), result.y(), WUtils::Power(10, -15)));
 }
 
 void test_PointTemplate::rotate_distance_1_m_45()
@@ -41,8 +41,8 @@ void test_PointTemplate::rotate_distance_1_m_45()
     PointTemplate<double> point { 0, 1 };
     PointTemplate<double> result { 1, 0 };
     const auto actual = point.rotate({0, 0}, -90);
-    QVERIFY(WCommonScript::is_near(actual.x(), result.x(), 0.));
-    QVERIFY(WCommonScript::is_near(actual.y(), result.y(), WCommonScript::Power(10, -15)));
+    QVERIFY(WUtils::is_near(actual.x(), result.x(), 0.));
+    QVERIFY(WUtils::is_near(actual.y(), result.y(), WUtils::Power(10, -15)));
 }
 
 void test_PointTemplate::rotate_distance_0()

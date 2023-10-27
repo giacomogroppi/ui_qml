@@ -29,7 +29,7 @@ public:
         W_ASSERT(this->_data == nullptr);
         this->_data = (char *) malloc (s);
         this->size = s;
-        WCommonScript::WMemcpy(_data, data, s);
+        WUtils::WMemcpy(_data, data, s);
 
         return Error::makeOk();
     }
@@ -60,7 +60,7 @@ void test_MemReader::writeInteger()
     writable.merge(writableTest);
 
     int valueRead;
-    WCommonScript::WMemcpy(&valueRead, writableTest.data(), sizeof(int));
+    WUtils::WMemcpy(&valueRead, writableTest.data(), sizeof(int));
     QCOMPARE(tmp, valueRead);
 }
 

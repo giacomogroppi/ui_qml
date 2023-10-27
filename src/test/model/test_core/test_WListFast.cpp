@@ -140,7 +140,7 @@ public:
     {
         W_ASSERT(result == nullptr);
         result = (char *) malloc (size);
-        WCommonScript::WMemcpy(result, data, size);
+        WUtils::WMemcpy(result, data, size);
         s = size;
         return Error::makeOk();
     }
