@@ -158,7 +158,7 @@ void test_WVector::moveOperator()
 
 void test_WVector::takeFirst()
 {
-    WListFast<int> tmp;
+    WVector<int> tmp;
     QList<int> tmpQt;
 
     for (int i = 0; i < 400; i++) {

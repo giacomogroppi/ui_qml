@@ -1,6 +1,7 @@
 #include <QtTest>
 #include <utility>
 
+#define TEST_W
 #include "core/WListFast.h"
 #include "utils/WCommonScript.h"
 #include "touch/dataTouch/stroke/Stroke.h"
@@ -152,12 +153,12 @@ public:
 
 void test_WListFast::saveAndLoadsingleThreadZeroElement()
 {
-    WListFast<pressure_t> list;
+    WListFast<UnsignedLong> list;
     MemWritable writable;
     MemReadable readable;
     WByteArray result;
 
-    QCOMPARE(WListFast<pressure_t>::write(writable, list), 0);
+    QCOMPARE(WListFast<UnsignedLong>::write(writable, list), 0);
 
     writable.merge([&](const void *d, size_t size) {
         result.append(static_cast<const char*>(d), size);
@@ -166,7 +167,7 @@ void test_WListFast::saveAndLoadsingleThreadZeroElement()
 
     readable.setData(result.constData(), result.size());
 
-    const auto [r, d] = WListFast<pressure_t>::load(VersionFileController(), readable);
+    const auto [r, d] = WListFast<UnsignedLong>::load(VersionFileController(), readable);
 
     QCOMPARE(readable.getSeek(), readable.getMax());
     QCOMPARE(r, 0);
@@ -175,15 +176,15 @@ void test_WListFast::saveAndLoadsingleThreadZeroElement()
 
 void test_WListFast::saveAndLoadSingleThread()
 {
-    WListFast<pressure_t> list;
+    WListFast<UnsignedLong> list;
     MemWritable writable;
     MemReadable readable;
     WByteArray result;
 
-    for (int i = 0; i < 10000; i++)
-        list.append(static_cast<double>(i));
+    for (auto i = 0ul; i < 10000ul; i++)
+        list.append(UnsignedLong(i));
 
-    QCOMPARE(WListFast<pressure_t>::write(writable, list), 0);
+    QCOMPARE(WListFast<UnsignedLong>::write(writable, list), 0);
 
     writable.merge([&](const void *d, size_t size) {
         result.append(static_cast<const char*>(d), size);
@@ -192,7 +193,7 @@ void test_WListFast::saveAndLoadSingleThread()
 
     readable.setData(result.constData(), result.size());
 
-    const auto [r, d] = WListFast<pressure_t>::load(VersionFileController(), readable);
+    const auto [r, d] = WListFast<UnsignedLong>::load(VersionFileController(), readable);
 
     QCOMPARE(readable.getSeek(), readable.getMax());
     QCOMPARE(r, 0);

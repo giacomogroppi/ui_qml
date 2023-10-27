@@ -32,13 +32,13 @@ private slots:
 void test_FileManager::loadStroke()
 {
     FileManager manager (nullptr, WPath(path), true);
-    WListFast<pressure_t> stroke;
+    WVector<pressure_t> stroke;
 
     for (int i = 0; i < 50000; i++) stroke.append(pressure_t(5.0));
 
     QCOMPARE(manager.createFile("prova", stroke, Extension::makeTxt()), 0);
 
-    const auto [result, data] = manager.openFile<WListFast<pressure_t>>("prova", Extension::makeTxt());
+    const auto [result, data] = manager.openFile<WVector<pressure_t>>("prova", Extension::makeTxt());
 
     QCOMPARE(result, 0);
     QCOMPARE(data, stroke);

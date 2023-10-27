@@ -28,16 +28,17 @@ private slots:
 
 void test_Scheduler::test_deadlocks3()
 {
-    WListFast<WListFast<pressure_t>> tmp;
+    using namespace std;
+    WListFast<WVector<pressure_t>> tmp;
     class WritableTest: public WritableAbstract {
     public:
-        Error write(const void* d, size_t size) final { return Error::makeOk(); }
+        Error write(const void*, size_t) final { return Error::makeOk(); }
     };
 
     WritableTest writable;
 
-    for (int i = 0; i < std::thread::hardware_concurrency(); i++) {
-        tmp.append(WListFast<pressure_t>(512));
+    for (decltype(thread::hardware_concurrency()) i = 0; i < thread::hardware_concurrency(); i++) {
+        tmp.append(WVector<pressure_t>(512));
     }
 
     for (auto& l: tmp) {
@@ -46,7 +47,7 @@ void test_Scheduler::test_deadlocks3()
         }
     }
 
-    auto result = WListFast<WListFast<pressure_t>>::writeMultiThread(writable, tmp, Scheduler::startNewTask);
+    auto result = WListFast<WVector<pressure_t>>::writeMultiThread(writable, tmp, Scheduler::startNewTask);
     QCOMPARE(result, 0);
 }
 
@@ -89,21 +90,21 @@ void test_Scheduler::test_deadlocks2()
 void test_Scheduler::test_deadlocks1()
 {
     MemWritable writable;
-    using type = WListFast<WListFast<WListFast<pressure_t>>>;
+    using type = WListFast<WListFast<WVector<pressure_t>>>;
     WListFast<type> values;
 
     for (int i = 0; i < 32; i++)
-        values.append(WListFast<WListFast<WListFast<pressure_t>>>());
+        values.append(WListFast<WListFast<WVector<pressure_t>>>());
 
     for (auto& list: values) {
         for (int i = 0; i < 32; i++)
-            list.append(WListFast<WListFast<pressure_t>>());
+            list.append(WListFast<WVector<pressure_t>>());
     }
 
     for (auto& list1: values) {
         for (auto& list: list1) {
             for (int i = 0; i < 32; i++)
-                list.append(WListFast<pressure_t>());
+                list.append(WVector<pressure_t>());
         }
     }
 
