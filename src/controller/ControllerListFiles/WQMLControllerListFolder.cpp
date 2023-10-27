@@ -18,7 +18,7 @@ WQMLControllerListFolder::WQMLControllerListFolder(QObject *parent, const Shared
 
 auto WQMLControllerListFolder::getPath(const WString &path) -> Path
 {
-    return (path.addSlashIfNecessary().toStdString());
+    return (path.toStdString());
 }
 
 auto WQMLControllerListFolder::rowCount(const QModelIndex &parent) const -> int

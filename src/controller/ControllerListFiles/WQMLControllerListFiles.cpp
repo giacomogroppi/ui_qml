@@ -39,7 +39,7 @@ auto WQMLControllerListFiles::roleNames() const -> QHash<int, QByteArray>
 
 auto WQMLControllerListFiles::createNewFile(const QString &name) -> int
 {
-    if (WString(name).contains({slash::__slash(), ':', '/'}))
+    if (WString(name).contains({'\\', ':', '/'}))
         return -1;
 
     if (_fileManager->createFile (name, Document(), Extension::makeWriternote()) < 0)
