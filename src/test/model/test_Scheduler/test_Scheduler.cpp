@@ -57,15 +57,14 @@ void test_Scheduler::test_deadlocks2()
     WListFast<Scheduler::Ptr<WTask>> list;
 
     for (int i = 0; i < 40; i++) {
-        auto task = Scheduler::Ptr<WTask>(new WTaskFunction(nullptr, []{
+        auto task = Scheduler::Ptr<WTask>(new WTaskFunction(nullptr, false, []{
             WListFast<Scheduler::Ptr<WTask>> tmp;
 
             for (int j = 0; j < 40; j++) {
-                tmp.append(Scheduler::Ptr<WTask>(new WTaskFunction(nullptr, []{
-                        //QThread::msleep(2);
-                }, false)));
+                tmp.append(Scheduler::Ptr<WTask>(new WTaskFunction(nullptr, false, std::bind(&QThread::msleep, 2))));
             }
 
+            tmp.forAll(&Scheduler::addTaskGeneric);
             for (auto& r: tmp)
                 Scheduler::addTaskGeneric(r);
 
@@ -73,7 +72,7 @@ void test_Scheduler::test_deadlocks2()
                 r->join();
                 r.release();
             }
-        }, false));
+        }));
 
         list.append(task);
     }
@@ -180,7 +179,7 @@ void test_Scheduler::test_destructor()
         scheduler = new Scheduler;
 
         for (int j = 0; j < 500; j++) {
-            Scheduler::addTaskGeneric(Scheduler::Ptr<WTask>(new WTaskFunction(nullptr, []{}, true)));
+            Scheduler::addTaskGeneric(Scheduler::Ptr<WTask>(new WTaskFunction(nullptr, false, []{})));
         }
 
         delete scheduler;

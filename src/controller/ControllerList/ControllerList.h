@@ -14,7 +14,7 @@ struct PreviewData {
 };
 
 // preview list
-class ControllerList : public QAbstractListModel
+class PreviewPageController : public QAbstractListModel
 {
     Q_OBJECT
 private:
@@ -27,7 +27,7 @@ public:
         Eta
     };
 
-    explicit ControllerList(QObject *parent = nullptr);
+    explicit PreviewPageController(QObject *parent = nullptr);
 
     auto rowCount(const QModelIndex& parent) const -> int override;
     auto data( const QModelIndex& index, int role = Qt::DisplayRole ) const -> QVariant override;
@@ -51,10 +51,10 @@ private: //members
 
     friend class WQMLItemListComponent;
 
-    const QImage &getImg(int index);
+    auto getImg(int index) -> const QImage &;
 
     QVector< PreviewData > m_data;
 
-    static ControllerList *instance();
+    static auto instance() -> PreviewPageController *;
     static void registerItem(class WQMLItemListComponent *item);
 };

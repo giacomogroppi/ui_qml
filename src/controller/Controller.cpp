@@ -22,7 +22,7 @@ Controller::Controller(QObject *parent,
             )
         )
     , _engine(engine)
-    , _listPreview(new ControllerList(this))
+    , _listPreview(new PreviewPageController(this))
     , _audioRecorder(new ControllerAudioRecorder(this, _tabletController->getAudioRecorder()))
     , _audioPlayer(new ControllerAudioPlayer(this, _tabletController->getAudioPlayer()))
     , _toolBar(new ControllerToolBar(this, _tabletController))
@@ -43,7 +43,7 @@ Controller::Controller(QObject *parent,
 
     QObject::connect(this, &Controller::onPathSavingChanged, _settings, &ControllerSettings::onPositionChanged);
 
-    QObject::connect(_settings, &ControllerSettings::onPositionFileChange, [&] {
+    QObject::connect(_settings, &ControllerSettings::onPositionFileChange, [this] {
         this->_tabletController->setCurrentPathSaving(_settings->getPositionFile());
     });
 

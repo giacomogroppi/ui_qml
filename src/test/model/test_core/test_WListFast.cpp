@@ -573,8 +573,8 @@ void test_WListFast::copyListWithMoreItems()
     WListFast<long> list1;
     WListFast<long> copiedList;
 
-    constexpr auto max = (2ul << 14);
-    constexpr auto min = (2ul << 12);
+    constexpr long max = (2ul << 14);
+    constexpr long min = (2ul << 12);
 
     for (long i = 0; i < min; i++)
         list1.append(i);

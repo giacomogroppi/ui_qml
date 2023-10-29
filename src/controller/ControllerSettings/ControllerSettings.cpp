@@ -12,9 +12,9 @@ ControllerSettings::ControllerSettings(QObject *parent, Fn<WPath()> getPath)
 {
     _options->begin();
 
-    Scheduler::addTaskMainThread(Scheduler::Ptr<WTask>(new WTaskFunction(nullptr, [this] {
-        _pathSaving = _getPath();
-    }, true)));
+    auto updatePath = [this] { onPositionFileChange(); };
+
+    Scheduler::addTaskMainThread(Scheduler::Ptr<WTask>(new WTaskFunction(nullptr, true, std::move(updatePath))));
 }
 
 ControllerSettings::~ControllerSettings()

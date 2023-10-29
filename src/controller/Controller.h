@@ -33,7 +33,7 @@ private:
 
     QQmlApplicationEngine *_engine;
 
-    ControllerList              *_listPreview;
+    PreviewPageController              *_listPreview;
     ControllerAudioRecorder     *_audioRecorder;
     ControllerAudioPlayer       *_audioPlayer;
     ControllerToolBar           *_toolBar;

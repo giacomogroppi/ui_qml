@@ -7,14 +7,12 @@ WQMLControllerListFiles::WQMLControllerListFiles(QObject *parent,
     : QAbstractListModel(parent)
     , _fileManager(fileManager)
 {
-    const auto update = [this] { updateList(); };
+    const auto update = std::bind(&WQMLControllerListFiles::updateList, this);
     w_connect_lambda(fileManager.get(), onListFilesChanged, update);
     w_connect_lambda(fileManager.get(), onCurrentDirectoryChanged, update);
 
     Scheduler::addTaskMainThread(Scheduler::Ptr<WTask>(
-            new WTaskFunction(nullptr, [this] {
-                updateList();
-            }, true))
+            new WTaskFunction(nullptr, true, update))
     );
 }
 

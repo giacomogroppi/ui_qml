@@ -7,12 +7,12 @@ WQMLItemListComponent::WQMLItemListComponent(QQuickItem *parent)
     : QQuickPaintedItem(parent)
 {
     qDebug() << "WQMLItemListComponent constructor";
-    ControllerList::registerItem(this);
+    PreviewPageController::registerItem(this);
 }
 
 void WQMLItemListComponent::paint(QPainter *painter)
 {
-    auto *instance = ControllerList::instance();
+    auto *instance = PreviewPageController::instance();
     const auto &img = instance->getImg(this->indexObject());
     painter->drawImage(QPointF {0., 0.}, img);
 }

@@ -6,12 +6,12 @@
 #include <QList>
 #include "controller/Controller.h"
 
-static ControllerList *instanceObject;
+static PreviewPageController *instanceObject;
 static QList<WQMLItemListComponent*> item = {};
 
 static bool init = false;
 
-ControllerList::ControllerList(QObject *parent)
+PreviewPageController::PreviewPageController(QObject *parent)
     : QAbstractListModel(parent)
     , _isVisible(true)
     , m_data()
@@ -32,7 +32,7 @@ ControllerList::ControllerList(QObject *parent)
     */
 
     auto *growthTimer = new QTimer(this);
-    connect(growthTimer, &QTimer::timeout, this, &ControllerList::growPopulation);
+    connect(growthTimer, &QTimer::timeout, this, &PreviewPageController::growPopulation);
 
     instanceObject = this;
 
@@ -40,7 +40,7 @@ ControllerList::ControllerList(QObject *parent)
     //growthTimer->start(2000);
 }
 
-int ControllerList::rowCount( const QModelIndex& parent) const
+int PreviewPageController::rowCount( const QModelIndex& parent) const
 {
     if (parent.isValid())
         return 0;
@@ -50,7 +50,7 @@ int ControllerList::rowCount( const QModelIndex& parent) const
     return m_data.count();
 }
 
-QVariant ControllerList::data(const QModelIndex &index, int role) const
+auto PreviewPageController::data(const QModelIndex &index, int role) const -> QVariant
 {
     if ( !index.isValid() )
         return QVariant();
@@ -62,7 +62,7 @@ QVariant ControllerList::data(const QModelIndex &index, int role) const
 }
 
 //--> slide
-QHash<int, QByteArray> ControllerList::roleNames() const
+auto PreviewPageController::roleNames() const -> QHash<int, QByteArray>
 {
     static QHash<int, QByteArray> mapping {
         {Nome, "nome"},
@@ -75,13 +75,13 @@ QHash<int, QByteArray> ControllerList::roleNames() const
     return mapping;
 }
 
-bool ControllerList::isVisible() const
+bool PreviewPageController::isVisible() const
 {
     qDebug() << "ControllerList::isVisible" << this->_isVisible;
     return this->_isVisible;
 }
 
-void ControllerList::setVisible(bool visibility)
+void PreviewPageController::setVisible(bool visibility)
 {
     const auto change = visibility != this->_isVisible;
     this->_isVisible = visibility;
@@ -91,7 +91,7 @@ void ControllerList::setVisible(bool visibility)
     }
 }
 
-void ControllerList::duplicateData(int row)
+void PreviewPageController::duplicateData(int row)
 {
     if (row < 0 || row >= m_data.count())
         return;
@@ -104,7 +104,7 @@ void ControllerList::duplicateData(int row)
     endInsertRows();
 }
 
-void ControllerList::removeData(int row)
+void PreviewPageController::removeData(int row)
 {
     if (row < 0 || row >= m_data.count())
         return;
@@ -114,19 +114,19 @@ void ControllerList::removeData(int row)
     endRemoveRows();
 }
 
-void ControllerList::modifiedPages(int page)
+void PreviewPageController::modifiedPages(int page)
 {
     item.at(page)->needRefresh();
 }
 
-void ControllerList::modifiedPages(const std::vector<int> &page)
+void PreviewPageController::modifiedPages(const std::vector<int> &page)
 {
     for (const auto index : page) {
         this->modifiedPages(index);
     }
 }
 
-void ControllerList::growPopulation()
+void PreviewPageController::growPopulation()
 {
     const double growthFactor = 0.01 / RAND_MAX;
 
@@ -140,20 +140,20 @@ void ControllerList::growPopulation()
     emit dataChanged(startIndex, endIndex, QVector<int>() << Eta);
 }
 
-const QImage &ControllerList::getImg(int index)
+auto PreviewPageController::getImg(int index) -> const QImage &
 {
     qDebug() << "ControllerList::getImg call";
     auto *i = new QImage;
     return *i;
 }
 
-ControllerList *ControllerList::instance()
+auto PreviewPageController::instance() -> PreviewPageController *
 {
     Q_ASSERT(instanceObject != nullptr);
     return instanceObject;
 }
 
-void ControllerList::registerItem(WQMLItemListComponent *object)
+void PreviewPageController::registerItem(WQMLItemListComponent *object)
 {
     Q_ASSERT(object != nullptr);
     qDebug() << "ControllerList::registerItem call";

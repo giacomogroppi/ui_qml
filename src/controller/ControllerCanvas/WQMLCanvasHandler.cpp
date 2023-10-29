@@ -51,13 +51,16 @@ void WQMLCanvasHandler::setTargetTouchArea(QQuickItem *targetTouchArea)
     emit targetTouchAreaChanged();
 }
 
-bool WQMLCanvasHandler::eventFilter(QObject * obj, QEvent *event)
+bool WQMLCanvasHandler::eventFilter(QObject *, QEvent *event)
 {
     if (auto *e = dynamic_cast<QMouseEvent*>(event)) {
         if (!_h or !_w)
             return false;
 
-        const double pressure = 0.3; e->points().at(0).pressure() * 5.;
+        const double pressure = 0.3;
+
+        // TODO: ri enable the real value of pressure
+        //const double pressure = e->points().at(0).pressure() * 5.;
 
         const double dw1 = 1.;
         const double dh1 = 1.; //Page::getHeight()  /  this->_h;
