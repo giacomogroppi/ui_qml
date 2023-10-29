@@ -10,6 +10,7 @@ class test_Scheduler : public QObject
 {
 Q_OBJECT
 
+    static constexpr auto numberOfTests = 1;
     Scheduler *scheduler = nullptr;
 
 private slots:
@@ -57,7 +58,7 @@ void test_Scheduler::test_deadlocks2()
     WListFast<Scheduler::Ptr<WTask>> list;
 
     for (int i = 0; i < 40; i++) {
-        auto task = Scheduler::Ptr<WTask>(new WTaskFunction(nullptr, false, []{
+        auto task = Scheduler::Ptr<WTask>(new WTaskFunction(nullptr, false, [] {
             WListFast<Scheduler::Ptr<WTask>> tmp;
 
             for (int j = 0; j < 40; j++) {
@@ -65,8 +66,6 @@ void test_Scheduler::test_deadlocks2()
             }
 
             tmp.forAll(&Scheduler::addTaskGeneric);
-            for (auto& r: tmp)
-                Scheduler::addTaskGeneric(r);
 
             for (auto& r: tmp) {
                 r->join();
@@ -74,11 +73,10 @@ void test_Scheduler::test_deadlocks2()
             }
         }));
 
-        list.append(task);
+        list.append(std::move(task));
     }
 
-    for (auto &t: list)
-        Scheduler::addTaskGeneric(t);
+    list.forAll(&Scheduler::addTaskGeneric);
 
     for (auto& t: list) {
         t->join();
