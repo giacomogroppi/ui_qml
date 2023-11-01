@@ -12,9 +12,11 @@ ControllerSettings::ControllerSettings(QObject *parent, Fn<WPath()> getPath)
 {
     _options->begin();
 
-    auto updatePath = [this] { onPositionFileChange(); };
+    auto updatePathInUI = [this] { this->positionFileChanged(); };
 
-    Scheduler::addTaskMainThread(Scheduler::Ptr<WTask>(new WTaskFunction(nullptr, true, std::move(updatePath))));
+    auto task = Scheduler::Ptr<WTaskFunction>::make(nullptr, WTask::DeleteLater, std::move(updatePathInUI));
+
+    Scheduler::addTaskMainThread(std::move(task));
 }
 
 ControllerSettings::~ControllerSettings()
@@ -22,7 +24,7 @@ ControllerSettings::~ControllerSettings()
     _options->save();
 }
 
-auto ControllerSettings::onPositionChanged() -> void
+auto ControllerSettings::positionFileChanged() -> void
 {
     const auto newPath = _getPath();
     if (newPath != _pathSaving) {

@@ -20,11 +20,24 @@ public:
     explicit ControllerSettings(QObject *parent, Fn<WPath()> getPath);
     ~ControllerSettings() override;
 
-    auto getPositionFile() const -> QString;
+    /**
+     * \brief Getter for the current position path show in the UI
+     * \return The current position for saving file
+     */
+    nd auto getPositionFile() const -> QString;
+
+    /**
+     * \brief Setter for path position
+     * \param newPosition A new position entered by the client
+     */
     auto setPositionFile(const QString& newPosition) -> void;
 
 public slots:
-    void onPositionChanged();
+    /**
+     * \brief Call this method to update the path show in the UI with the
+     * model.
+     */
+    void positionFileChanged();
 
 signals:
     void onPositionFileChange();

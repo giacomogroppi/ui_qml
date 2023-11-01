@@ -41,7 +41,7 @@ Controller::Controller(QObject *parent,
     w_connect_lambda(_tabletController, onPathChanged, [this] { emit this->onPathSavingChanged(); });
     w_connect_listener(&_tabletController->getAudioPlayer(), onTimeChanged, _audioPlayer, audioPositionChanged);
 
-    QObject::connect(this, &Controller::onPathSavingChanged, _settings, &ControllerSettings::onPositionChanged);
+    QObject::connect(this, &Controller::onPathSavingChanged, _settings, &ControllerSettings::positionFileChanged);
 
     QObject::connect(_settings, &ControllerSettings::onPositionFileChange, [this] {
         this->_tabletController->setCurrentPathSaving(_settings->getPositionFile());
