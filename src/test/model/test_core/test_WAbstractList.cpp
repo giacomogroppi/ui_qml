@@ -19,7 +19,27 @@ private slots:
     void testReverse();
 
     void test_MidConst();
+    void test_Mid();
 };
+
+void test_WAbstractList::test_Mid()
+{
+    WVector<int> test;
+    int ref = 0;
+
+    for (int i = 0; i < 400; i++)
+        test.append(i);
+
+    test.refMidConst(0, 32).forAll([&ref](int& i) {
+        ref++;
+        i++;
+        QCOMPARE(i, ref);
+    });
+
+    for (int i = 0; i < 32; i++) {
+        QCOMPARE(test.at(i), i + 1);
+    }
+}
 
 void test_WAbstractList::test_MidConst()
 {
