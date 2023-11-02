@@ -1,21 +1,44 @@
 #include <QtTest>
+#include <memory>
 #include <utility>
 
 #include "currenttitle/document.h"
 #include "touch/dataTouch/stroke/StrokeNormal.h"
 #include "sheet/style_struct.h"
 #include "file/Directory.h"
+#include "Scheduler/Scheduler.h"
 #include <QStandardPaths>
 
 class test_Page : public QObject
 {
 Q_OBJECT
 
+    UniquePtr<Scheduler> scheduler;
+
 private slots:
+    void init();
+    void cleanup();
+
     void testLoadWithNoStroke();
     void testLoadWith1Stroke();
     void testLoadWith200Stroke();
 };
+
+void test_Page::init()
+{
+    static bool first = true;
+
+    if (first == true) {
+        Document::init();
+        first = false;
+
+        scheduler = std::make_unique<Scheduler>();
+    }
+}
+
+void test_Page::cleanup()
+{
+}
 
 void test_Page::testLoadWithNoStroke()
 {
