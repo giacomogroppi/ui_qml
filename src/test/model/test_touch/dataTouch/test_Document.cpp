@@ -6,15 +6,31 @@
 #include "sheet/style_struct.h"
 #include "file/Directory.h"
 #include <QStandardPaths>
+#include "Scheduler/Scheduler.h"
 
 class test_Document : public QObject
 {
 Q_OBJECT
 
+    UniquePtr<Scheduler> scheduler;
+
 private slots:
+    void init();
+
     void testLoad();
     void test200Pages();
 };
+
+void test_Document::init()
+{
+    static bool first = true;
+    if (first) {
+        scheduler = std::make_unique<Scheduler>();
+        Document::init();
+
+        first = false;
+    }
+}
 
 void test_Document::test200Pages()
 {

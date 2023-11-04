@@ -12,9 +12,23 @@ class test_Rubber : public QObject
 {
 Q_OBJECT
 
+    UniquePtr<Scheduler> sched;
+
 private slots:
+    void init();
+
     void test();
 };
+
+void test_Rubber::init()
+{
+    static bool first = true;
+    if (first) {
+        this->sched = std::make_unique<Scheduler>();
+        Document::init();
+        first = false;
+    }
+}
 
 void test_Rubber::test()
 {

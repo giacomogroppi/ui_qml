@@ -27,5 +27,5 @@ void ControllerAudioRecorder::setRecording(bool recording)
 
 auto ControllerAudioRecorder::getSecondRecording() const -> unsigned
 {
-    return _audioRecorder.getCurrentTime();
+    return _audioRecorder.getCurrentTime().seconds();
 }

@@ -10,7 +10,7 @@ ControllerAudioPlayer::ControllerAudioPlayer(QObject *parent,
 
 auto ControllerAudioPlayer::getPositionInSeconds() const -> unsigned
 {
-    return _audioPlayer.getCurrentTimeSecond();
+    return _audioPlayer.getCurrentTimeSecond().seconds();
 }
 
 auto ControllerAudioPlayer::isPlaying() const -> bool
@@ -35,7 +35,7 @@ auto ControllerAudioPlayer::durationChanged() -> void
 
 auto ControllerAudioPlayer::getPosition() const -> unsigned
 {
-    return this->_audioPlayer.getCurrentTimeSecond();
+    return this->_audioPlayer.getCurrentTimeSecond().seconds();
 }
 
 void ControllerAudioPlayer::setPosition(unsigned newPosition)

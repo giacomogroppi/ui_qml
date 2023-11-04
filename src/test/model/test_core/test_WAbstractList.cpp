@@ -30,7 +30,7 @@ void test_WAbstractList::test_Mid()
     for (int i = 0; i < 400; i++)
         test.append(i);
 
-    test.refMidConst(0, 32).forAll([&ref](int& i) {
+    test.refMid(0, 32).forAll([&ref](int& i) {
         ref++;
         i++;
         QCOMPARE(i, ref);
@@ -49,7 +49,7 @@ void test_WAbstractList::test_MidConst()
     for (int i = 0; i < 400; i++)
         test.append(i);
 
-    test.refMidConst(0, 32).forAll([&ref](int i) {
+    test.refMid(0, 32).forAll([&ref](int i) {
         QCOMPARE(i, ref);
         ref++;
     });
