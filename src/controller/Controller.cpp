@@ -11,7 +11,7 @@ auto Controller::getContent() -> QQmlContext *
 }
 
 Controller::Controller(QObject *parent,
-                       QQmlContext *content,
+                       QQmlContext *,
                        QQmlApplicationEngine *engine)
     : QObject(parent)
     , _tabletController(

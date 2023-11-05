@@ -131,6 +131,7 @@ QHash<int, QByteArray> ControllerCanvas::roleNames() const
 // this function should not be call from qml
 void ControllerCanvas::duplicateData(int row)
 {
+    unused(row);
     /*
     if (row < 0 || row >= drawer.size())
         return;
@@ -143,6 +144,7 @@ void ControllerCanvas::duplicateData(int row)
 // this function should not be call from qml
 void ControllerCanvas::removeData(int row)
 {
+    unused(row);
     /*
     if (row < 0 || row >= drawer.count())
         return;
