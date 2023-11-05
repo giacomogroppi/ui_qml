@@ -15,6 +15,10 @@ class test_WListFast : public QObject
 Q_OBJECT
 
 private slots:
+    // filter
+    void filterConst();
+    void filter();
+
     // operator copy
     void test_copy ();
     void copy_not_empty();
@@ -59,6 +63,31 @@ private slots:
     void removeOne();
     void removeMultiple();
 };
+
+void test_WListFast::filter()
+{
+    WListFast<int> tmp;
+    int ref;
+
+    auto isOdd = [] (int i) { return i % 2 != 0; };
+    auto isMultiple3 = [] (int i) { return i % 3 == 0; };
+    auto isBiggerThan5 = [] (int i) { return i >= 50; };
+
+    for (int i = 0; i < 50000; i++)
+        tmp.append(i);
+
+    tmp.filter(isOdd)
+        .filter(isMultiple3)
+        .filter(isBiggerThan5)
+        .forAll([&] (int i) {
+            QVERIFY(i % 2 != 0 and i % 3 == 0 and i >= 50);
+        });
+}
+
+void test_WListFast::filterConst()
+{
+
+}
 
 void test_WListFast::removeWithIterator()
 {

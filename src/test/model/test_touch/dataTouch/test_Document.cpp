@@ -87,20 +87,20 @@ void test_Document::testLoad()
 
     (void) Directory::createDir(tmp);
 
-    WByteArray data;
+    WByteArray raw;
 
     {
         MemWritable writable;
 
         QCOMPARE(Document::write(writable, doc), 0);
         writable.merge([&] (const void *d, size_t size) -> Error {
-            data.append(static_cast<const char *>(d), size);
+            raw.append(static_cast<const char *>(d), size);
             return Error::makeOk();
         });
     }
 
     {
-        MemReadable readable (data.constData(), data.size());
+        MemReadable readable (raw.constData(), raw.size());
 
         const auto [result, data] = Document::load(VersionFileController(), readable);
 
