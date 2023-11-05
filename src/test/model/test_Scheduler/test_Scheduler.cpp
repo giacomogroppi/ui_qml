@@ -165,8 +165,10 @@ void test_Scheduler::test_timersConcurrency()
     delete scheduler;
     scheduler = nullptr;
 
-    for (auto& timer : timers)
+    for (auto& timer : timers) {
+        WDebug(true, "Before delete" << timer);
         delete timer;
+    }
 }
 
 void test_Scheduler::test_destructor()

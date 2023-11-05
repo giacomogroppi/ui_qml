@@ -89,7 +89,7 @@ void ControllerToolBar::clickCut()
 void ControllerToolBar::clickBlack()
 {
     _color = Qt::black;
-    this->_tabletController->selectColor(_color);
+    this->_tabletController->selectColor(WColor {_color});
     emit colorChanged();
 }
 
