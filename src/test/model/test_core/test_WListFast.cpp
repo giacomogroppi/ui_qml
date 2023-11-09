@@ -9,12 +9,17 @@
 #include "FileContainer/MemWritable.h"
 #include "Scheduler/Scheduler.h"
 #include "Scheduler/WTask.h"
+#include "Scheduler/WTaskAllocator.h"
+#include "core/Allocators.h"
 
 class test_WListFast : public QObject
 {
 Q_OBJECT
 
 private slots:
+    void init();
+    void cleanup();
+
     // filter
     void filterConst();
     void filter();
@@ -64,10 +69,19 @@ private slots:
     void removeMultiple();
 };
 
+void test_WListFast::init()
+{
+    Allocators::init();
+}
+
+void test_WListFast::cleanup()
+{
+    Allocators::exit();
+}
+
 void test_WListFast::filter()
 {
     WListFast<int> tmp;
-    int ref;
 
     auto isOdd = [] (int i) { return i % 2 != 0; };
     auto isMultiple3 = [] (int i) { return i % 3 == 0; };

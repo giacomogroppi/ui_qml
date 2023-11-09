@@ -7,6 +7,8 @@
 #include "sheet/style_struct.h"
 #include "file/Directory.h"
 #include "Scheduler/Scheduler.h"
+#include "Scheduler/WTaskAllocator.h"
+#include "core/Allocators.h"
 #include <QStandardPaths>
 
 class test_Page : public QObject
@@ -28,6 +30,8 @@ void test_Page::init()
 {
     static bool first = true;
 
+    Allocators::init();
+
     if (first == true) {
         Document::init();
         first = false;
@@ -38,6 +42,7 @@ void test_Page::init()
 
 void test_Page::cleanup()
 {
+    Allocators::exit();
 }
 
 void test_Page::testLoadWithNoStroke()
@@ -64,10 +69,10 @@ void test_Page::testLoadWithNoStroke()
         MemReadable readable (data.constData(), data.size());
         //WFile file (tmp / "prova.txt", WFile::ReadOnly);
         //QVERIFY(file.isValid());
-        const auto [result, data] = Page::load(VersionFileController(), readable);
+        const auto [result, d] = Page::load(VersionFileController(), readable);
 
         QVERIFY(result == 0);
-        QCOMPARE(data, doc);
+        QCOMPARE(d, doc);
     }
 }
 

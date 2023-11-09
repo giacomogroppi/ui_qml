@@ -300,6 +300,8 @@ set(PROJECT_SOURCES_WRITERNOTE
 		${A_DIR_ROOT}/src/model/core/pointer/Pointer.cpp
 		${A_DIR_ROOT}/src/model/core/Error.cpp
 		${A_DIR_ROOT}/src/model/touch/dataTouch/stroke/AudioPosition.cpp
+		${A_DIR_ROOT}/src/model/Scheduler/WTaskAllocator.cpp
+		${A_DIR_ROOT}/src/model/core/Allocators.cpp
 )
 
 if(IOS)
@@ -311,7 +313,7 @@ if(IOS)
 else()
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUGINFO -O0 -fprofile-arcs -ftest-coverage")
 	#set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=thread")
-	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address")
+	#set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address")
 endif()
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions")
@@ -554,6 +556,7 @@ SETUP_TESTS(
 		src/test/model/test_core/test_WFlags
 		src/test/model/test_core/test_WHeap
 		src/test/model/test_Scheduler/test_WTimer
+		src/test/model/test_Scheduler/test_WTask
 		src/test/model/test_file/test_FileManager
 		src/test/model/test_file/test_Directory
 		src/test/model/test_touch/dataTouch/test_Document

@@ -7,8 +7,11 @@
 #include "core/PointF.h"
 #include "Scheduler/WTimer.h"
 #include "Scheduler/Scheduler.h"
+#include "Scheduler/WTaskAllocator.h"
+#include "core/Allocators.h"
 
 #define REPEATED_TEST(stuff, numberOfTimes) \
+    cleanup();                                        \
     for (int _i = 0; _i < (numberOfTimes); _i++) { \
         init();                              \
         stuff;\
@@ -32,6 +35,8 @@ private slots:
 
 void test_WTimer::init()
 {
+    Allocators::init();
+
     if (scheduler == nullptr) {
         scheduler = new Scheduler();
     }
@@ -41,16 +46,19 @@ void test_WTimer::cleanup()
 {
     delete scheduler;
     scheduler = nullptr;
+
+    Allocators::exit();
 }
 
 void test_WTimer::singleTimer()
 {
     REPEATED_TEST(
-            WDebug(true, _i);
+        WDebug(true, _i);
         std::atomic<bool> call = false;
+
         auto *timer = new WTimer(nullptr, [&]{
             call = true;
-        }, 200, false);
+        }, 200, ~WTimer::Flag::onMainThread | WTimer::Flag::singleShot);
 
         timer->start();
 
@@ -72,14 +80,11 @@ void test_WTimer::secondTimerAddWithLessTime()
 
     auto *timer1 = new WTimer(nullptr, [&]{
         call1 = true;
-    }, 2000, false);
+    }, 2000, ~WTimer::Flag::onMainThread | WTimer::Flag::singleShot);
 
     auto *timer2 = new WTimer(nullptr, [&]{
         call2 = true;
-    }, 200, false);
-
-    timer1->setSingleShot(true);
-    timer2->setSingleShot(true);
+    }, 200, ~WTimer::Flag::onMainThread);
 
     timer1->start();
     timer2->start();

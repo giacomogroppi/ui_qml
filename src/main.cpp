@@ -5,7 +5,9 @@
 #include <QQmlContext>
 #include <QTimer>
 #include "Scheduler/Scheduler.h"
+#include "Scheduler/WTaskAllocator.h"
 #include "controller/ControllerCanvas/WQMLCanvasComponentPage.h"
+#include "core/Allocators.h"
 
 extern QQmlContext *_content;
 extern StrokePre *__tmp;
@@ -16,6 +18,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     auto *scheduler = new Scheduler();
+    Allocators::init();
 
     //QQuickWindow::setGraphicsApi(QSGRendererInterface::Metal);
     QQmlApplicationEngine engine;
@@ -50,6 +53,7 @@ int main(int argc, char *argv[])
     const auto res = QGuiApplication::exec();
 
     delete scheduler;
+    Allocators::exit();
 
     return res;
 }

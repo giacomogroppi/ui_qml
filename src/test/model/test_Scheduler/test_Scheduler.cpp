@@ -5,6 +5,8 @@
 #include "utils/WCommonScript.h"
 #include "core/WListFast.h"
 #include "touch/dataTouch/datastruct/utils_datastruct.h"
+#include "Scheduler/WTaskAllocator.h"
+#include "core/Allocators.h"
 
 class test_Scheduler : public QObject
 {
@@ -121,6 +123,8 @@ void test_Scheduler::test_deadlocks1()
 
 void test_Scheduler::init ()
 {
+    Allocators::init();
+
     W_ASSERT(scheduler == nullptr);
     scheduler = new Scheduler;
 }
@@ -129,24 +133,25 @@ void test_Scheduler::cleanup()
 {
     delete scheduler;
     scheduler = nullptr;
+
+    Allocators::exit();
 }
 
 void test_Scheduler::test_timersConcurrency()
 {
     constexpr auto max = 1000;
     QList<WTimer*> timers;
-    bool callers[max];
+    std::atomic_bool callers[max];
 
-    memset(callers, 0, sizeof(callers));
+    for (auto& ref: callers) ref = false;
 
     for (int i = 0; i < max; i++) {
         auto func = [&callers, i]() {
             callers[i] = true;
         };
 
-        auto timer = new WTimer(nullptr, func, (std::rand() % 100 + 100), false);
+        auto timer = new WTimer(nullptr, func, (std::rand() % 100 + 100), (~WTimer::Flag::onMainThread) | (WTimer::Flag::singleShot));
 
-        timer->setSingleShot(true);
         timers.append(timer);
         timer->start();
     }
@@ -198,9 +203,8 @@ void test_Scheduler::test_timers()
         bool call = false;
         auto *timer = new WTimer(nullptr, [&call] {
             call = true;
-        }, 40, false);
+        }, 40, (~WTimer::Flag::onMainThread) | WTimer::Flag::singleShot);
 
-        timer->setSingleShot(true);
         timer->start();
 
         QCOMPARE(call, false);

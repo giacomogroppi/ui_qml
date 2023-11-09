@@ -7,6 +7,8 @@
 #include "file/Directory.h"
 #include <QStandardPaths>
 #include "Scheduler/Scheduler.h"
+#include "Scheduler/WTaskAllocator.h"
+#include "core/Allocators.h"
 
 class test_Document : public QObject
 {
@@ -16,6 +18,7 @@ Q_OBJECT
 
 private slots:
     void init();
+    void cleanup();
 
     void testLoad();
     void test200Pages();
@@ -23,6 +26,7 @@ private slots:
 
 void test_Document::init()
 {
+    Allocators::init();
     static bool first = true;
     if (first) {
         scheduler = std::make_unique<Scheduler>();
@@ -30,6 +34,11 @@ void test_Document::init()
 
         first = false;
     }
+}
+
+void test_Document::cleanup()
+{
+    Allocators::exit();
 }
 
 void test_Document::test200Pages()

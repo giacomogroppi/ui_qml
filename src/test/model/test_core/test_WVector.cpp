@@ -7,6 +7,8 @@
 #include "touch/dataTouch/datastruct/utils_datastruct.h"
 #include "core/ByteArray/WByteArray.h"
 #include "touch/dataTouch/stroke/StrokeNormal.h"
+#include "Scheduler/WTaskAllocator.h"
+#include "core/Allocators.h"
 #include <QList>
 
 class test_WVector : public QObject
@@ -14,6 +16,9 @@ class test_WVector : public QObject
 Q_OBJECT
 
 private slots:
+    void init();
+    void cleanup();
+
     // takeFirst
     void takeFirstForceReallocation();
 
@@ -72,6 +77,16 @@ private slots:
     void copyListWithLessItem();
     void copy_not_empty();
 };
+
+void test_WVector::init()
+{
+    Allocators::init();
+}
+
+void test_WVector::cleanup()
+{
+    Allocators::exit();
+}
 
 void test_WVector::removeNotExists()
 {

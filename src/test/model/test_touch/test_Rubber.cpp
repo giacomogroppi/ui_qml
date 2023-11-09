@@ -7,6 +7,8 @@
 #include "file/Directory.h"
 #include <QStandardPaths>
 #include "touch/rubber/Rubber.h"
+#include "Scheduler/WTaskAllocator.h"
+#include "core/Allocators.h"
 
 class test_Rubber : public QObject
 {
@@ -16,6 +18,7 @@ Q_OBJECT
 
 private slots:
     void init();
+    void cleanup();
 
     void test();
 };
@@ -23,11 +26,19 @@ private slots:
 void test_Rubber::init()
 {
     static bool first = true;
+
+    Allocators::init();
+
     if (first) {
         this->sched = std::make_unique<Scheduler>();
         Document::init();
         first = false;
     }
+}
+
+void test_Rubber::cleanup()
+{
+    Allocators::exit();
 }
 
 void test_Rubber::test()
