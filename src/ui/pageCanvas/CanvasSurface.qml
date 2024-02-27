@@ -65,7 +65,13 @@ Item {
 
     Popup {
         width: 100
-        height: 30*3
+        height: 40
+        modal: true
+
+        background: Rectangle {
+            color: "transparent"
+            border.color: "transparent"
+        }
 
         function showObject() {
             console.log("popupOptions show with index " + index + " x " + x + " y " + y)
@@ -77,29 +83,23 @@ Item {
 
         Rectangle {
             anchors.fill: parent
-            Button {
-                id: buttonAddPage
-                text: "Add page"
-                height: parent.height / 3
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.right: parent.right
-            }
-            Button {
-                id: buttonRemovePage
-                text: "Remove page"
-                height: parent.height / 3
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.top: buttonAddPage.bottom
-            }
-            Button {
-                id: buttonCopyPage
-                text: "Copy page"
-                height: parent.height / 3
-                anchors.top: buttonRemovePage.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
+
+            // TODO: add controll action
+            Row {
+                anchors.fill: parent
+                spacing: 1
+                Button {
+                    text: "Copy"
+                    onClicked: console.log("Option 1 clicked")
+                }
+                Button {
+                    text: "Delete"
+                    onClicked: console.log("Option 2 clicked")
+                }
+                Button {
+                    text: "Paste"
+                    onClicked: console.log("Option 3 clicked")
+                }
             }
         }
     }
