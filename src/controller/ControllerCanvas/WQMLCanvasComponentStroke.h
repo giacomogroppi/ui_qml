@@ -15,6 +15,10 @@
 #include "core/WFlags.h"
 #include "touch/UpdateEvent.h"
 
+/**
+ * This class represents the area that is modified directly
+ * by the user before making changes to the page
+*/
 class WQMLCanvasComponentStroke: public QQuickPaintedItem
 {
     Q_OBJECT
@@ -25,10 +29,10 @@ public:
     ~WQMLCanvasComponentStroke() override;
 
     void setXPosition(double x);
-    double xPosition() const;
+    nd auto xPosition() const -> double;
 
     void setYPosition(double y);
-    double yPosition() const;
+    nd auto yPosition() const -> double;
 
     void setFunc(std::function<void (QPainter &painter, double width, WFlags<UpdateEvent::UpdateEventType>)> getImg);
 
@@ -43,7 +47,6 @@ public slots:
     void paint(QPainter *painter) override;
 
 private:
-    int _index;
     bool event(QEvent *event) override;
     int _x, _y;
     std::function<void(QPainter &painter, double width, WFlags<UpdateEvent::UpdateEventType> type)> _getImg;

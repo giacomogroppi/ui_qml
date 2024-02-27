@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<WQMLCanvasComponentStroke>("writernote.WQMLCanvasComponentStroke",
                                                1, 0,
-                                               "WCanvasComponent");
+                                               "WCanvasComponentStroke");
     qmlRegisterType<WQMLCanvasComponentPage>("writernote.WQMLCanvasComponentPage",
                                                1, 0,
                                                "WCanvasComponentPage");

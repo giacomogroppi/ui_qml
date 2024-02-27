@@ -60,6 +60,7 @@ Item {
             height: 44
             anchors.bottomMargin: 0
 
+            // Page -= 1
             Button {
                 id: buttonPageUp
                 anchors {
@@ -71,6 +72,7 @@ Item {
                 text: "X"
             }
 
+            // Counter for page
             Text {
                 id: textWhatPageLeft
                 text: _controllerPageCounter.page + "/" + _controllerPageCounter.numberOfPage
@@ -84,6 +86,7 @@ Item {
                 font.pixelSize: 12
             }
 
+            // Page += 1
             Button {
                 id: buttonPageDown
                 anchors {

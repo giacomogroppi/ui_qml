@@ -78,8 +78,16 @@ private:
 
     std::function<void (QPainter &painter, double width, WFlags<UpdateEvent::UpdateEventType> updateFlag)> _getImg;
 
+    /**
+     * @brief Call this method to update the canvas on the screen
+     * */
     static void callUpdate(const UpdateEvent& event);
-    static void callUpdate(int page);
+
+    /**
+     * @brief Call this method to update a specific page
+     * @param page -1 if you want to update all pages, otherwise pass the index of the page you want to refresh
+     * */
+    static void callUpdatePage(int page);
 
 public slots:
     void refresh(const UpdateEvent& event);

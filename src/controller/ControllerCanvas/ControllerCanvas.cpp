@@ -15,7 +15,7 @@ static ControllerCanvas *controllerCanvas = nullptr;
 static QList<WQMLCanvasComponentPage *> drawerPage;
 static WQMLCanvasComponentStroke *drawerStroke;
 
-bool init = false;
+static bool init = false;
 
 ControllerCanvas::ControllerCanvas(QObject *parent)
     : QAbstractListModel(parent)
@@ -170,6 +170,7 @@ void ControllerCanvas::registerDrawerStroke(WQMLCanvasComponentStroke *object)
     QObject::connect(object, &WQMLCanvasComponentStroke::onYPositionChanged, [object]() {
         emit controllerCanvas->positionChanged(QPointF(0., object->yPosition()));
     });
+
     object->setFunc(controllerCanvas->_getImg);
 }
 
@@ -211,9 +212,8 @@ void ControllerCanvas::unregisterDrawerPage(WQMLCanvasComponentPage *object)
     drawerPage.remove(drawerPage.indexOf(object));
 }
 
-void ControllerCanvas::callUpdate(int page)
+void ControllerCanvas::callUpdatePage(int page)
 {
-    // TODO: da mettere a posto
     W_ASSERT(page == -1 || (page >= 0 && page < drawerPage.size()));
     if (page == -1) {
         for (auto &d : drawerPage) {
@@ -228,17 +228,16 @@ void ControllerCanvas::callUpdate(const UpdateEvent& event)
 {
     if (event & (UpdateEvent::page | UpdateEvent::sheet)) {
         if (event.isAll()) {
-            ControllerCanvas::callUpdate(-1);
+            ControllerCanvas::callUpdatePage(-1);
         } else {
             for (int i = event.getPageLow(); i < event.getPageHigh(); i++) {
-                ControllerCanvas::callUpdate(i);
+                ControllerCanvas::callUpdatePage(i);
             }
         }
     }
 
     if (event & UpdateEvent::stroke) {
-        if (not (event & (UpdateEvent::page)))
-            drawerStroke->callUpdate();
+        drawerStroke->callUpdate();
     }
 }
 

@@ -14,7 +14,8 @@
 
 WQMLCanvasComponentStroke::WQMLCanvasComponentStroke(QQuickItem *parent)
     : QQuickPaintedItem(parent)
-    , _index(0)
+    , _x(0)
+    , _y(0)
     , _getImg([](QPainter &, double, WFlags<UpdateEvent::UpdateEventType>) {})
     , _functionSet(false)
 {
@@ -53,7 +54,7 @@ void WQMLCanvasComponentStroke::paint(QPainter *painter)
     const auto hz =  1./((e - paint_hz).count() * 1e-9);
     paint_hz = e;
 
-    if (hz < 50 or 1) {
+    if (hz < 60) {
         qDebug() << "problemi signori: " << hz << "\t" << (void *)this;
     }
 
