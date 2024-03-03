@@ -64,8 +64,8 @@ Item {
     }
 
     Popup {
-        width: 100
-        height: 40
+        width: 245
+        height: 45
         modal: true
 
         background: Rectangle {
@@ -84,12 +84,28 @@ Item {
         Rectangle {
             anchors.fill: parent
 
+            //property var fontButtons: Font { family: "Helvetica"; pointSize: 13; bold: true }
+            property var fontFamily: string = "Helvetica"
+            property var fontSize: 13
+            property var fontColor: "black"
+
             // TODO: add controll action
             Row {
+                id: private_row_popup_canvas
                 anchors.fill: parent
+
                 spacing: 1
                 Button {
-                    text: "Copy"
+                    //text: "Copy"
+                    contentItem: Text {
+                            text: "copy"
+                            opacity: 1.0
+                            font: fontFamily
+                            color: fontColor
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            elide: Text.ElideRight
+                        }
                     onClicked: console.log("Option 1 clicked")
                 }
                 Button {
