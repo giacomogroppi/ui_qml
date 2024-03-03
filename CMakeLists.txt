@@ -19,7 +19,7 @@ if(MSVC OR MSYS OR MINGW)
 endif()
 
 if (APPLE)
-	set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "$ENV{HOME}/Qt/6.5.0/macos/lib/cmake")
+	set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "$ENV{HOME}/Qt/6.6.1/macos/lib/cmake")
 else()
 	set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "$ENV{HOME}/Qt/6.6.0/gcc_64/lib/cmake")
 endif()
