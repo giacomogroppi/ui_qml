@@ -336,6 +336,8 @@ set(A_SOURCES_CPP
     ${A_DIR_ROOT}/src/controller/ControllerColor/ControllerColor.cpp
     ${A_DIR_ROOT}/src/controller/ControllerCanvas/WQMLCanvasHandler.h
     ${A_DIR_ROOT}/src/controller/ControllerCanvas/WQMLCanvasHandler.cpp
+    ${A_DIR_ROOT}/src/controller/ControllerCanvas/ControllerPopupCanvas.cpp
+
     ${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/WQMLControllerHighlighter.cpp
     ${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/WQMLControllerHighlighter.h
     ${A_DIR_ROOT}/src/controller/ControllerToolBar/Tool/WQMLControllerPen.cpp
