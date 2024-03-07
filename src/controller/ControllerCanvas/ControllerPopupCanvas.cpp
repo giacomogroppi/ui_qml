@@ -4,8 +4,8 @@
 
 ControllerPopupCanvas::ControllerPopupCanvas(QObject *parent)
     : QObject{parent}
-    , _types(0xffff)
-    , _isVisible(true)
+    , _types(0)
+    , _isVisible(false)
 {
 
 }
