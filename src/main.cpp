@@ -35,7 +35,11 @@ int main(int argc, char *argv[])
                                        "WCanvasHandler");
 
     _content = engine.rootContext();
-    Controller controller(nullptr, engine.rootContext(), &engine);
+
+    Controller *c = (Controller *) malloc(sizeof(Controller));
+    { extern Controller *controller; controller = c; }
+    new (c) Controller (nullptr, engine.rootContext(), &engine);
+
     QQmlContext *context = engine.rootContext();
 
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
@@ -44,13 +48,16 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
 
-    context->setContextProperty("_controller", &controller);
+    context->setContextProperty("_controller", c);
 
     engine.load(url);
 
     //qGuiApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 
     const auto res = QGuiApplication::exec();
+
+    c->~Controller();
+    free(c);
 
     delete scheduler;
     Allocators::exit();
