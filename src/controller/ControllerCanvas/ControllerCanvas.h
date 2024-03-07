@@ -9,8 +9,9 @@
 #include "WQMLCanvasComponentStroke.h"
 #include "WQMLCanvasComponentPage.h"
 #include "touch/UpdateEvent.h"
+#include "ControllerPopupCanvas.h"
 
-class ControllerCanvas: public QAbstractListModel
+class ControllerCanvas final: public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(double positionX READ positionX WRITE setPositionX NOTIFY positionXChanged);
@@ -23,6 +24,8 @@ private:
 
     void wSetWidth(int newWidth);
     void wSetHeigth(int newHeigth);
+
+    ControllerPopupCanvas* _controllerPopupCanvas;
 
 #ifdef DEBUGINFO
     enum waitingFor {
@@ -41,11 +44,11 @@ public:
     explicit ControllerCanvas(QObject *parent = nullptr);
     ~ControllerCanvas() = default;
 
-    int getHeigthObject() const;
-    int getWidthObject() const;
+    auto getHeigthObject() const -> int;
+    auto getWidthObject() const -> int;
 
-    double positionX() const;
-    double positionY() const;
+    auto positionX() const -> double;
+    auto positionY() const -> double;
 
     void setPositionX(double newPosition);
     void setPositionY(double newPosition);

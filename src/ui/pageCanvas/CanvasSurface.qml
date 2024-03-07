@@ -79,13 +79,13 @@ Item {
         }
 
         id: popupOptions
-        visible: true
+        visible: _controllerCanvasPopup.isVisible
 
         Rectangle {
             anchors.fill: parent
 
             //property var fontButtons: Font { family: "Helvetica"; pointSize: 13; bold: true }
-            property var fontFamily: string = "Helvetica"
+            property var fontFamily: string = "Helvetica"
             property var fontSize: 13
             property var fontColor: "black"
 
@@ -106,15 +106,23 @@ Item {
                             verticalAlignment: Text.AlignVCenter
                             elide: Text.ElideRight
                         }
-                    onClicked: console.log("Option 1 clicked")
+                    enabled: _controllerCanvasPopup.isCopySelectable
+                    onClicked: _controllerCanvasPopup.clickCopy()
                 }
                 Button {
                     text: "Delete"
-                    onClicked: console.log("Option 2 clicked")
+                    enabled: _controllerCanvasPopup.isDeleteSelectable
+                    onClicked: _controllerCanvasPopup.clickDelete()
+                }
+                Button {
+                    text: "Cut"
+                    enabled: _controllerCanvasPopup.isCutSelectable
+                    onClicked: _controllerCanvasPopup.clickCut()
                 }
                 Button {
                     text: "Paste"
-                    onClicked: console.log("Option 3 clicked")
+                    onClicked: _controllerCanvasPopup.clickPaste()
+                    enabled: _controllerCanvasPopup.isPasteSelectable
                 }
             }
         }

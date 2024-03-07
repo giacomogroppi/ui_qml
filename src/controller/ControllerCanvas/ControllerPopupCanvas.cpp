@@ -4,8 +4,8 @@
 
 ControllerPopupCanvas::ControllerPopupCanvas(QObject *parent)
     : QObject{parent}
-    , _types(0)
-    , _isVisible(false)
+    , _types(0xffff)
+    , _isVisible(true)
 {
 
 }
@@ -25,6 +25,11 @@ bool ControllerPopupCanvas::isCutSelectable() const
 bool ControllerPopupCanvas::isDeleteSelectable() const
 {
     return _types & del;
+}
+
+bool ControllerPopupCanvas::isPasteSelectable() const
+{
+    return _types & paste;
 }
 
 bool ControllerPopupCanvas::isVisible() const
@@ -68,6 +73,18 @@ void ControllerPopupCanvas::cutSelectable(bool selectable)
     if (shouldEmit) emit clickableChanged();
 }
 
+void ControllerPopupCanvas::pasteSelectable(bool selectable)
+{
+    const auto shouldEmit = selectable != !!(_types & paste);
+
+    if (selectable)
+        this->_types |= PopupVisibility::paste;
+    else
+        this->_types &= ~PopupVisibility::paste;
+
+    if (shouldEmit) emit clickableChanged();
+}
+
 void ControllerPopupCanvas::visibilityChanged(bool isVisible)
 {
     if (isVisible != this->_isVisible) {
@@ -76,17 +93,36 @@ void ControllerPopupCanvas::visibilityChanged(bool isVisible)
     }
 }
 
-void ControllerPopupCanvas::clickCopy(const QPointF& point)
+void ControllerPopupCanvas::clickCopy()
 {
     W_EMIT_0(copyClicked);
 }
 
-void ControllerPopupCanvas::clickDelete(const QPointF& point)
+void ControllerPopupCanvas::clickDelete()
 {
     W_EMIT_0(deleteClicked);
 }
 
-void ControllerPopupCanvas::clickCut(const QPointF& point)
+void ControllerPopupCanvas::clickCut()
 {
     W_EMIT_0(cutClicked);
+}
+
+void ControllerPopupCanvas::clickPaste()
+{
+    W_EMIT_0(pasteClicked);
+}
+
+void ControllerPopupCanvas::propertyShow(const PointF& point, ActionProperty actionProperty)
+{
+    // TODO: use the point passed as parameter
+    this->copySelectable(!!(actionProperty & ActionProperty::PROPERTY_SHOW_COPY));
+    this->deleteSelectable(!!(actionProperty & ActionProperty::PROPERTY_SHOW_DELETE));
+    this->cutSelectable(!!(actionProperty & ActionProperty::PROPERTY_SHOW_CUT));
+    this->pasteSelectable(!!(actionProperty & ActionProperty::PROPERTY_SHOW_PASTE));
+
+    this->_isVisible = !!actionProperty;
+
+    if (actionProperty)
+        emit onVisibilityChanged();
 }

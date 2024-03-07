@@ -21,6 +21,7 @@ ControllerCanvas::ControllerCanvas(QObject *parent)
     : QAbstractListModel(parent)
     , _width(Page::getWidth())
     , _heigth(Page::getHeight())
+    , _controllerPopupCanvas(new ControllerPopupCanvas(this))
     , _status(waitingFor::begin)
     , _positionX(0.)
     , _positionY(0.)
@@ -30,6 +31,10 @@ ControllerCanvas::ControllerCanvas(QObject *parent)
 
     controllerCanvas = this;
     //Controller::registerControllerCanvas(this);
+
+    Controller::registerType("_controllerCanvasPopup", this->_controllerPopupCanvas);
+
+    w_connect_listener(Controller::instance()->tabletController(), onPropertyShow, _controllerPopupCanvas, propertyShow);
 
     qDebug() << "ControllerCanvas::ControllerCanvas call";
 }

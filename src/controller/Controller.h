@@ -68,6 +68,8 @@ public:
     static auto instance() -> Controller *;
     static void registerControllerCanvas(ControllerCanvas *controllerCanvas);
 
+    static auto tabletController() -> TabletController *;
+
 signals:
     void onPathSavingChanged();
     void onUiSelectedChanged();
@@ -90,3 +92,8 @@ inline void Controller::registerType(const QString &name, QObject *object)
     QQmlContext *content = Controller::getContent();
     content->setContextProperty(name, object);
 };
+
+inline auto Controller::tabletController() -> TabletController *
+{
+    return Controller::instance()->_tabletController;
+}
