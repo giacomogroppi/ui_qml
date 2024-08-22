@@ -20,7 +20,7 @@ static bool init = false;
 ControllerCanvas::ControllerCanvas(QObject *parent)
     : QAbstractListModel(parent)
     , _width(Page::getWidth())
-    , _heigth(Page::getHeight())
+    , _height(Page::getHeight())
     , _controllerPopupCanvas(new ControllerPopupCanvas(this))
     , _status(waitingFor::begin)
     , _positionX(0.)
@@ -51,15 +51,15 @@ void ControllerCanvas::wSetWidth(int newWidth)
     emit onWidthObjectChanged();
 }
 
-void ControllerCanvas::wSetHeigth(int newHeigth)
+void ControllerCanvas::wSetHeight(int newHeight)
 {
-    this->_heigth = newHeigth;
-    emit onHeigthObjectChanged();
+    this->_height = newHeight;
+    emit onHeightObjectChanged();
 }
 
-int ControllerCanvas::getHeigthObject() const
+int ControllerCanvas::getHeightObject() const
 {
-    return this->_heigth;
+    return this->_height;
 }
 
 int ControllerCanvas::getWidthObject() const
@@ -258,12 +258,12 @@ void ControllerCanvas::sizeHasChanged(const QSizeF &size)
     qDebug() << "asked for new size: " << size;
 
     this->_width = size.width();
-    this->_heigth = size.height();
+    this->_height = size.height();
 
     WDebug(false, "Call");
 
     emit this->onWidthObjectChanged();
-    emit this->onHeigthObjectChanged();
+    emit this->onHeightObjectChanged();
 
     ControllerCanvas::callUpdate(UpdateEvent::makeAll());
 }

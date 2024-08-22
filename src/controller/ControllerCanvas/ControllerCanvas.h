@@ -16,14 +16,14 @@ class ControllerCanvas final: public QAbstractListModel
     Q_OBJECT
     Q_PROPERTY(double positionX READ positionX WRITE setPositionX NOTIFY positionXChanged);
     Q_PROPERTY(double positionY READ positionY WRITE setPositionY NOTIFY positionYChanged);
-    Q_PROPERTY(int heigthObject READ getHeigthObject NOTIFY onHeigthObjectChanged);
+    Q_PROPERTY(int heightObject READ getHeightObject NOTIFY onHeightObjectChanged);
     Q_PROPERTY(int widthObject READ getWidthObject NOTIFY onWidthObjectChanged);
 private:
     int _width;
-    int _heigth;
+    int _height;
 
     void wSetWidth(int newWidth);
-    void wSetHeigth(int newHeigth);
+    void wSetHeight(int newHeight);
 
     ControllerPopupCanvas* _controllerPopupCanvas;
 
@@ -44,7 +44,7 @@ public:
     explicit ControllerCanvas(QObject *parent = nullptr);
     ~ControllerCanvas() = default;
 
-    auto getHeigthObject() const -> int;
+    auto getHeightObject() const -> int;
     auto getWidthObject() const -> int;
 
     auto positionX() const -> double;
@@ -55,9 +55,9 @@ public:
 
     void setFunc(std::function<void (QPainter &, double, WFlags<UpdateEvent::UpdateEventType>)> getImg);
 
-    int rowCount(const QModelIndex& parent) const override;
-    QVariant data( const QModelIndex& index, int role = Qt::DisplayRole ) const override;
-    QHash<int, QByteArray> roleNames() const override;
+    auto rowCount(const QModelIndex& parent) const -> int override;
+    auto data( const QModelIndex& index, int role = Qt::DisplayRole ) const -> QVariant override;
+    auto roleNames() const -> QHash<int, QByteArray> override;
 
     static void registerDrawerPage(WQMLCanvasComponentPage* object);
     static void unregisterDrawerPage(WQMLCanvasComponentPage* object);
@@ -117,5 +117,5 @@ signals:
     void positionChanged(const QPointF &newPosition);
 
     void onWidthObjectChanged();
-    void onHeigthObjectChanged();
+    void onHeightObjectChanged();
 };
